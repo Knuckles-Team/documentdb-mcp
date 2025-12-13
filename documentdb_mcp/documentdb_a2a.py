@@ -15,22 +15,24 @@ DEFAULT_PROVIDER = "openai"
 DEFAULT_MODEL_ID = "qwen3:4b"  # User's preference
 DEFAULT_OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "http://ollama.arpa/v1")
 DEFAULT_OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "ollama")
-DEFAULT_MCP_URL = "http://documentdb-mcp:8000/mcp" 
+DEFAULT_MCP_URL = "http://documentdb-mcp:8000/mcp"
 DEFAULT_ALLOWED_TOOLS: List[str] = [
     "list_databases",
-    "list_collections", 
+    "list_collections",
     "create_collection",
     "drop_collection",
     "insert_one",
     "find_one",
     "find",
-    "update_one", 
+    "update_one",
     "delete_one",
-    "aggregate"
+    "aggregate",
 ]
 
 AGENT_NAME = "DocumentDBAgent"
-AGENT_DESCRIPTION = "A specialist agent for managing and querying DocumentDB (MongoDB-compatible)."
+AGENT_DESCRIPTION = (
+    "A specialist agent for managing and querying DocumentDB (MongoDB-compatible)."
+)
 INSTRUCTIONS = (
     "You are a database administrator and query specialist for DocumentDB.\n\n"
     "Your primary goal is to assist users in managing their database collections and performing queries.\n"
@@ -88,7 +90,7 @@ def create_agent(
     else:
         raise ValueError(f"Unsupported provider: {provider}")
 
-    # Define the toolset using FastMCPToolset 
+    # Define the toolset using FastMCPToolset
     try:
         toolset = FastMCPToolset(client=mcp_url)
         filtered_toolset = toolset.filtered(
@@ -96,7 +98,9 @@ def create_agent(
         )
         toolsets = [filtered_toolset]
     except Exception as e:
-        print(f"Warning: Could not connect to MCP server at {mcp_url}. Agent will start without tools. Error: {e}")
+        print(
+            f"Warning: Could not connect to MCP server at {mcp_url}. Agent will start without tools. Error: {e}"
+        )
         toolsets = []
 
     # Define the agent
@@ -111,7 +115,7 @@ def create_agent(
 
 
 # Expose as A2A server (Default instance for ASGI runners)
-# Note: This default instance might fail to connect to MCP if it's not up, 
+# Note: This default instance might fail to connect to MCP if it's not up,
 # but that's expected behavior for static analysis or simple imports.
 agent = create_agent()
 
@@ -143,7 +147,7 @@ skills = [
         examples=["Create a 'logs' collection", "List all collections"],
         input_modes=["text"],
         output_modes=["text"],
-    )
+    ),
 ]
 
 
@@ -199,10 +203,10 @@ def agent_server():
         mcp_url=args.mcp_url,
         allowed_tools=args.allowed_tools,
     )
-    
+
     # Version 0.1.0 since this is a new implementation
     cli_app = cli_agent.to_a2a(
-        name=AGENT_NAME, description=AGENT_DESCRIPTION, version="0.1.0", skills=skills
+        name=AGENT_NAME, description=AGENT_DESCRIPTION, version="0.0.2", skills=skills
     )
 
     uvicorn.run(
