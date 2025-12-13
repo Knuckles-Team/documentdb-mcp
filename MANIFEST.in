@@ -1,0 +1,1 @@
+include README.md include requirements.txt recursive-include documentdb_mcp *.py
