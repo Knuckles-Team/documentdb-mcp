@@ -67,7 +67,7 @@ def get_client() -> pymongo.MongoClient:
         if not uri:
             # Check for MONGODB_HOST, MONGODB_PORT etc as fallback or default
             host = os.environ.get("MONGODB_HOST", "localhost")
-            port = os.environ.get("MONGODB_PORT", "27017")
+            port = os.environ.get("MONGODB_PORT", "10260")
             uri = f"mongodb://{host}:{port}/"
 
         logger.info(f"Connecting to DocumentDB/MongoDB at {uri}")
@@ -231,10 +231,18 @@ def register_tools(mcp: FastMCP):
             return f"Error dropping collection: {str(e)}"
 
     @mcp.tool()
-    def create_database(database_name: str, initial_collection: str = "test") -> str:
+    def create_database(
+        database_name: str, initial_collection: str = "default_collection"
+    ) -> str:
         """Explicitly create a database by creating a collection in it (MongoDB creates DBs lazily)."""
         # This maps loosely to create_database, but typically we just start using it.
-        return create_collection(database_name, initial_collection)
+        client = get_client()
+        db = client[database_name]
+        try:
+            db.create_collection(initial_collection)
+            return f"Collection '{initial_collection}' created in database '{database_name}'"
+        except PyMongoError as e:
+            return f"Error creating collection: {str(e)}"
 
     @mcp.tool()
     def drop_database(database_name: str) -> str:
@@ -619,7 +627,7 @@ def register_tools(mcp: FastMCP):
 
 def register_prompts(mcp: FastMCP):
     @mcp.prompt
-    def create_incident_prompt(user: str) -> str:
+    def create_user_prompt(user: str) -> str:
         """
         Generates a prompt for creating a user.
         """
