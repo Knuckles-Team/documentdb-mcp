@@ -50,10 +50,10 @@ ENV PATH="/usr/local/bin:${PATH}"
 ENV UV_HTTP_TIMEOUT=3600
 
 RUN pip install uv \
-    && uv pip install --system --upgrade documentdb-mcp[all]>=0.0.4
+    && uv pip install --system --upgrade documentdb-mcp[all]>=0.0.5
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["searxng-mcp"]
+CMD ["documentdb-mcp"]

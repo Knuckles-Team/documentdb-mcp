@@ -206,7 +206,7 @@ def agent_server():
 
     # Version 0.1.0 since this is a new implementation
     cli_app = cli_agent.to_a2a(
-        name=AGENT_NAME, description=AGENT_DESCRIPTION, version="0.0.4", skills=skills
+        name=AGENT_NAME, description=AGENT_DESCRIPTION, version="0.0.5", skills=skills
     )
 
     uvicorn.run(
