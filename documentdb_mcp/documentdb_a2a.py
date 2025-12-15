@@ -11,11 +11,11 @@ from pydantic_ai.toolsets.fastmcp import FastMCPToolset
 from fasta2a import Skill
 
 # Default Configuration
-DEFAULT_PROVIDER = "openai"
-DEFAULT_MODEL_ID = "qwen3:4b"  # User's preference
+DEFAULT_PROVIDER = os.getenv("PROVIDER", "openai")
+DEFAULT_MODEL_ID = os.getenv("MODEL_ID", "qwen3:4b")
 DEFAULT_OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "http://ollama.arpa/v1")
 DEFAULT_OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "ollama")
-DEFAULT_MCP_URL = "http://documentdb-mcp:8000/mcp"
+DEFAULT_MCP_URL = os.getenv("MCP_URL", "http://documentdb-mcp.arpa/mcp")
 DEFAULT_ALLOWED_TOOLS: List[str] = [
     "list_databases",
     "list_collections",
@@ -206,7 +206,7 @@ def agent_server():
 
     # Version 0.1.0 since this is a new implementation
     cli_app = cli_agent.to_a2a(
-        name=AGENT_NAME, description=AGENT_DESCRIPTION, version="0.0.3", skills=skills
+        name=AGENT_NAME, description=AGENT_DESCRIPTION, version="0.0.4", skills=skills
     )
 
     uvicorn.run(
