@@ -1,6 +1,7 @@
 # DocumentDB - A2A & MCP Server
 
 ![PyPI - Version](https://img.shields.io/pypi/v/documentdb-mcp)
+![MCP Server](https://badge.mcpx.dev?type=server 'MCP Server')
 ![PyPI - Downloads](https://img.shields.io/pypi/dd/documentdb-mcp)
 ![GitHub Repo stars](https://img.shields.io/github/stars/Knuckles-Team/documentdb-mcp)
 ![GitHub forks](https://img.shields.io/github/forks/Knuckles-Team/documentdb-mcp)
@@ -20,7 +21,7 @@
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/documentdb-mcp)
 ![PyPI - Implementation](https://img.shields.io/pypi/implementation/documentdb-mcp)
 
-*Version: 0.0.5*
+*Version: 0.0.6*
 
 DocumentDB + MCP Server + A2A
 
@@ -76,11 +77,96 @@ This package provides:
 |            | --openapi-file                  | Path to OpenAPI JSON spec to import tools/resources from                                                  |
 |            | --openapi-base-url              | Base URL for the OpenAPI client (defaults to instance URL)                                                |
 
+## A2A Agent
+
+### Architecture:
+
+```mermaid
+---
+config:
+  layout: dagre
+---
+flowchart TB
+ subgraph subGraph0["Agent Capabilities"]
+        C["Agent"]
+        B["A2A Server - Uvicorn/FastAPI"]
+        D["MCP Tools"]
+        F["Agent Skills"]
+  end
+    C --> D & F
+    A["User Query"] --> B
+    B --> C
+    D --> E["Platform API"]
+
+     C:::agent
+     B:::server
+     A:::server
+    classDef server fill:#f9f,stroke:#333
+    classDef agent fill:#bbf,stroke:#333,stroke-width:2px
+    style B stroke:#000000,fill:#FFD600
+    style D stroke:#000000,fill:#BBDEFB
+    style F fill:#BBDEFB
+    style A fill:#C8E6C9
+    style subGraph0 fill:#FFF9C4
+```
+
+### Component Interaction Diagram
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Server as A2A Server
+    participant Agent as Agent
+    participant Skill as Agent Skills
+    participant MCP as MCP Tools
+
+    User->>Server: Send Query
+    Server->>Agent: Invoke Agent
+    Agent->>Skill: Analyze Skills Available
+    Skill->>Agent: Provide Guidance on Next Steps
+    Agent->>MCP: Invoke Tool
+    MCP-->>Agent: Tool Response Returned
+    Agent-->>Agent: Return Results Summarized
+    Agent-->>Server: Final Response
+    Server-->>User: Output
+```
+
+## Usage
+
+### CLI
+
+| Short Flag | Long Flag        | Description                            |
+|------------|------------------|----------------------------------------|
+| -h         | --help           | See Usage                              |
+
+### MCP CLI
+
+| Short Flag | Long Flag                          | Description                                                                 |
+|------------|------------------------------------|-----------------------------------------------------------------------------|
+| -h         | --help                             | Display help information                                                    |
+| -t         | --transport                        | Transport method: 'stdio', 'http', or 'sse' [legacy] (default: stdio)       |
+| -s         | --host                             | Host address for HTTP transport (default: 0.0.0.0)                          |
+| -p         | --port                             | Port number for HTTP transport (default: 8000)                              |
+|            | --auth-type                        | Authentication type: 'none', 'static', 'jwt', 'oauth-proxy', 'oidc-proxy', 'remote-oauth' (default: none) |
+|            | --eunomia-type                     | Eunomia authorization type: 'none', 'embedded', 'remote' (default: none)   |
+
+
 ### A2A CLI
 
 | Short Flag | Long Flag         | Description                                                            |
 |------------|-------------------|------------------------------------------------------------------------|
 | -h         | --help            | Display help information                                               |
+|            | --host            | Host to bind the server to (default: 0.0.0.0)                          |
+|            | --port            | Port to bind the server to (default: 9000)                             |
+|            | --reload          | Enable auto-reload                                                     |
+|            | --provider        | LLM Provider: 'openai', 'anthropic', 'google', 'huggingface'           |
+|            | --model-id        | LLM Model ID (default: qwen/qwen3-8b)                                  |
+|            | --base-url        | LLM Base URL (for OpenAI compatible providers)                         |
+|            | --api-key         | LLM API Key                                                            |
+|            | --mcp-url         | MCP Server URL (default: http://localhost:8000/mcp)                    |
+
+### Using as an MCP Server
+mation                                               |
 |            | --host            | Host to bind the server to (default: 0.0.0.0)                          |
 |            | --port            | Port to bind the server to (default: 9000)                             |
 |            | --reload          | Enable auto-reload                                                     |
