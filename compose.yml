@@ -1,0 +1,64 @@
+---
+services:
+  documentdb-mcp:
+    image: docker.io/knucklessg1/documentdb-mcp:latest
+    # build: . # Debug
+    container_name: documentdb-mcp
+    hostname: documentdb-mcp
+    command: ["documentdb-mcp"]
+    depends_on:
+      - documentdb
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    restart: always
+    environment:
+      - "HOST=0.0.0.0"
+      - "PORT=8015"
+      - "TRANSPORT=streamable-http"
+      - "MONGODB_URI=${MONGODB_URI}" # Required
+    ports:
+      - "8015:8015"
+
+  documentdb-a2a:
+    image: docker.io/knucklessg1/documentdb-mcp:latest
+    # build: . # Debug
+    container_name: documentdb-a2a
+    hostname: documentdb-a2a
+    command: ["documentdb-a2a"]
+    depends_on:
+      - documentdb-mcp
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    restart: always
+    environment:
+      - "HOST=0.0.0.0"
+      - "PORT=9015"
+      - "MCP_URL=http://documentdb-mcp:8015/mcp"
+      - "PROVIDER=openai"
+      - "OPENAI_BASE_URL=http://localhost:1234/v1"
+      - "OPENAI_API_KEY=llama"
+      - "MODEL_ID=qwen/qwen3-8b"
+      - "DEBUG=False"
+    ports:
+      - "9015:9015"
+
+  documentdb:
+    image: ghcr.io/microsoft/documentdb/documentdb-local:latest
+    environment:
+      - USERNAME=${DOCUMENTDB_USERNAME:-administrator}
+      - PASSWORD=${DOCUMENTDB_PASSWORD:-documentdbadmin}
+    volumes:
+      - ./mcp/documentdb-data:/data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    ports:
+      - "10260:10260"

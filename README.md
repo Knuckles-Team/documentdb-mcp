@@ -23,6 +23,8 @@
 
 *Version: 0.0.6*
 
+## Overview
+
 DocumentDB + MCP Server + A2A
 
 A [FastMCP](https://github.com/jlowin/fastmcp) server and A2A (Agent-to-Agent) agent for [DocumentDB](https://documentdb.io/).
@@ -32,7 +34,7 @@ This package provides:
 1.  **MCP Server**: Exposes DocumentDB functionality (CRUD, Administration) as tools for LLMs.
 2.  **A2A Agent**: A specialized agent that uses these tools to help users manage their database.
 
-## Features
+### Features
 
 -   **CRUD Operations**: Insert, Find, Update, Replace, Delete, Count, Distinct, Aggregate.
 -   **Collection Management**: Create, Drop, List, Rename collections.
@@ -40,42 +42,40 @@ This package provides:
 -   **Direct Commands**: Run raw database commands.
 
 
-### MCP CLI
+## MCP
 
-| Short Flag | Long Flag                       | Description                                                                                               |
-|------------|---------------------------------|-----------------------------------------------------------------------------------------------------------|
-| -h         | --help                          | Display help information                                                                                  |
-| -t         | --transport                     | Transport method: 'stdio', 'http', or 'sse' [legacy] (default: stdio)                                     |
-| -s         | --host                          | Host address for HTTP transport (default: 0.0.0.0)                                                        |
-| -p         | --port                          | Port number for HTTP transport (default: 8000)                                                            |
-|            | --auth-type                     | Authentication type: 'none', 'static', 'jwt', 'oauth-proxy', 'oidc-proxy', 'remote-oauth' (default: none) |
-|            | --token-jwks-uri                | JWKS URI for JWT verification                                                                             |
-|            | --token-issuer                  | Issuer for JWT verification                                                                               |
-|            | --token-audience                | Audience for JWT verification                                                                             |
-|            | --token-algorithm               | JWT signing algorithm (e.g., HS256, RS256). Required for HMAC or static keys. Auto-detected for JWKS.     |
-|            | --token-secret                  | Shared secret for HMAC (HS*) verification. Used with --token-algorithm.                                   |
-|            | --token-public-key              | Path to PEM public key file or inline PEM string for static asymmetric verification.                      |
-|            | --required-scopes               | Comma-separated required scopes (e.g., documentdb.read,documentdb.write). Enforced by JWTVerifier.        |
-|            | --oauth-upstream-auth-endpoint  | Upstream authorization endpoint for OAuth Proxy                                                           |
-|            | --oauth-upstream-token-endpoint | Upstream token endpoint for OAuth Proxy                                                                   |
-|            | --oauth-upstream-client-id      | Upstream client ID for OAuth Proxy                                                                        |
-|            | --oauth-upstream-client-secret  | Upstream client secret for OAuth Proxy                                                                    |
-|            | --oauth-base-url                | Base URL for OAuth Proxy                                                                                  |
-|            | --oidc-config-url               | OIDC configuration URL                                                                                    |
-|            | --oidc-client-id                | OIDC client ID                                                                                            |
-|            | --oidc-client-secret            | OIDC client secret                                                                                        |
-|            | --oidc-base-url                 | Base URL for OIDC Proxy                                                                                   |
-|            | --remote-auth-servers           | Comma-separated list of authorization servers for Remote OAuth                                            |
-|            | --remote-base-url               | Base URL for Remote OAuth                                                                                 |
-|            | --allowed-client-redirect-uris  | Comma-separated list of allowed client redirect URIs                                                      |
-|            | --eunomia-type                  | Eunomia authorization type: 'none', 'embedded', 'remote' (default: none)                                  |
-|            | --eunomia-policy-file           | Policy file for embedded Eunomia (default: mcp_policies.json)                                             |
-|            | --eunomia-remote-url            | URL for remote Eunomia server                                                                             |
-|            | --enable-delegation             | Enable OIDC token delegation to (default: False)                                                          |
-|            | --audience                      | Audience for the delegated token                                                                          |
-|            | --delegated-scopes              | Scopes for the delegated token (space-separated)                                                          |
-|            | --openapi-file                  | Path to OpenAPI JSON spec to import tools/resources from                                                  |
-|            | --openapi-base-url              | Base URL for the OpenAPI client (defaults to instance URL)                                                |
+### MCP Tools
+
+| Function Name          | Description                                                                                     | Tag(s)        |
+|:-----------------------|:------------------------------------------------------------------------------------------------|:--------------|
+| `binary_version`       | Get the binary version of the server (using buildInfo).                                         | `system`      |
+| `list_databases`       | List all databases in the connected DocumentDB/MongoDB instance.                                | `system`      |
+| `run_command`          | Run a raw command against the database.                                                         | `system`      |
+| `list_collections`     | List all collections in a specific database.                                                    | `collections` |
+| `create_collection`    | Create a new collection in the specified database.                                              | `collections` |
+| `drop_collection`      | Drop a collection from the specified database.                                                  | `collections` |
+| `create_database`      | Explicitly create a database by creating a collection in it (MongoDB creates DBs lazily).       | `collections` |
+| `drop_database`        | Drop a database.                                                                                | `collections` |
+| `rename_collection`    | Rename a collection.                                                                            | `collections` |
+| `create_user`          | Create a new user on the specified database.                                                    | `users`       |
+| `drop_user`            | Drop a user from the specified database.                                                        | `users`       |
+| `update_user`          | Update a user's password or roles.                                                              | `users`       |
+| `users_info`           | Get information about a user.                                                                   | `users`       |
+| `insert_one`           | Insert a single document into a collection.                                                     | `crud`        |
+| `insert_many`          | Insert multiple documents into a collection.                                                    | `crud`        |
+| `find_one`             | Find a single document matching the filter.                                                     | `crud`        |
+| `find`                 | Find documents matching the filter.                                                             | `crud`        |
+| `replace_one`          | Replace a single document matching the filter.                                                  | `crud`        |
+| `update_one`           | Update a single document matching the filter. 'update' must contain update operators like $set. | `crud`        |
+| `update_many`          | Update multiple documents matching the filter.                                                  | `crud`        |
+| `delete_one`           | Delete a single document matching the filter.                                                   | `crud`        |
+| `delete_many`          | Delete multiple documents matching the filter.                                                  | `crud`        |
+| `count_documents`      | Count documents matching the filter.                                                            | `crud`        |
+| `distinct`             | Find distinct values for a key.                                                                 | `analysis`    |
+| `aggregate`            | Run an aggregation pipeline.                                                                    | `analysis`    |
+| `find_one_and_update`  | Finds a single document and updates it. return_document: 'before' or 'after'.                   | `crud`        |
+| `find_one_and_replace` | Finds a single document and replaces it. return_document: 'before' or 'after'.                  | `crud`        |
+| `find_one_and_delete`  | Finds a single document and deletes it.                                                         | `crud`        |
 
 ## A2A Agent
 
@@ -133,22 +133,42 @@ sequenceDiagram
 
 ## Usage
 
-### CLI
-
-| Short Flag | Long Flag        | Description                            |
-|------------|------------------|----------------------------------------|
-| -h         | --help           | See Usage                              |
-
 ### MCP CLI
 
-| Short Flag | Long Flag                          | Description                                                                 |
-|------------|------------------------------------|-----------------------------------------------------------------------------|
-| -h         | --help                             | Display help information                                                    |
-| -t         | --transport                        | Transport method: 'stdio', 'http', or 'sse' [legacy] (default: stdio)       |
-| -s         | --host                             | Host address for HTTP transport (default: 0.0.0.0)                          |
-| -p         | --port                             | Port number for HTTP transport (default: 8000)                              |
-|            | --auth-type                        | Authentication type: 'none', 'static', 'jwt', 'oauth-proxy', 'oidc-proxy', 'remote-oauth' (default: none) |
-|            | --eunomia-type                     | Eunomia authorization type: 'none', 'embedded', 'remote' (default: none)   |
+| Short Flag | Long Flag                       | Description                                                                                               |
+|------------|---------------------------------|-----------------------------------------------------------------------------------------------------------|
+| -h         | --help                          | Display help information                                                                                  |
+| -t         | --transport                     | Transport method: 'stdio', 'http', or 'sse' [legacy] (default: stdio)                                     |
+| -s         | --host                          | Host address for HTTP transport (default: 0.0.0.0)                                                        |
+| -p         | --port                          | Port number for HTTP transport (default: 8000)                                                            |
+|            | --auth-type                     | Authentication type: 'none', 'static', 'jwt', 'oauth-proxy', 'oidc-proxy', 'remote-oauth' (default: none) |
+|            | --token-jwks-uri                | JWKS URI for JWT verification                                                                             |
+|            | --token-issuer                  | Issuer for JWT verification                                                                               |
+|            | --token-audience                | Audience for JWT verification                                                                             |
+|            | --token-algorithm               | JWT signing algorithm (e.g., HS256, RS256). Required for HMAC or static keys. Auto-detected for JWKS.     |
+|            | --token-secret                  | Shared secret for HMAC (HS*) verification. Used with --token-algorithm.                                   |
+|            | --token-public-key              | Path to PEM public key file or inline PEM string for static asymmetric verification.                      |
+|            | --required-scopes               | Comma-separated required scopes (e.g., documentdb.read,documentdb.write). Enforced by JWTVerifier.        |
+|            | --oauth-upstream-auth-endpoint  | Upstream authorization endpoint for OAuth Proxy                                                           |
+|            | --oauth-upstream-token-endpoint | Upstream token endpoint for OAuth Proxy                                                                   |
+|            | --oauth-upstream-client-id      | Upstream client ID for OAuth Proxy                                                                        |
+|            | --oauth-upstream-client-secret  | Upstream client secret for OAuth Proxy                                                                    |
+|            | --oauth-base-url                | Base URL for OAuth Proxy                                                                                  |
+|            | --oidc-config-url               | OIDC configuration URL                                                                                    |
+|            | --oidc-client-id                | OIDC client ID                                                                                            |
+|            | --oidc-client-secret            | OIDC client secret                                                                                        |
+|            | --oidc-base-url                 | Base URL for OIDC Proxy                                                                                   |
+|            | --remote-auth-servers           | Comma-separated list of authorization servers for Remote OAuth                                            |
+|            | --remote-base-url               | Base URL for Remote OAuth                                                                                 |
+|            | --allowed-client-redirect-uris  | Comma-separated list of allowed client redirect URIs                                                      |
+|            | --eunomia-type                  | Eunomia authorization type: 'none', 'embedded', 'remote' (default: none)                                  |
+|            | --eunomia-policy-file           | Policy file for embedded Eunomia (default: mcp_policies.json)                                             |
+|            | --eunomia-remote-url            | URL for remote Eunomia server                                                                             |
+|            | --enable-delegation             | Enable OIDC token delegation to (default: False)                                                          |
+|            | --audience                      | Audience for the delegated token                                                                          |
+|            | --delegated-scopes              | Scopes for the delegated token (space-separated)                                                          |
+|            | --openapi-file                  | Path to OpenAPI JSON spec to import tools/resources from                                                  |
+|            | --openapi-base-url              | Base URL for the OpenAPI client (defaults to instance URL)                                                |
 
 
 ### A2A CLI
@@ -176,11 +196,6 @@ mation                                               |
 |            | --api-key         | LLM API Key                                                            |
 |            | --mcp-url         | MCP Server URL (default: http://localhost:8000/mcp)                    |
 
-## Installation
-
-```bash
-pip install documentdb-mcp
-```
 
 ## Usage
 
@@ -222,16 +237,11 @@ documentdb-a2a
 documentdb-a2a --provider anthropic --model-id claude-3-5-sonnet-20240620 --mcp-url http://localhost:8000/mcp
 ```
 
-## Docker Utils
-
-To run with Docker using the provided `Dockerfile`:
+## Installation
 
 ```bash
-docker build -t documentdb-mcp .
-docker run -e MONGODB_URI=mongodb://host.docker.internal:27017/ -p 8000:8000 documentdb-mcp
+pip install documentdb-mcp
 ```
-
-
 
 ## Development
 
@@ -242,3 +252,11 @@ pip install -e ".[dev]"
 # Run tests or verification
 python -m build
 ```
+
+## Repository Owners
+
+<img width="100%" height="180em" src="https://github-readme-stats.vercel.app/api?username=Knucklessg1&show_icons=true&hide_border=true&&count_private=true&include_all_commits=true"  alt=""/>
+
+![GitHub followers](https://img.shields.io/github/followers/Knucklessg1)
+
+![GitHub User's stars](https://img.shields.io/github/stars/Knucklessg1)

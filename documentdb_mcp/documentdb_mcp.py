@@ -1,62 +1,55 @@
 #!/usr/bin/python
 # coding: utf-8
-import argparse
-import os
-import sys
-import json
-import logging
-from threading import local
-from typing import List, Dict, Any, Optional, Union
 
+import os
+import argparse
+import sys
+import logging
+from typing import Optional, List, Dict, Union, Any
+
+
+import json
 import pymongo
+from pymongo.errors import PyMongoError
 import requests
 from eunomia_mcp.middleware import EunomiaMcpMiddleware
-from pymongo.errors import PyMongoError
 from fastmcp import FastMCP
 from fastmcp.server.auth.oidc_proxy import OIDCProxy
 from fastmcp.server.auth import OAuthProxy, RemoteAuthProvider
 from fastmcp.server.auth.providers.jwt import JWTVerifier, StaticTokenVerifier
-from fastmcp.server.middleware import MiddlewareContext, Middleware
 from fastmcp.server.middleware.logging import LoggingMiddleware
 from fastmcp.server.middleware.timing import TimingMiddleware
 from fastmcp.server.middleware.rate_limiting import RateLimitingMiddleware
 from fastmcp.server.middleware.error_handling import ErrorHandlingMiddleware
 from fastmcp.utilities.logging import get_logger
+from documentdb_mcp.utils import to_boolean, to_integer
+from documentdb_mcp.middlewares import UserTokenMiddleware, JWTClaimsLoggingMiddleware
 
-local = local()
-logger = get_logger(name="DocumentDB")
+logger = get_logger(name="TokenMiddleware")
 logger.setLevel(logging.DEBUG)
+
+config = {
+    "enable_delegation": to_boolean(os.environ.get("ENABLE_DELEGATION", "False")),
+    "audience": os.environ.get("AUDIENCE", None),
+    "delegated_scopes": os.environ.get("DELEGATED_SCOPES", "api"),
+    "token_endpoint": None,  # Will be fetched dynamically from OIDC config
+    "oidc_client_id": os.environ.get("OIDC_CLIENT_ID", None),
+    "oidc_client_secret": os.environ.get("OIDC_CLIENT_SECRET", None),
+    "oidc_config_url": os.environ.get("OIDC_CONFIG_URL", None),
+    "jwt_jwks_uri": os.getenv("FASTMCP_SERVER_AUTH_JWT_JWKS_URI", None),
+    "jwt_issuer": os.getenv("FASTMCP_SERVER_AUTH_JWT_ISSUER", None),
+    "jwt_audience": os.getenv("FASTMCP_SERVER_AUTH_JWT_AUDIENCE", None),
+    "jwt_algorithm": os.getenv("FASTMCP_SERVER_AUTH_JWT_ALGORITHM", None),
+    "jwt_secret": os.getenv("FASTMCP_SERVER_AUTH_JWT_PUBLIC_KEY", None),
+    "jwt_required_scopes": os.getenv("FASTMCP_SERVER_AUTH_JWT_REQUIRED_SCOPES", None),
+}
+
+DEFAULT_TRANSPORT = os.getenv("TRANSPORT", "stdio")
+DEFAULT_HOST = os.getenv("HOST", "0.0.0.0")
+DEFAULT_PORT = to_integer(string=os.getenv("PORT", "8000"))
 
 # Global client variable (lazy initialization)
 _client: Optional[pymongo.MongoClient] = None
-
-
-def to_integer(string: Union[str, int] = None) -> int:
-    if isinstance(string, int):
-        return string
-    if not string:
-        return 0
-    try:
-        return int(string.strip())
-    except ValueError as e:
-        print(f"Cannot convert '{string}' to integer: {e}")
-        raise ValueError(f"Cannot convert '{string}' to integer")
-
-
-def to_boolean(string: Union[str, bool] = None) -> bool:
-    if isinstance(string, bool):
-        return string
-    if not string:
-        return False
-    normalized = str(string).strip().lower()
-    true_values = {"t", "true", "y", "yes", "1"}
-    false_values = {"f", "false", "n", "no", "0"}
-    if normalized in true_values:
-        return True
-    elif normalized in false_values:
-        return False
-    else:
-        raise ValueError(f"Cannot convert '{string}' to boolean")
 
 
 def get_client() -> pymongo.MongoClient:
@@ -106,71 +99,8 @@ def serialize_oid(data: Any) -> Any:
         return data
 
 
-config = {
-    "enable_delegation": to_boolean(os.environ.get("ENABLE_DELEGATION", "False")),
-    "audience": os.environ.get("AUDIENCE", None),
-    "delegated_scopes": os.environ.get("DELEGATED_SCOPES", "api"),
-    "token_endpoint": None,  # Will be fetched dynamically from OIDC config
-    "oidc_client_id": os.environ.get("OIDC_CLIENT_ID", None),
-    "oidc_client_secret": os.environ.get("OIDC_CLIENT_SECRET", None),
-    "oidc_config_url": os.environ.get("OIDC_CONFIG_URL", None),
-    "jwt_jwks_uri": os.getenv("FASTMCP_SERVER_AUTH_JWT_JWKS_URI", None),
-    "jwt_issuer": os.getenv("FASTMCP_SERVER_AUTH_JWT_ISSUER", None),
-    "jwt_audience": os.getenv("FASTMCP_SERVER_AUTH_JWT_AUDIENCE", None),
-    "jwt_algorithm": os.getenv("FASTMCP_SERVER_AUTH_JWT_ALGORITHM", None),
-    "jwt_secret": os.getenv("FASTMCP_SERVER_AUTH_JWT_PUBLIC_KEY", None),
-    "jwt_required_scopes": os.getenv("FASTMCP_SERVER_AUTH_JWT_REQUIRED_SCOPES", None),
-}
-
-
-class UserTokenMiddleware(Middleware):
-    async def on_request(self, context: MiddlewareContext, call_next):
-        logger.debug(f"Delegation enabled: {config['enable_delegation']}")
-        if config["enable_delegation"]:
-            headers = getattr(context.message, "headers", {})
-            auth = headers.get("Authorization")
-            if auth and auth.startswith("Bearer "):
-                token = auth.split(" ")[1]
-                local.user_token = token
-                local.user_claims = None  # Will be populated by JWTVerifier
-
-                # Extract claims if JWTVerifier already validated
-                if hasattr(context, "auth") and hasattr(context.auth, "claims"):
-                    local.user_claims = context.auth.claims
-                    logger.info(
-                        "Stored JWT claims for delegation",
-                        extra={"subject": context.auth.claims.get("sub")},
-                    )
-                else:
-                    logger.debug("JWT claims not yet available (will be after auth)")
-
-                logger.info("Extracted Bearer token for delegation")
-            else:
-                logger.error("Missing or invalid Authorization header")
-                raise ValueError("Missing or invalid Authorization header")
-        return await call_next(context)
-
-
-class JWTClaimsLoggingMiddleware(Middleware):
-    async def on_response(self, context: MiddlewareContext, call_next):
-        response = await call_next(context)
-        logger.info(f"JWT Response: {response}")
-        if hasattr(context, "auth") and hasattr(context.auth, "claims"):
-            logger.info(
-                "JWT Authentication Success",
-                extra={
-                    "subject": context.auth.claims.get("sub"),
-                    "client_id": context.auth.claims.get("client_id"),
-                    "scopes": context.auth.claims.get("scope"),
-                },
-            )
-
-
-# ==================================================================================
-# Utility Functions
-# ==================================================================================
 def register_tools(mcp: FastMCP):
-    @mcp.tool()
+    @mcp.tool(tags={"system"})
     def binary_version() -> str:
         """Get the binary version of the server (using buildInfo)."""
         try:
@@ -180,13 +110,13 @@ def register_tools(mcp: FastMCP):
         except Exception as e:
             return f"Error: {str(e)}"
 
-    @mcp.tool()
+    @mcp.tool(tags={"system"})
     def list_databases() -> List[str]:
         """List all databases in the connected DocumentDB/MongoDB instance."""
         client = get_client()
         return client.list_database_names()
 
-    @mcp.tool()
+    @mcp.tool(tags={"system"})
     def run_command(database_name: str, command: Dict[str, Any]) -> Dict[str, Any]:
         """Run a raw command against the database."""
         client = get_client()
@@ -195,18 +125,14 @@ def register_tools(mcp: FastMCP):
         result = db.command(cmd)
         return serialize_oid(result)
 
-    # ==================================================================================
-    # Collection Management
-    # ==================================================================================
-
-    @mcp.tool()
+    @mcp.tool(tags={"collections"})
     def list_collections(database_name: str) -> List[str]:
         """List all collections in a specific database."""
         client = get_client()
         db = client[database_name]
         return db.list_collection_names()
 
-    @mcp.tool()
+    @mcp.tool(tags={"collections"})
     def create_collection(database_name: str, collection_name: str) -> str:
         """Create a new collection in the specified database."""
         client = get_client()
@@ -219,7 +145,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return f"Error creating collection: {str(e)}"
 
-    @mcp.tool()
+    @mcp.tool(tags={"collections"})
     def drop_collection(database_name: str, collection_name: str) -> str:
         """Drop a collection from the specified database."""
         client = get_client()
@@ -230,7 +156,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return f"Error dropping collection: {str(e)}"
 
-    @mcp.tool()
+    @mcp.tool(tags={"collections"})
     def create_database(
         database_name: str, initial_collection: str = "default_collection"
     ) -> str:
@@ -244,7 +170,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return f"Error creating collection: {str(e)}"
 
-    @mcp.tool()
+    @mcp.tool(tags={"collections"})
     def drop_database(database_name: str) -> str:
         """Drop a database."""
         client = get_client()
@@ -254,7 +180,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return f"Error dropping database: {str(e)}"
 
-    @mcp.tool()
+    @mcp.tool(tags={"collections"})
     def rename_collection(database_name: str, old_name: str, new_name: str) -> str:
         """Rename a collection."""
         client = get_client()
@@ -265,11 +191,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return f"Error renaming collection: {str(e)}"
 
-    # ==================================================================================
-    # User Management
-    # ==================================================================================
-
-    @mcp.tool()
+    @mcp.tool(tags={"users"})
     def create_user(
         database_name: str, username: str, password: str, roles: List[Any]
     ) -> str:
@@ -284,7 +206,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return f"Error creating user: {str(e)}"
 
-    @mcp.tool()
+    @mcp.tool(tags={"users"})
     def drop_user(database_name: str, username: str) -> str:
         """Drop a user from the specified database."""
         client = get_client()
@@ -295,7 +217,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return f"Error dropping user: {str(e)}"
 
-    @mcp.tool()
+    @mcp.tool(tags={"users"})
     def update_user(
         database_name: str,
         username: str,
@@ -320,7 +242,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return f"Error updating user: {str(e)}"
 
-    @mcp.tool()
+    @mcp.tool(tags={"users"})
     def users_info(database_name: str, username: str) -> Dict[str, Any]:
         """Get information about a user."""
         client = get_client()
@@ -331,11 +253,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return {"error": str(e)}
 
-    # ==================================================================================
-    # CRUD Operations
-    # ==================================================================================
-
-    @mcp.tool()
+    @mcp.tool(tags={"crud"})
     def insert_one(
         database_name: str, collection_name: str, document: Dict[str, Any]
     ) -> str:
@@ -350,7 +268,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return f"Error inserting document: {str(e)}"
 
-    @mcp.tool()
+    @mcp.tool(tags={"crud"})
     def insert_many(
         database_name: str, collection_name: str, documents: List[Dict[str, Any]]
     ) -> List[str]:
@@ -365,7 +283,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return [f"Error inserting documents: {str(e)}"]
 
-    @mcp.tool()
+    @mcp.tool(tags={"crud"})
     def find_one(
         database_name: str, collection_name: str, filter: Dict[str, Any]
     ) -> Optional[Dict[str, Any]]:
@@ -382,7 +300,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return {"error": str(e)}
 
-    @mcp.tool()
+    @mcp.tool(tags={"crud"})
     def find(
         database_name: str,
         collection_name: str,
@@ -419,7 +337,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return [{"error": str(e)}]
 
-    @mcp.tool()
+    @mcp.tool(tags={"crud"})
     def replace_one(
         database_name: str,
         collection_name: str,
@@ -438,7 +356,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return f"Error replacing document: {str(e)}"
 
-    @mcp.tool()
+    @mcp.tool(tags={"crud"})
     def update_one(
         database_name: str,
         collection_name: str,
@@ -457,7 +375,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return f"Error updating document: {str(e)}"
 
-    @mcp.tool()
+    @mcp.tool(tags={"crud"})
     def update_many(
         database_name: str,
         collection_name: str,
@@ -476,7 +394,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return f"Error updating documents: {str(e)}"
 
-    @mcp.tool()
+    @mcp.tool(tags={"crud"})
     def delete_one(
         database_name: str, collection_name: str, filter: Dict[str, Any]
     ) -> str:
@@ -491,7 +409,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return f"Error deleting document: {str(e)}"
 
-    @mcp.tool()
+    @mcp.tool(tags={"crud"})
     def delete_many(
         database_name: str, collection_name: str, filter: Dict[str, Any]
     ) -> str:
@@ -506,7 +424,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return f"Error deleting documents: {str(e)}"
 
-    @mcp.tool()
+    @mcp.tool(tags={"crud"})
     def count_documents(
         database_name: str, collection_name: str, filter: Dict[str, Any]
     ) -> int:
@@ -521,7 +439,7 @@ def register_tools(mcp: FastMCP):
             logger.error(f"Error counting documents: {e}")
             return -1
 
-    @mcp.tool()
+    @mcp.tool(tags={"analysis"})
     def distinct(
         database_name: str, collection_name: str, key: str, filter: Dict[str, Any]
     ) -> List[Any]:
@@ -535,7 +453,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return [f"Error getting distinct values: {str(e)}"]
 
-    @mcp.tool()
+    @mcp.tool(tags={"analysis"})
     def aggregate(
         database_name: str, collection_name: str, pipeline: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
@@ -553,7 +471,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return [{"error": str(e)}]
 
-    @mcp.tool()
+    @mcp.tool(tags={"crud"})
     def find_one_and_update(
         database_name: str,
         collection_name: str,
@@ -580,7 +498,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return {"error": str(e)}
 
-    @mcp.tool()
+    @mcp.tool(tags={"crud"})
     def find_one_and_replace(
         database_name: str,
         collection_name: str,
@@ -607,7 +525,7 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return {"error": str(e)}
 
-    @mcp.tool()
+    @mcp.tool(tags={"crud"})
     def find_one_and_delete(
         database_name: str, collection_name: str, filter: Dict[str, Any]
     ) -> Optional[Dict[str, Any]]:
@@ -639,21 +557,21 @@ def documentdb_mcp():
     parser.add_argument(
         "-t",
         "--transport",
-        default="stdio",
-        choices=["stdio", "http", "sse"],
-        help="Transport method: 'stdio', 'http', or 'sse' [legacy] (default: stdio)",
+        default=DEFAULT_TRANSPORT,
+        choices=["stdio", "streamable-http", "sse"],
+        help="Transport method: 'stdio', 'streamable-http', or 'sse' [legacy] (default: stdio)",
     )
     parser.add_argument(
         "-s",
         "--host",
-        default="0.0.0.0",
+        default=DEFAULT_HOST,
         help="Host address for HTTP transport (default: 0.0.0.0)",
     )
     parser.add_argument(
         "-p",
         "--port",
         type=int,
-        default=8000,
+        default=DEFAULT_PORT,
         help="Port number for HTTP transport (default: 8000)",
     )
     parser.add_argument(
@@ -769,7 +687,7 @@ def documentdb_mcp():
         "--enable-delegation",
         action="store_true",
         default=to_boolean(os.environ.get("ENABLE_DELEGATION", "False")),
-        help="Enable OIDC token delegation to DocumentDB",
+        help="Enable OIDC token delegation",
     )
     parser.add_argument(
         "--audience",
@@ -1103,9 +1021,8 @@ def documentdb_mcp():
         LoggingMiddleware(),
         JWTClaimsLoggingMiddleware(),
     ]
-
     if config["enable_delegation"] or args.auth_type == "jwt":
-        middlewares.insert(0, UserTokenMiddleware())  # Must be first
+        middlewares.insert(0, UserTokenMiddleware(config=config))  # Must be first
 
     if args.eunomia_type in ["embedded", "remote"]:
         try:
@@ -1140,8 +1057,8 @@ def documentdb_mcp():
 
     if args.transport == "stdio":
         mcp.run(transport="stdio")
-    elif args.transport == "http":
-        mcp.run(transport="http", host=args.host, port=args.port)
+    elif args.transport == "streamable-http":
+        mcp.run(transport="streamable-http", host=args.host, port=args.port)
     elif args.transport == "sse":
         mcp.run(transport="sse", host=args.host, port=args.port)
     else:
