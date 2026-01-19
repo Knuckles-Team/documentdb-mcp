@@ -6,6 +6,8 @@ services:
     container_name: documentdb-mcp
     hostname: documentdb-mcp
     command: ["documentdb-mcp"]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - documentdb
     logging:
@@ -22,12 +24,14 @@ services:
     ports:
       - "8015:8015"
 
-  documentdb-a2a:
+  documentdb-agent:
     image: docker.io/knucklessg1/documentdb-mcp:latest
     # build: . # Debug
-    container_name: documentdb-a2a
-    hostname: documentdb-a2a
-    command: ["documentdb-a2a"]
+    container_name: documentdb-agent
+    hostname: documentdb-agent
+    command: ["documentdb-agent"]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - documentdb-mcp
     logging:
@@ -45,6 +49,7 @@ services:
       - "OPENAI_API_KEY=llama"
       - "MODEL_ID=qwen/qwen3-8b"
       - "DEBUG=False"
+      - "ENABLE_WEB_UI=True"
     ports:
       - "9015:9015"
 
@@ -53,6 +58,8 @@ services:
     environment:
       - USERNAME=${DOCUMENTDB_USERNAME:-administrator}
       - PASSWORD=${DOCUMENTDB_PASSWORD:-documentdbadmin}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./mcp/documentdb-data:/data
     logging:

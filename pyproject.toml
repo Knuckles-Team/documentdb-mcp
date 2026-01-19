@@ -25,20 +25,20 @@ dependencies = [
 
 [project.optional-dependencies]
 a2a = [
-    "pydantic-ai-slim[fastmcp,openai,anthropic,google,huggingface,a2a]>=1.32.0",
+    "pydantic-ai-slim[fastmcp,openai,anthropic,google,huggingface,a2a,ag-ui,web]>=1.32.0",
     "pydantic-ai-skills",
 ]
 
 all = [
     "fastmcp>=2.13.0.2",
     "eunomia-mcp>=0.3.10",
-    "pydantic-ai-slim[fastmcp,openai,anthropic,google,huggingface,a2a]>=1.32.0",
+    "pydantic-ai-slim[fastmcp,openai,anthropic,google,huggingface,a2a,ag-ui,web]>=1.32.0",
     "pydantic-ai-skills",
 ]
 
 [project.scripts]
 documentdb-mcp = "documentdb_mcp.documentdb_mcp:documentdb_mcp"
-documentdb-a2a = "documentdb_mcp.documentdb_a2a:agent_server"
+documentdb-agent = "documentdb_mcp.documentdb_agent:agent_server"
 
 [tool.setuptools.package-data]
 documentdb_mcp = ["mcp_config.json", "skills/**"]

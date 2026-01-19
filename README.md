@@ -1,4 +1,4 @@
-# DocumentDB - A2A & MCP Server
+# DocumentDB - A2A | AG-UI | MCP
 
 ![PyPI - Version](https://img.shields.io/pypi/v/documentdb-mcp)
 ![MCP Server](https://badge.mcpx.dev?type=server 'MCP Server')
@@ -172,6 +172,10 @@ sequenceDiagram
 
 
 ### A2A CLI
+#### Endpoints
+- **Web UI**: `http://localhost:8000/` (if enabled)
+- **A2A**: `http://localhost:8000/a2a` (Discovery: `/a2a/.well-known/agent.json`)
+- **AG-UI**: `http://localhost:8000/ag-ui` (POST)
 
 | Short Flag | Long Flag         | Description                                                            |
 |------------|-------------------|------------------------------------------------------------------------|
@@ -184,18 +188,7 @@ sequenceDiagram
 |            | --base-url        | LLM Base URL (for OpenAI compatible providers)                         |
 |            | --api-key         | LLM API Key                                                            |
 |            | --mcp-url         | MCP Server URL (default: http://localhost:8000/mcp)                    |
-
-### Using as an MCP Server
-mation                                               |
-|            | --host            | Host to bind the server to (default: 0.0.0.0)                          |
-|            | --port            | Port to bind the server to (default: 9000)                             |
-|            | --reload          | Enable auto-reload                                                     |
-|            | --provider        | LLM Provider: 'openai', 'anthropic', 'google', 'huggingface'           |
-|            | --model-id        | LLM Model ID (default: qwen3:4b)                                       |
-|            | --base-url        | LLM Base URL (for OpenAI compatible providers)                         |
-|            | --api-key         | LLM API Key                                                            |
-|            | --mcp-url         | MCP Server URL (default: http://localhost:8000/mcp)                    |
-
+|            | --web             | Enable Pydantic AI Web UI                                              | False (Env: ENABLE_WEB_UI) |
 
 ## Usage
 
@@ -231,10 +224,10 @@ The A2A agent connects to the MCP server to perform tasks.
 
 ```bash
 # Start Agent Server (Default: OpenAI/Ollama)
-documentdb-a2a
+documentdb-agent
 
 # Custom Configuration
-documentdb-a2a --provider anthropic --model-id claude-3-5-sonnet-20240620 --mcp-url http://localhost:8000/mcp
+documentdb-agent --provider anthropic --model-id claude-3-5-sonnet-20240620 --mcp-url http://localhost:8000/mcp
 ```
 
 ## Installation

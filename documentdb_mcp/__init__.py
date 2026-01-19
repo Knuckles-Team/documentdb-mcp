@@ -14,7 +14,7 @@ CORE_MODULES = [
 
 # Optional modules
 OPTIONAL_MODULES = {
-    "documentdb_mcp.documentdb_a2a": "a2a",
+    "documentdb_mcp.documentdb_agent": "a2a",
     "documentdb_mcp.documentdb_mcp": "mcp",
 }
 
@@ -54,7 +54,7 @@ for module_name, extra_name in OPTIONAL_MODULES.items():
 _MCP_AVAILABLE = OPTIONAL_MODULES.get("documentdb_mcp.documentdb_mcp") in [
     m.__name__ for m in globals().values() if hasattr(m, "__name__")
 ]
-_A2A_AVAILABLE = "documentdb_mcp.documentdb_a2a" in globals()
+_A2A_AVAILABLE = "documentdb_mcp.documentdb_agent" in globals()
 
 __all__.extend(["_MCP_AVAILABLE", "_A2A_AVAILABLE"])
 
