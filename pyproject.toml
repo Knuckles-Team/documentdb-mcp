@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "documentdb-mcp"
-version = "0.0.7"
+version = "0.0.8"
 description = "DocumentDB MCP Server & A2A Server. DocumentDB is a MongoDB compatible open source document database built on PostgreSQL."
 readme = "README.md"
 authors = [{ name = "Audel Rouhi", email = "knucklessg1@gmail.com" }]
@@ -27,6 +27,7 @@ dependencies = [
 a2a = [
     "pydantic-ai-slim[fastmcp,openai,anthropic,google,huggingface,a2a,ag-ui,web]>=1.32.0",
     "pydantic-ai-skills",
+    "fastapi>=0.128.0"
 ]
 
 all = [
@@ -34,6 +35,7 @@ all = [
     "eunomia-mcp>=0.3.10",
     "pydantic-ai-slim[fastmcp,openai,anthropic,google,huggingface,a2a,ag-ui,web]>=1.32.0",
     "pydantic-ai-skills",
+    "fastapi>=0.128.0"
 ]
 
 [project.scripts]
