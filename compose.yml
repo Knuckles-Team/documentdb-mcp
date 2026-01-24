@@ -5,7 +5,7 @@ services:
     # build: . # Debug
     container_name: documentdb-mcp
     hostname: documentdb-mcp
-    command: ["documentdb-mcp"]
+    command: [ "documentdb-mcp" ]
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
@@ -23,13 +23,19 @@ services:
       - "MONGODB_URI=${MONGODB_URI}" # Required
     ports:
       - "8015:8015"
+    healthcheck:
+      test: [ "CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8015/health')" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
   documentdb-agent:
     image: docker.io/knucklessg1/documentdb-mcp:latest
     # build: . # Debug
     container_name: documentdb-agent
     hostname: documentdb-agent
-    command: ["documentdb-agent"]
+    command: [ "documentdb-agent" ]
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
@@ -52,6 +58,12 @@ services:
       - "ENABLE_WEB_UI=True"
     ports:
       - "9015:9015"
+    healthcheck:
+      test: [ "CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9015/health')" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
   documentdb:
     image: ghcr.io/microsoft/documentdb/documentdb-local:latest

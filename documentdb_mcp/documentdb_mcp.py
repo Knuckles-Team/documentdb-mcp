@@ -13,6 +13,8 @@ import pymongo
 from pymongo.errors import PyMongoError
 import requests
 from eunomia_mcp.middleware import EunomiaMcpMiddleware
+from starlette.requests import Request
+from starlette.responses import JSONResponse
 from fastmcp import FastMCP
 from fastmcp.server.auth.oidc_proxy import OIDCProxy
 from fastmcp.server.auth import OAuthProxy, RemoteAuthProvider
@@ -100,6 +102,10 @@ def serialize_oid(data: Any) -> Any:
 
 
 def register_tools(mcp: FastMCP):
+    @mcp.custom_route("/health", methods=["GET"])
+    async def health_check(request: Request) -> JSONResponse:
+        return JSONResponse({"status": "OK"})
+
     @mcp.tool(tags={"system"})
     def binary_version() -> str:
         """Get the binary version of the server (using buildInfo)."""
