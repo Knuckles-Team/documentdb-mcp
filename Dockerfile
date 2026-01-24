@@ -49,6 +49,6 @@ ENV PATH="/usr/local/bin:${PATH}"
 ENV UV_HTTP_TIMEOUT=3600
 
 RUN pip install uv \
-    && uv pip install --system documentdb-mcp[all]>=0.0.8
+    && uv pip install --system documentdb-mcp[all]>=0.0.9
 
 CMD ["documentdb-mcp"]
