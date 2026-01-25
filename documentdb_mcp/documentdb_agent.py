@@ -5,22 +5,23 @@ import os
 import argparse
 import logging
 import uvicorn
-from typing import Optional, Any, List
+from typing import Optional, Any
 from contextlib import asynccontextmanager
-from pathlib import Path
-import yaml
 
 from fastmcp import Client
 from pydantic_ai import Agent, ModelSettings
 from pydantic_ai.mcp import load_mcp_servers
 from pydantic_ai.toolsets.fastmcp import FastMCPToolset
 from pydantic_ai_skills import SkillsToolset
-from pydantic_ai.models.openai import OpenAIChatModel
-from pydantic_ai.models.anthropic import AnthropicModel
-from pydantic_ai.models.google import GoogleModel
-from pydantic_ai.models.huggingface import HuggingFaceModel
 from fasta2a import Skill
-from documentdb_mcp.documentdb_mcp import to_boolean
+from documentdb_mcp.documentdb_mcp import (
+    to_boolean,
+    to_integer,
+    get_mcp_config_path,
+    get_skills_path,
+    load_skills_from_directory,
+    create_model,
+)
 
 from fastapi import FastAPI, Request
 from starlette.responses import Response, StreamingResponse
@@ -41,7 +42,7 @@ logger = logging.getLogger(__name__)
 
 # Default Configuration
 DEFAULT_HOST = os.getenv("HOST", "0.0.0.0")
-DEFAULT_PORT = int(os.getenv("PORT", "9000"))
+DEFAULT_PORT = to_integer(os.getenv("PORT", "9000"))
 DEFAULT_DEBUG = to_boolean(os.getenv("DEBUG", "False"))
 DEFAULT_PROVIDER = os.getenv("PROVIDER", "openai")
 DEFAULT_MODEL_ID = os.getenv("MODEL_ID", "qwen/qwen3-4b-2507")
@@ -50,11 +51,9 @@ DEFAULT_OPENAI_BASE_URL = os.getenv(
 )
 DEFAULT_OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "ollama")
 DEFAULT_MCP_URL = os.getenv("MCP_URL", None)
-DEFAULT_MCP_CONFIG = os.getenv("MCP_CONFIG", "mcp_config.json")
+DEFAULT_MCP_CONFIG = os.getenv("MCP_CONFIG", get_mcp_config_path())
 # Calculate default skills directory relative to this file
-DEFAULT_SKILLS_DIRECTORY = os.getenv(
-    "SKILLS_DIRECTORY", str(Path(__file__).parent / "skills")
-)
+DEFAULT_SKILLS_DIRECTORY = os.getenv("SKILLS_DIRECTORY", get_skills_path())
 DEFAULT_ENABLE_WEB_UI = to_boolean(os.getenv("ENABLE_WEB_UI", "False"))
 
 AGENT_NAME = "DocumentDB Agent"
@@ -74,38 +73,6 @@ AGENT_SYSTEM_PROMPT = (
     "5. Explain your plan in detail before executing.\n"
     "6. Handle errors gracefully and suggest fixes.\n"
 )
-
-
-def create_model(
-    provider: str = DEFAULT_PROVIDER,
-    model_id: str = DEFAULT_MODEL_ID,
-    base_url: Optional[str] = DEFAULT_OPENAI_BASE_URL,
-    api_key: Optional[str] = DEFAULT_OPENAI_API_KEY,
-):
-    if provider == "openai":
-        target_base_url = base_url or DEFAULT_OPENAI_BASE_URL
-        target_api_key = api_key or DEFAULT_OPENAI_API_KEY
-        if target_base_url:
-            os.environ["OPENAI_BASE_URL"] = target_base_url
-        if target_api_key:
-            os.environ["OPENAI_API_KEY"] = target_api_key
-        return OpenAIChatModel(model_id, provider="openai")
-
-    elif provider == "anthropic":
-        if api_key:
-            os.environ["ANTHROPIC_API_KEY"] = api_key
-        return AnthropicModel(model_id)
-
-    elif provider == "google":
-        if api_key:
-            os.environ["GEMINI_API_KEY"] = api_key
-            os.environ["GOOGLE_API_KEY"] = api_key
-        return GoogleModel(model_id)
-
-    elif provider == "huggingface":
-        if api_key:
-            os.environ["HF_TOKEN"] = api_key
-        return HuggingFaceModel(model_id)
 
 
 def create_agent(
@@ -149,50 +116,6 @@ def create_agent(
         deps_type=Any,
         model_settings=settings,
     )
-
-
-def load_skills_from_directory(directory: str) -> List[Skill]:
-    skills = []
-    base_path = Path(directory)
-
-    if not base_path.exists():
-        logger.warning(f"Skills directory not found: {directory}")
-        return skills
-
-    for item in base_path.iterdir():
-        if item.is_dir():
-            skill_file = item / "SKILL.md"
-            if skill_file.exists():
-                try:
-                    with open(skill_file, "r") as f:
-                        # Extract frontmatter
-                        content = f.read()
-                        if content.startswith("---"):
-                            _, frontmatter, _ = content.split("---", 2)
-                            data = yaml.safe_load(frontmatter)
-
-                            skill_id = item.name
-                            skill_name = data.get("name", skill_id)
-                            skill_desc = data.get(
-                                "description", f"Access to {skill_name} tools"
-                            )
-                            # Derive tags from folder name or define defaults
-                            tags = ["documentdb", skill_id.replace("documentdb-", "")]
-
-                            skills.append(
-                                Skill(
-                                    id=skill_id,
-                                    name=skill_name,
-                                    description=skill_desc,
-                                    tags=tags,
-                                    input_modes=["text"],
-                                    output_modes=["text"],
-                                )
-                            )
-                except Exception as e:
-                    logger.error(f"Error loading skill from {skill_file}: {e}")
-
-    return skills
 
 
 def create_agent_server(
@@ -242,7 +165,7 @@ def create_agent_server(
     a2a_app = agent.to_a2a(
         name=AGENT_NAME,
         description=AGENT_DESCRIPTION,
-        version="0.0.9",
+        version="0.0.10",
         skills=skills,
         debug=debug,
     )
