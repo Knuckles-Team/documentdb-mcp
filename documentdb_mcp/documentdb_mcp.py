@@ -27,6 +27,8 @@ from fastmcp.utilities.logging import get_logger
 from documentdb_mcp.utils import to_boolean, to_integer
 from documentdb_mcp.middlewares import UserTokenMiddleware, JWTClaimsLoggingMiddleware
 
+__version__ = "0.0.13"
+
 logger = get_logger(name="TokenMiddleware")
 logger.setLevel(logging.DEBUG)
 
@@ -550,6 +552,8 @@ def register_tools(mcp: FastMCP):
 
 
 def register_prompts(mcp: FastMCP):
+    print(f"documentdb_mcp v{__version__}")
+
     @mcp.prompt
     def create_user_prompt(user: str) -> str:
         """
@@ -1055,6 +1059,7 @@ def documentdb_mcp():
     for mw in middlewares:
         mcp.add_middleware(mw)
 
+    print(f"DocumentDB MCP v{__version__}")
     print("\nStarting DocumentDB MCP Server")
     print(f"  Transport: {args.transport.upper()}")
     print(f"  Auth: {args.auth_type}")
