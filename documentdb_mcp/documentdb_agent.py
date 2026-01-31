@@ -29,7 +29,7 @@ from pydantic import ValidationError
 from pydantic_ai.ui import SSE_CONTENT_TYPE
 from pydantic_ai.ui.ag_ui import AGUIAdapter
 
-__version__ = "0.0.15"
+__version__ = "0.0.16"
 
 # Configure logging
 logging.basicConfig(
@@ -115,6 +115,7 @@ def create_agent(
         system_prompt=AGENT_SYSTEM_PROMPT,
         name=AGENT_NAME,
         toolsets=agent_toolsets,
+        tool_timeout=32400.0,
         deps_type=Any,
         model_settings=settings,
     )
