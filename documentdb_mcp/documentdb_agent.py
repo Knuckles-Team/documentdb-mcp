@@ -35,7 +35,7 @@ from pydantic import ValidationError
 from pydantic_ai.ui import SSE_CONTENT_TYPE
 from pydantic_ai.ui.ag_ui import AGUIAdapter
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 # Configure logging
 logging.basicConfig(
@@ -83,7 +83,6 @@ AGENT_NAME = "DocumentDB Agent"
 AGENT_DESCRIPTION = (
     "An intelligent agent for managing and querying DocumentDB (MongoDB-compatible)."
 )
-
 
 AGENT_SYSTEM_PROMPT = (
     "You are a Database Administrator and Query Specialist Agent for DocumentDB.\n"
@@ -209,7 +208,11 @@ def create_agent_server(
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
-        yield
+        if hasattr(a2a_app, "router") and hasattr(a2a_app.router, "lifespan_context"):
+            async with a2a_app.router.lifespan_context(a2a_app):
+                yield
+        else:
+            yield
 
     # Create main FastAPI app
     app = FastAPI(

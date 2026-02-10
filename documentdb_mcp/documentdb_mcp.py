@@ -27,7 +27,7 @@ from fastmcp.utilities.logging import get_logger
 from documentdb_mcp.utils import to_boolean, to_integer
 from documentdb_mcp.middlewares import UserTokenMiddleware, JWTClaimsLoggingMiddleware
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 logger = get_logger(name="TokenMiddleware")
 logger.setLevel(logging.DEBUG)
