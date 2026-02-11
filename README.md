@@ -21,7 +21,7 @@
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/documentdb-mcp)
 ![PyPI - Implementation](https://img.shields.io/pypi/implementation/documentdb-mcp)
 
-*Version: 0.1.1*
+*Version: 0.1.2*
 
 ## Overview
 
@@ -184,7 +184,7 @@ sequenceDiagram
 |            | --port            | Port to bind the server to (default: 9000)                             |
 |            | --reload          | Enable auto-reload                                                     |
 |            | --provider        | LLM Provider: 'openai', 'anthropic', 'google', 'huggingface'           |
-|            | --model-id        | LLM Model ID (default: qwen/qwen3-4b-2507)                                  |
+|            | --model-id        | LLM Model ID (default: qwen/qwen3-coder-next)                                  |
 |            | --base-url        | LLM Base URL (for OpenAI compatible providers)                         |
 |            | --api-key         | LLM API Key                                                            |
 |            | --mcp-url         | MCP Server URL (default: http://localhost:8000/mcp)                    |
@@ -217,8 +217,8 @@ The A2A agent connects to the MCP server to perform tasks.
 
 **Environment Variables:**
 
--   `OPENAI_API_KEY` / `ANTHROPIC_API_KEY`: API key for your chosen LLM provider.
--   `OPENAI_BASE_URL`: (Optional) Base URL for OpenAI-compatible providers (e.g. Ollama).
+-   `LLM_API_KEY` / `LLM_API_KEY`: API key for your chosen LLM provider.
+-   `LLM_BASE_URL`: (Optional) Base URL for OpenAI-compatible providers (e.g. Ollama).
 
 **Running the Agent:**
 
