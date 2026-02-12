@@ -27,7 +27,7 @@ from fastmcp.utilities.logging import get_logger
 from documentdb_mcp.utils import to_boolean, to_integer
 from documentdb_mcp.middlewares import UserTokenMiddleware, JWTClaimsLoggingMiddleware
 
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 
 logger = get_logger(name="TokenMiddleware")
 logger.setLevel(logging.DEBUG)
@@ -36,7 +36,7 @@ config = {
     "enable_delegation": to_boolean(os.environ.get("ENABLE_DELEGATION", "False")),
     "audience": os.environ.get("AUDIENCE", None),
     "delegated_scopes": os.environ.get("DELEGATED_SCOPES", "api"),
-    "token_endpoint": None,  # Will be fetched dynamically from OIDC config
+    "token_endpoint": None,
     "oidc_client_id": os.environ.get("OIDC_CLIENT_ID", None),
     "oidc_client_secret": os.environ.get("OIDC_CLIENT_SECRET", None),
     "oidc_config_url": os.environ.get("OIDC_CONFIG_URL", None),
@@ -52,7 +52,6 @@ DEFAULT_TRANSPORT = os.getenv("TRANSPORT", "stdio")
 DEFAULT_HOST = os.getenv("HOST", "0.0.0.0")
 DEFAULT_PORT = to_integer(string=os.getenv("PORT", "8000"))
 
-# Global client variable (lazy initialization)
 _client: Optional[pymongo.MongoClient] = None
 
 
@@ -62,7 +61,6 @@ def get_client() -> pymongo.MongoClient:
     if _client is None:
         uri = os.environ.get("MONGODB_URI")
         if not uri:
-            # Check for MONGODB_HOST, MONGODB_PORT etc as fallback or default
             host = os.environ.get("MONGODB_HOST", "localhost")
             port = os.environ.get("MONGODB_PORT", "10260")
             uri = f"mongodb://{host}:{port}/"
@@ -70,7 +68,6 @@ def get_client() -> pymongo.MongoClient:
         logger.info(f"Connecting to DocumentDB/MongoDB at {uri}")
         try:
             _client = pymongo.MongoClient(uri)
-            # Connectivity check
             _client.admin.command("ping")
             logger.info("Successfully connected to DocumentDB/MongoDB")
         except Exception as e:
@@ -85,8 +82,6 @@ def parse_json_arg(arg: Any) -> Any:
         try:
             return json.loads(arg)
         except json.JSONDecodeError:
-            # If it's not valid JSON, assume it's a simple string or the user intended it as is
-            # For complex filter queries passed as string, this allows "{\"x\": 1}" to become {"x": 1}
             return arg
     return arg
 
@@ -169,7 +164,6 @@ def register_tools(mcp: FastMCP):
         database_name: str, initial_collection: str = "default_collection"
     ) -> str:
         """Explicitly create a database by creating a collection in it (MongoDB creates DBs lazily)."""
-        # This maps loosely to create_database, but typically we just start using it.
         client = get_client()
         db = client[database_name]
         try:
@@ -207,7 +201,6 @@ def register_tools(mcp: FastMCP):
         client = get_client()
         db = client[database_name]
         try:
-            # roles can be list of strings or list of dicts (e.g. [{'role': 'read', 'db': 'test'}])
             parsed_roles = parse_json_arg(roles)
             db.command("createUser", username, pwd=password, roles=parsed_roles)
             return f"User '{username}' created on '{database_name}'"
@@ -328,7 +321,6 @@ def register_tools(mcp: FastMCP):
         try:
             cursor = col.find(query)
             if sort:
-                # Parse sort if it comes as string
                 s = parse_json_arg(sort)
                 cursor = cursor.sort(s)
 
@@ -592,7 +584,6 @@ def documentdb_mcp():
         choices=["none", "static", "jwt", "oauth-proxy", "oidc-proxy", "remote-oauth"],
         help="Authentication type for MCP server: 'none' (disabled), 'static' (internal), 'jwt' (external token verification), 'oauth-proxy', 'oidc-proxy', 'remote-oauth' (external) (default: none)",
     )
-    # JWT/Token params
     parser.add_argument(
         "--token-jwks-uri", default=None, help="JWKS URI for JWT verification"
     )
@@ -633,7 +624,6 @@ def documentdb_mcp():
         default=os.getenv("FASTMCP_SERVER_AUTH_JWT_REQUIRED_SCOPES"),
         help="Comma-separated list of required scopes (e.g., documentdb.read,documentdb.write).",
     )
-    # OAuth Proxy params
     parser.add_argument(
         "--oauth-upstream-auth-endpoint",
         default=None,
@@ -657,14 +647,12 @@ def documentdb_mcp():
     parser.add_argument(
         "--oauth-base-url", default=None, help="Base URL for OAuth Proxy"
     )
-    # OIDC Proxy params
     parser.add_argument(
         "--oidc-config-url", default=None, help="OIDC configuration URL"
     )
     parser.add_argument("--oidc-client-id", default=None, help="OIDC client ID")
     parser.add_argument("--oidc-client-secret", default=None, help="OIDC client secret")
     parser.add_argument("--oidc-base-url", default=None, help="Base URL for OIDC Proxy")
-    # Remote OAuth params
     parser.add_argument(
         "--remote-auth-servers",
         default=None,
@@ -673,13 +661,11 @@ def documentdb_mcp():
     parser.add_argument(
         "--remote-base-url", default=None, help="Base URL for Remote OAuth"
     )
-    # Common
     parser.add_argument(
         "--allowed-client-redirect-uris",
         default=None,
         help="Comma-separated list of allowed client redirect URIs",
     )
-    # Eunomia params
     parser.add_argument(
         "--eunomia-type",
         default="none",
@@ -694,7 +680,6 @@ def documentdb_mcp():
     parser.add_argument(
         "--eunomia-remote-url", default=None, help="URL for remote Eunomia server"
     )
-    # Delegation params
     parser.add_argument(
         "--enable-delegation",
         action="store_true",
@@ -765,7 +750,6 @@ def documentdb_mcp():
         print(f"Error: Port {args.port} is out of valid range (0-65535).")
         sys.exit(1)
 
-    # Update config with CLI arguments
     config["enable_delegation"] = args.enable_delegation
     config["audience"] = args.audience or config["audience"]
     config["delegated_scopes"] = args.delegated_scopes or config["delegated_scopes"]
@@ -775,7 +759,6 @@ def documentdb_mcp():
         args.oidc_client_secret or config["oidc_client_secret"]
     )
 
-    # Configure delegation if enabled
     if config["enable_delegation"]:
         if args.auth_type != "oidc-proxy":
             logger.error("Token delegation requires auth-type=oidc-proxy")
@@ -795,7 +778,6 @@ def documentdb_mcp():
             )
             sys.exit(1)
 
-        # Fetch OIDC configuration to get token_endpoint
         try:
             logger.info(
                 "Fetching OIDC configuration",
@@ -820,7 +802,6 @@ def documentdb_mcp():
             )
             sys.exit(1)
 
-    # Set auth based on type
     auth = None
     allowed_uris = (
         args.allowed_client_redirect_uris.split(",")
@@ -838,7 +819,6 @@ def documentdb_mcp():
             }
         )
     elif args.auth_type == "jwt":
-        # Fallback to env vars if not provided via CLI
         jwks_uri = args.token_jwks_uri or os.getenv("FASTMCP_SERVER_AUTH_JWT_JWKS_URI")
         issuer = args.token_issuer or os.getenv("FASTMCP_SERVER_AUTH_JWT_ISSUER")
         audience = args.token_audience or os.getenv("FASTMCP_SERVER_AUTH_JWT_AUDIENCE")
@@ -855,7 +835,6 @@ def documentdb_mcp():
             logger.error("JWT requires --token-issuer and --token-audience")
             sys.exit(1)
 
-        # Load static public key from file if path is given
         if args.token_public_key and os.path.isfile(args.token_public_key):
             try:
                 with open(args.token_public_key, "r") as f:
@@ -866,15 +845,13 @@ def documentdb_mcp():
                 logger.error(f"Failed to read public key file: {e}")
                 sys.exit(1)
         elif args.token_public_key:
-            public_key_pem = args.token_public_key  # Inline PEM
+            public_key_pem = args.token_public_key
 
-        # Validation: Conflicting options
         if jwks_uri and (algorithm or secret_or_key):
             logger.warning(
                 "JWKS mode ignores --token-algorithm and --token-secret/--token-public-key"
             )
 
-        # HMAC mode
         if algorithm and algorithm.startswith("HS"):
             if not secret_or_key:
                 logger.error(f"HMAC algorithm {algorithm} requires --token-secret")
@@ -886,7 +863,6 @@ def documentdb_mcp():
         else:
             public_key = public_key_pem
 
-        # Required scopes
         required_scopes = None
         if args.required_scopes:
             required_scopes = [
@@ -1023,7 +999,6 @@ def documentdb_mcp():
             base_url=args.remote_base_url,
         )
 
-    # === 2. Build Middleware List ===
     middlewares: List[
         Union[
             UserTokenMiddleware,
@@ -1042,7 +1017,7 @@ def documentdb_mcp():
         JWTClaimsLoggingMiddleware(),
     ]
     if config["enable_delegation"] or args.auth_type == "jwt":
-        middlewares.insert(0, UserTokenMiddleware(config=config))  # Must be first
+        middlewares.insert(0, UserTokenMiddleware(config=config))
 
     if args.eunomia_type in ["embedded", "remote"]:
         try:
