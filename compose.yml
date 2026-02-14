@@ -18,7 +18,9 @@ services:
     restart: always
     env_file:
       - .env
+
     environment:
+      - "PYTHONUNBUFFERED=1"
       - "HOST=0.0.0.0"
       - "PORT=8015"
       - "TRANSPORT=streamable-http"
@@ -48,7 +50,9 @@ services:
         max-size: "10m"
         max-file: "3"
     restart: always
+
     environment:
+      - "PYTHONUNBUFFERED=1"
       - "HOST=0.0.0.0"
       - "PORT=9015"
       - "MCP_URL=http://documentdb-mcp:8015/mcp"
@@ -71,7 +75,9 @@ services:
     image: ghcr.io/microsoft/documentdb/documentdb-local:latest
     container_name: documentdb
     hostname: documentdb
+
     environment:
+      - "PYTHONUNBUFFERED=1"
       - USERNAME=${DOCUMENTDB_USERNAME:-administrator}
       - PASSWORD=${DOCUMENTDB_PASSWORD:-documentdbadmin}
     extra_hosts:
