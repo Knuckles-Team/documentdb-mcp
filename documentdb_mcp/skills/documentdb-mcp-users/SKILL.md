@@ -1,6 +1,7 @@
 ---
 name: documentdb-mcp-users
 description: Documentdb Mcp Users capabilities for A2A Agent.
+tags: [users]
 ---
 ### Overview
 This skill provides access to users operations.

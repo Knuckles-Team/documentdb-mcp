@@ -1,6 +1,7 @@
 ---
 name: documentdb-mcp-system
 description: Documentdb Mcp System capabilities for A2A Agent.
+tags: [system]
 ---
 ### Overview
 This skill provides access to system operations.

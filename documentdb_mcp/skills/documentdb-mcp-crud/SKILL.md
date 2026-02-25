@@ -1,6 +1,7 @@
 ---
 name: documentdb-mcp-crud
 description: Documentdb Mcp Crud capabilities for A2A Agent.
+tags: [crud]
 ---
 ### Overview
 This skill provides access to crud operations.

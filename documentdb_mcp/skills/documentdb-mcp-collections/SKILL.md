@@ -1,6 +1,7 @@
 ---
 name: documentdb-mcp-collections
 description: Documentdb Mcp Collections capabilities for A2A Agent.
+tags: [collections]
 ---
 ### Overview
 This skill provides access to collections operations.

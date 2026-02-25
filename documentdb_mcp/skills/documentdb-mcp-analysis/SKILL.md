@@ -1,6 +1,7 @@
 ---
 name: documentdb-mcp-analysis
 description: Documentdb Mcp Analysis capabilities for A2A Agent.
+tags: [analysis]
 ---
 ### Overview
 This skill provides access to analysis operations.
