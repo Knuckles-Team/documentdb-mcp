@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "documentdb-mcp"
-version = "0.1.14"
+version = "0.1.15"
 description = "DocumentDB MCP Server & A2A Server. DocumentDB is a MongoDB compatible open source document database built on PostgreSQL."
 readme = "README.md"
 authors = [{ name = "Audel Rouhi", email = "knucklessg1@gmail.com" }]
@@ -18,33 +18,25 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "tree-sitter>=0.23.2",
-    "fastmcp>=3.0.0b1",
-    "eunomia-mcp>=0.3.10",
+    "agent-utilities[mcp]>=0.1.9",
     "pymongo>=4.0"
 ]
 
 [project.optional-dependencies]
-a2a = [
-    "pydantic-ai-slim[fastmcp,openai,groq,anthropic,mistral,google,huggingface,a2a,ag-ui,web]>=1.60.0",
-    "pydantic-ai-skills>=v0.4.0",
-    "fastapi>=0.128.0"
+agent = [
+    "agent-utilities[agent]>=0.1.9",
 ]
 
 all = [
-    "fastmcp>=3.0.0b1",
-    "eunomia-mcp>=0.3.10",
-    "pydantic-ai-slim[fastmcp,openai,groq,anthropic,mistral,google,huggingface,a2a,ag-ui,web]>=1.60.0",
-    "pydantic-ai-skills>=v0.4.0",
-    "fastapi>=0.128.0"
+    "agent-utilities[mcp,agent]>=0.1.9",
 ]
 
 [project.scripts]
-documentdb-mcp = "documentdb_mcp.documentdb_mcp:documentdb_mcp"
-documentdb-agent = "documentdb_mcp.documentdb_agent:agent_server"
+documentdb-mcp = "documentdb_mcp.mcp:mcp_server"
+documentdb-agent = "documentdb_mcp.agent:agent_server"
 
 [tool.setuptools.package-data]
-documentdb_mcp = ["mcp_config.json", "skills/**"]
+documentdb_mcp = [ "mcp_config.json", "skills/**", "agent/**",]
 
 [tool.setuptools.packages.find]
 where = ["."]
