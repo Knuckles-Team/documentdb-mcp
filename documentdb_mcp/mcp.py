@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # coding: utf-8
 
+from dotenv import load_dotenv, find_dotenv
+from agent_utilities.base_utilities import to_boolean
 import os
 import sys
 import logging
@@ -32,7 +34,7 @@ from agent_utilities.middlewares import (
     JWTClaimsLoggingMiddleware,
 )
 
-__version__ = "0.1.24"
+__version__ = "0.1.25"
 
 logger = get_logger(name="TokenMiddleware")
 logger.setLevel(logging.DEBUG)
@@ -84,11 +86,12 @@ def serialize_oid(data: Any) -> Any:
         return data
 
 
-def register_tools(mcp: FastMCP):
-    @mcp.custom_route("/health", methods=["GET"])
+def register_misc_tools(mcp: FastMCP):
     async def health_check(request: Request) -> JSONResponse:
         return JSONResponse({"status": "OK"})
 
+
+def register_system_tools(mcp: FastMCP):
     @mcp.tool(tags={"system"})
     def binary_version() -> str:
         """Get the binary version of the server (using buildInfo)."""
@@ -114,6 +117,8 @@ def register_tools(mcp: FastMCP):
         result = db.command(cmd)
         return serialize_oid(result)
 
+
+def register_collections_tools(mcp: FastMCP):
     @mcp.tool(tags={"collections"})
     def list_collections(database_name: str) -> List[str]:
         """List all collections in a specific database."""
@@ -179,6 +184,8 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return f"Error renaming collection: {str(e)}"
 
+
+def register_users_tools(mcp: FastMCP):
     @mcp.tool(tags={"users"})
     def create_user(
         database_name: str, username: str, password: str, roles: List[Any]
@@ -240,6 +247,8 @@ def register_tools(mcp: FastMCP):
         except PyMongoError as e:
             return {"error": str(e)}
 
+
+def register_crud_tools(mcp: FastMCP):
     @mcp.tool(tags={"crud"})
     def insert_one(
         database_name: str, collection_name: str, document: Dict[str, Any]
@@ -425,38 +434,6 @@ def register_tools(mcp: FastMCP):
             logger.error(f"Error counting documents: {e}")
             return -1
 
-    @mcp.tool(tags={"analysis"})
-    def distinct(
-        database_name: str, collection_name: str, key: str, filter: Dict[str, Any]
-    ) -> List[Any]:
-        """Find distinct values for a key."""
-        client = get_client()
-        db = client[database_name]
-        col = db[collection_name]
-        query = parse_json_arg(filter)
-        try:
-            return col.distinct(key, query)
-        except PyMongoError as e:
-            return [f"Error getting distinct values: {str(e)}"]
-
-    @mcp.tool(tags={"analysis"})
-    def aggregate(
-        database_name: str, collection_name: str, pipeline: List[Dict[str, Any]]
-    ) -> List[Dict[str, Any]]:
-        """Run an aggregation pipeline."""
-        client = get_client()
-        db = client[database_name]
-        col = db[collection_name]
-        pipe = parse_json_arg(pipeline)
-        try:
-            cursor = col.aggregate(pipe)
-            results = []
-            for doc in cursor:
-                results.append(serialize_oid(doc))
-            return results
-        except PyMongoError as e:
-            return [{"error": str(e)}]
-
     @mcp.tool(tags={"crud"})
     def find_one_and_update(
         database_name: str,
@@ -529,6 +506,40 @@ def register_tools(mcp: FastMCP):
             return {"error": str(e)}
 
 
+def register_analysis_tools(mcp: FastMCP):
+    @mcp.tool(tags={"analysis"})
+    def distinct(
+        database_name: str, collection_name: str, key: str, filter: Dict[str, Any]
+    ) -> List[Any]:
+        """Find distinct values for a key."""
+        client = get_client()
+        db = client[database_name]
+        col = db[collection_name]
+        query = parse_json_arg(filter)
+        try:
+            return col.distinct(key, query)
+        except PyMongoError as e:
+            return [f"Error getting distinct values: {str(e)}"]
+
+    @mcp.tool(tags={"analysis"})
+    def aggregate(
+        database_name: str, collection_name: str, pipeline: List[Dict[str, Any]]
+    ) -> List[Dict[str, Any]]:
+        """Run an aggregation pipeline."""
+        client = get_client()
+        db = client[database_name]
+        col = db[collection_name]
+        pipe = parse_json_arg(pipeline)
+        try:
+            cursor = col.aggregate(pipe)
+            results = []
+            for doc in cursor:
+                results.append(serialize_oid(doc))
+            return results
+        except PyMongoError as e:
+            return [{"error": str(e)}]
+
+
 def register_prompts(mcp: FastMCP):
     print(f"documentdb_mcp v{__version__}")
 
@@ -541,6 +552,7 @@ def register_prompts(mcp: FastMCP):
 
 
 def mcp_server():
+    load_dotenv(find_dotenv())
     parser = create_mcp_parser()
     parser.description = "DocumentDB MCP Server"
     args = parser.parse_args()
@@ -843,7 +855,24 @@ def mcp_server():
             sys.exit(1)
 
     mcp = FastMCP("DocumentDB", auth=auth)
-    register_tools(mcp)
+    DEFAULT_MISCTOOL = to_boolean(os.getenv("MISCTOOL", "True"))
+    if DEFAULT_MISCTOOL:
+        register_misc_tools(mcp)
+    DEFAULT_SYSTEMTOOL = to_boolean(os.getenv("SYSTEMTOOL", "True"))
+    if DEFAULT_SYSTEMTOOL:
+        register_system_tools(mcp)
+    DEFAULT_COLLECTIONSTOOL = to_boolean(os.getenv("COLLECTIONSTOOL", "True"))
+    if DEFAULT_COLLECTIONSTOOL:
+        register_collections_tools(mcp)
+    DEFAULT_USERSTOOL = to_boolean(os.getenv("USERSTOOL", "True"))
+    if DEFAULT_USERSTOOL:
+        register_users_tools(mcp)
+    DEFAULT_CRUDTOOL = to_boolean(os.getenv("CRUDTOOL", "True"))
+    if DEFAULT_CRUDTOOL:
+        register_crud_tools(mcp)
+    DEFAULT_ANALYSISTOOL = to_boolean(os.getenv("ANALYSISTOOL", "True"))
+    if DEFAULT_ANALYSISTOOL:
+        register_analysis_tools(mcp)
     register_prompts(mcp)
 
     for mw in middlewares:
