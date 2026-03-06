@@ -1,15 +1,48 @@
 ---
 services:
+  documentdb-mcp:
+    image: docker.io/knucklessg1/documentdb-mcp:latest
+    # build: . # Debug
+    container_name: documentdb-mcp
+    hostname: documentdb-mcp
+    command: [ "documentdb-mcp" ]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - documentdb
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - "PYTHONUNBUFFERED=1"
+      - "HOST=0.0.0.0"
+      - "PORT=8015"
+      - "TRANSPORT=streamable-http"
+      - "MONGODB_URI=${MONGODB_URI}" # Required
+    ports:
+      - "8015:8015"
+    healthcheck:
+      test: [ "CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8015/health')" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
   documentdb-agent:
-    # image: docker.io/knucklessg1/documentdb-mcp:latest
-    build:
-      context: .
-      dockerfile: debug.Dockerfile
+    image: docker.io/knucklessg1/documentdb-mcp:latest
+    # build: . # Debug
     container_name: documentdb-agent
     hostname: documentdb-agent
     command: [ "documentdb-agent" ]
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    depends_on:
+      - documentdb-mcp
     logging:
       driver: json-file
       options:
@@ -19,9 +52,8 @@ services:
     environment:
       - "PYTHONUNBUFFERED=1"
       - "HOST=0.0.0.0"
-      - "PORT=9435"
-      - "TRANSPORT=stdio"
-      - "MONGODB_URI=${MONGODB_URI}"
+      - "PORT=9015"
+      - "MCP_URL=http://documentdb-mcp:8015/mcp"
       - "PROVIDER=openai"
       - "LLM_BASE_URL=${LLM_BASE_URL:-http://host.docker.internal:1234/v1}"
       - "LLM_API_KEY=${LLM_API_KEY:-llama}"
@@ -30,9 +62,9 @@ services:
       - "ENABLE_WEB_UI=True"
       - "ENABLE_OTEL=True"
     ports:
-      - "9435:9435"
+      - "9015:9015"
     healthcheck:
-      test: [ "CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9435/health')" ]
+      test: [ "CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9015/health')" ]
       interval: 30s
       timeout: 10s
       retries: 3
