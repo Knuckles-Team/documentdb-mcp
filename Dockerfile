@@ -54,6 +54,6 @@ ENV HOST=${HOST} \
 RUN apt-get update \
    && apt-get install -y ripgrep tree fd-find curl nano \
    && curl -LsSf https://astral.sh/uv/install.sh | sh \
-    && uv pip install --system --upgrade --verbose --no-cache --break-system-packages --prerelease=allow documentdb-mcp[all]>=0.1.27
+    && uv pip install --system --upgrade --verbose --no-cache --break-system-packages --prerelease=allow documentdb-mcp[all]>=0.1.28
 
 CMD ["documentdb-mcp"]
