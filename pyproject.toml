@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "documentdb-mcp"
-version = "0.1.37"
+version = "0.1.39"
 description = "DocumentDB MCP Server & A2A Server. DocumentDB is a MongoDB compatible open source document database built on PostgreSQL."
 readme = "README.md"
 authors = [{ name = "Audel Rouhi", email = "knucklessg1@gmail.com" }]
@@ -17,23 +17,26 @@ classifiers = [
     "Programming Language :: Python :: 3"]
 requires-python = ">=3.10"
 dependencies = [
-    "agent-utilities[mcp]>=0.2.23",
+    "agent-utilities[mcp]>=0.2.25",
     "pymongo>=4.0"
 ]
 
 [project.optional-dependencies]
 agent = [
-    "agent-utilities[agent,logfire]>=0.2.23"]
+    "agent-utilities[agent,logfire]>=0.2.25"]
 
 all = [
-    "agent-utilities[mcp,agent,logfire]>=0.2.23"]
+    "agent-utilities[mcp,agent,logfire]>=0.2.25"]
 
 [project.scripts]
-documentdb-mcp = "documentdb_mcp.mcp:mcp_server"
-documentdb-agent = "documentdb_mcp.agent:agent_server"
+documentdb-mcp = "documentdb_mcp.mcp_server:mcp_server"
+documentdb-agent = "documentdb_mcp.agent_server:agent_server"
 
 [tool.setuptools.package-data]
-documentdb_mcp = [ "mcp_config.json", "agent/**"]
+documentdb_mcp = [ "mcp_config.json", "agent_data/**"]
 
 [tool.setuptools.packages.find]
 where = ["."]
+
+[tool.setuptools]
+include-package-data = true

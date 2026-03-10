@@ -8,12 +8,12 @@ from typing import List
 __all__: List[str] = []
 
 CORE_MODULES = [
-    "documentdb_mcp.mcp",
+    "documentdb_mcp.mcp_server",
 ]
 
 OPTIONAL_MODULES = {
-    "documentdb_mcp.agent": "agent",
-    "documentdb_mcp.mcp": "mcp",
+    "documentdb_mcp.agent_server": "agent",
+    "documentdb_mcp.mcp_server": "mcp",
 }
 
 
@@ -47,10 +47,10 @@ for module_name, extra_name in OPTIONAL_MODULES.items():
     else:
         globals()[f"_{extra_name.upper()}_AVAILABLE"] = False
 
-_MCP_AVAILABLE = OPTIONAL_MODULES.get("documentdb_mcp.mcp") in [
+_MCP_AVAILABLE = OPTIONAL_MODULES.get("documentdb_mcp.mcp_server") in [
     m.__name__ for m in globals().values() if hasattr(m, "__name__")
 ]
-_AGENT_AVAILABLE = "documentdb_mcp.agent" in globals()
+_AGENT_AVAILABLE = "documentdb_mcp.agent_server" in globals()
 
 __all__.extend(["_MCP_AVAILABLE", "_AGENT_AVAILABLE"])
 
