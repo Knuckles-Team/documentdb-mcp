@@ -1,6 +1,4 @@
-#!/usr/bin/python
-# coding: utf-8
-from documentdb_mcp.mcp_server import documentdb_mcp
+from documentdb_mcp.agent_server import agent_server
 
 if __name__ == "__main__":
-    documentdb_mcp()
+    agent_server()
