@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "documentdb-mcp"
-version = "0.1.47"
+version = "0.1.48"
 description = "DocumentDB MCP Server & A2A Server. DocumentDB is a MongoDB compatible open source document database built on PostgreSQL."
 readme = "README.md"
 authors = [{ name = "Audel Rouhi", email = "knucklessg1@gmail.com" }]
@@ -30,7 +30,6 @@ all = [
 
 [project.scripts]
 documentdb-mcp = "documentdb_mcp.mcp_server:mcp_server"
-documentdb-agent = "documentdb_mcp.agent_server:agent_server"
 
 [tool.setuptools.package-data]
 documentdb_mcp = [ "mcp_config.json", "agent_data/**"]
