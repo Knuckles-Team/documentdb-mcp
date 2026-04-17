@@ -6,6 +6,7 @@ with warnings.catch_warnings():
     warnings.simplefilter("ignore")
     try:
         from requests.exceptions import RequestsDependencyWarning
+
         warnings.filterwarnings("ignore", category=RequestsDependencyWarning)
     except ImportError:
         pass
@@ -25,15 +26,13 @@ from typing import Optional, List, Dict, Any
 import json
 import pymongo
 from pymongo.errors import PyMongoError
-from starlette.requests import Request
-from starlette.responses import JSONResponse
 from fastmcp import FastMCP
 from fastmcp.utilities.logging import get_logger
 from agent_utilities.mcp_utilities import (
     create_mcp_server,
 )
 
-__version__ = "0.1.53"
+__version__ = "0.1.54"
 
 logger = get_logger(name="TokenMiddleware")
 logger.setLevel(logging.DEBUG)
@@ -86,8 +85,8 @@ def serialize_oid(data: Any) -> Any:
 
 
 def register_misc_tools(mcp: FastMCP):
-    async def health_check(request: Request) -> JSONResponse:
-        return JSONResponse({"status": "OK"})
+    pass
+    pass
 
 
 def register_system_tools(mcp: FastMCP):
