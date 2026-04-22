@@ -15,22 +15,21 @@ with warnings.catch_warnings():
 warnings.filterwarnings("ignore", message=".*urllib3.*or chardet.*")
 warnings.filterwarnings("ignore", message=".*urllib3.*or charset_normalizer.*")
 
-from dotenv import load_dotenv, find_dotenv
-from agent_utilities.base_utilities import to_boolean
+import json
+import logging
 import os
 import sys
-import logging
-from typing import Optional, List, Dict, Any
+from typing import Any
 
-
-import json
 import pymongo
-from pymongo.errors import PyMongoError
-from fastmcp import FastMCP
-from fastmcp.utilities.logging import get_logger
+from agent_utilities.base_utilities import to_boolean
 from agent_utilities.mcp_utilities import (
     create_mcp_server,
 )
+from dotenv import find_dotenv, load_dotenv
+from fastmcp import FastMCP
+from fastmcp.utilities.logging import get_logger
+from pymongo.errors import PyMongoError
 
 __version__ = "0.1.54"
 
@@ -38,7 +37,7 @@ logger = get_logger(name="TokenMiddleware")
 logger.setLevel(logging.DEBUG)
 
 
-_client: Optional[pymongo.MongoClient] = None
+_client: pymongo.MongoClient | None = None
 
 
 def get_client() -> pymongo.MongoClient:
@@ -101,13 +100,13 @@ def register_system_tools(mcp: FastMCP):
             return f"Error: {str(e)}"
 
     @mcp.tool(tags={"system"})
-    def list_databases() -> List[str]:
+    def list_databases() -> list[str]:
         """List all databases in the connected DocumentDB/MongoDB instance."""
         client = get_client()
         return client.list_database_names()
 
     @mcp.tool(tags={"system"})
-    def run_command(database_name: str, command: Dict[str, Any]) -> Dict[str, Any]:
+    def run_command(database_name: str, command: dict[str, Any]) -> dict[str, Any]:
         """Run a raw command against the database."""
         client = get_client()
         db = client[database_name]
@@ -118,7 +117,7 @@ def register_system_tools(mcp: FastMCP):
 
 def register_collections_tools(mcp: FastMCP):
     @mcp.tool(tags={"collections"})
-    def list_collections(database_name: str) -> List[str]:
+    def list_collections(database_name: str) -> list[str]:
         """List all collections in a specific database."""
         client = get_client()
         db = client[database_name]
@@ -186,7 +185,7 @@ def register_collections_tools(mcp: FastMCP):
 def register_users_tools(mcp: FastMCP):
     @mcp.tool(tags={"users"})
     def create_user(
-        database_name: str, username: str, password: str, roles: List[Any]
+        database_name: str, username: str, password: str, roles: list[Any]
     ) -> str:
         """Create a new user on the specified database."""
         client = get_client()
@@ -213,8 +212,8 @@ def register_users_tools(mcp: FastMCP):
     def update_user(
         database_name: str,
         username: str,
-        password: Optional[str] = None,
-        roles: Optional[List[Any]] = None,
+        password: str | None = None,
+        roles: list[Any] | None = None,
     ) -> str:
         """Update a user's password or roles."""
         client = get_client()
@@ -235,7 +234,7 @@ def register_users_tools(mcp: FastMCP):
             return f"Error updating user: {str(e)}"
 
     @mcp.tool(tags={"users"})
-    def users_info(database_name: str, username: str) -> Dict[str, Any]:
+    def users_info(database_name: str, username: str) -> dict[str, Any]:
         """Get information about a user."""
         client = get_client()
         db = client[database_name]
@@ -249,7 +248,7 @@ def register_users_tools(mcp: FastMCP):
 def register_crud_tools(mcp: FastMCP):
     @mcp.tool(tags={"crud"})
     def insert_one(
-        database_name: str, collection_name: str, document: Dict[str, Any]
+        database_name: str, collection_name: str, document: dict[str, Any]
     ) -> str:
         """Insert a single document into a collection."""
         client = get_client()
@@ -264,8 +263,8 @@ def register_crud_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"crud"})
     def insert_many(
-        database_name: str, collection_name: str, documents: List[Dict[str, Any]]
-    ) -> List[str]:
+        database_name: str, collection_name: str, documents: list[dict[str, Any]]
+    ) -> list[str]:
         """Insert multiple documents into a collection."""
         client = get_client()
         db = client[database_name]
@@ -279,8 +278,8 @@ def register_crud_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"crud"})
     def find_one(
-        database_name: str, collection_name: str, filter: Dict[str, Any]
-    ) -> Optional[Dict[str, Any]]:
+        database_name: str, collection_name: str, filter: dict[str, Any]
+    ) -> dict[str, Any] | None:
         """Find a single document matching the filter."""
         client = get_client()
         db = client[database_name]
@@ -298,11 +297,11 @@ def register_crud_tools(mcp: FastMCP):
     def find(
         database_name: str,
         collection_name: str,
-        filter: Dict[str, Any],
+        filter: dict[str, Any],
         limit: int = 20,
         skip: int = 0,
-        sort: Optional[List[Any]] = None,
-    ) -> List[Dict[str, Any]]:
+        sort: list[Any] | None = None,
+    ) -> list[dict[str, Any]]:
         """
         Find documents matching the filter.
         'sort' should be a list of [key, direction] pairs, e.g. [["name", 1], ["date", -1]].
@@ -334,8 +333,8 @@ def register_crud_tools(mcp: FastMCP):
     def replace_one(
         database_name: str,
         collection_name: str,
-        filter: Dict[str, Any],
-        replacement: Dict[str, Any],
+        filter: dict[str, Any],
+        replacement: dict[str, Any],
     ) -> str:
         """Replace a single document matching the filter."""
         client = get_client()
@@ -353,8 +352,8 @@ def register_crud_tools(mcp: FastMCP):
     def update_one(
         database_name: str,
         collection_name: str,
-        filter: Dict[str, Any],
-        update: Dict[str, Any],
+        filter: dict[str, Any],
+        update: dict[str, Any],
     ) -> str:
         """Update a single document matching the filter. 'update' must contain update operators like $set."""
         client = get_client()
@@ -372,8 +371,8 @@ def register_crud_tools(mcp: FastMCP):
     def update_many(
         database_name: str,
         collection_name: str,
-        filter: Dict[str, Any],
-        update: Dict[str, Any],
+        filter: dict[str, Any],
+        update: dict[str, Any],
     ) -> str:
         """Update multiple documents matching the filter."""
         client = get_client()
@@ -389,7 +388,7 @@ def register_crud_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"crud"})
     def delete_one(
-        database_name: str, collection_name: str, filter: Dict[str, Any]
+        database_name: str, collection_name: str, filter: dict[str, Any]
     ) -> str:
         """Delete a single document matching the filter."""
         client = get_client()
@@ -404,7 +403,7 @@ def register_crud_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"crud"})
     def delete_many(
-        database_name: str, collection_name: str, filter: Dict[str, Any]
+        database_name: str, collection_name: str, filter: dict[str, Any]
     ) -> str:
         """Delete multiple documents matching the filter."""
         client = get_client()
@@ -419,7 +418,7 @@ def register_crud_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"crud"})
     def count_documents(
-        database_name: str, collection_name: str, filter: Dict[str, Any]
+        database_name: str, collection_name: str, filter: dict[str, Any]
     ) -> int:
         """Count documents matching the filter."""
         client = get_client()
@@ -436,10 +435,10 @@ def register_crud_tools(mcp: FastMCP):
     def find_one_and_update(
         database_name: str,
         collection_name: str,
-        filter: Dict[str, Any],
-        update: Dict[str, Any],
+        filter: dict[str, Any],
+        update: dict[str, Any],
         return_document: str = "before",
-    ) -> Optional[Dict[str, Any]]:
+    ) -> dict[str, Any] | None:
         """Finds a single document and updates it. return_document: 'before' or 'after'."""
         client = get_client()
         db = client[database_name]
@@ -463,10 +462,10 @@ def register_crud_tools(mcp: FastMCP):
     def find_one_and_replace(
         database_name: str,
         collection_name: str,
-        filter: Dict[str, Any],
-        replacement: Dict[str, Any],
+        filter: dict[str, Any],
+        replacement: dict[str, Any],
         return_document: str = "before",
-    ) -> Optional[Dict[str, Any]]:
+    ) -> dict[str, Any] | None:
         """Finds a single document and replaces it. return_document: 'before' or 'after'."""
         client = get_client()
         db = client[database_name]
@@ -488,8 +487,8 @@ def register_crud_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"crud"})
     def find_one_and_delete(
-        database_name: str, collection_name: str, filter: Dict[str, Any]
-    ) -> Optional[Dict[str, Any]]:
+        database_name: str, collection_name: str, filter: dict[str, Any]
+    ) -> dict[str, Any] | None:
         """Finds a single document and deletes it."""
         client = get_client()
         db = client[database_name]
@@ -507,8 +506,8 @@ def register_crud_tools(mcp: FastMCP):
 def register_analysis_tools(mcp: FastMCP):
     @mcp.tool(tags={"analysis"})
     def distinct(
-        database_name: str, collection_name: str, key: str, filter: Dict[str, Any]
-    ) -> List[Any]:
+        database_name: str, collection_name: str, key: str, filter: dict[str, Any]
+    ) -> list[Any]:
         """Find distinct values for a key."""
         client = get_client()
         db = client[database_name]
@@ -521,8 +520,8 @@ def register_analysis_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"analysis"})
     def aggregate(
-        database_name: str, collection_name: str, pipeline: List[Dict[str, Any]]
-    ) -> List[Dict[str, Any]]:
+        database_name: str, collection_name: str, pipeline: list[dict[str, Any]]
+    ) -> list[dict[str, Any]]:
         """Run an aggregation pipeline."""
         client = get_client()
         db = client[database_name]

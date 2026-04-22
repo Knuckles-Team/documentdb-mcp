@@ -5,7 +5,7 @@ import importlib
 import inspect
 from typing import List
 
-__all__: List[str] = []
+__all__: list[str] = []
 
 CORE_MODULES = [
     "documentdb_mcp.mcp_server",
