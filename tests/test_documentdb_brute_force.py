@@ -26,7 +26,8 @@ def mock_mongo():
 
         yield mock_client
 
-def test_mcp_server_coverage(_mock_mongo):
+def test_mcp_server_coverage(mock_mongo):
+    _ = mock_mongo
     from documentdb_mcp.mcp_server import get_mcp_instance
     from fastmcp.server.middleware.rate_limiting import RateLimitingMiddleware
 
