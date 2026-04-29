@@ -30,9 +30,9 @@ from agent_utilities.mcp_utilities import (
     ctx_progress,
 )
 from dotenv import find_dotenv, load_dotenv
-from fastmcp import Context, FastMCP
-from fastmcp.utilities.logging import get_logger
+from fastmcp import FastMCP, Context
 from pydantic import Field
+from fastmcp.utilities.logging import get_logger
 from pymongo.errors import PyMongoError
 
 __version__ = "0.1.54"
@@ -118,9 +118,9 @@ def register_system_tools(mcp: FastMCP):
         return client.list_database_names()
 
     @mcp.tool(tags={"system"})
-    def run_command(
-        database_name: str,
-        command: dict[str, Any],
+    async def run_command(
+        database_name: str, command: dict[str, Any],
+        await ctx_progress(ctx, 0, 100)
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
@@ -130,6 +130,7 @@ def register_system_tools(mcp: FastMCP):
         db = client[database_name]
         cmd = parse_json_arg(command)
         result = db.command(cmd)
+        await ctx_progress(ctx, 100, 100)
         return serialize_oid(result)
 
 
@@ -148,8 +149,7 @@ def register_collections_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"collections"})
     def create_collection(
-        database_name: str,
-        collection_name: str,
+        database_name: str, collection_name: str,
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
@@ -167,12 +167,11 @@ def register_collections_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"collections"})
     async def drop_collection(
-        database_name: str,
-        collection_name: str,
+        database_name: str, collection_name: str,
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
-    ) -> str | dict[str, Any]:
+    ) -> str:
         """Drop a collection from the specified database."""
         if not await ctx_confirm_destructive(ctx, "drop collection"):
             return {"status": "cancelled", "message": "Operation cancelled by user"}
@@ -187,8 +186,7 @@ def register_collections_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"collections"})
     def create_database(
-        database_name: str,
-        initial_collection: str = "default_collection",
+        database_name: str, initial_collection: str = "default_collection",
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
@@ -208,7 +206,7 @@ def register_collections_tools(mcp: FastMCP):
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
-    ) -> str | dict[str, Any]:
+    ) -> str:
         """Drop a database."""
         if not await ctx_confirm_destructive(ctx, "drop database"):
             return {"status": "cancelled", "message": "Operation cancelled by user"}
@@ -222,9 +220,7 @@ def register_collections_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"collections"})
     def rename_collection(
-        database_name: str,
-        old_name: str,
-        new_name: str,
+        database_name: str, old_name: str, new_name: str,
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
@@ -242,10 +238,7 @@ def register_collections_tools(mcp: FastMCP):
 def register_users_tools(mcp: FastMCP):
     @mcp.tool(tags={"users"})
     def create_user(
-        database_name: str,
-        username: str,
-        password: str,
-        roles: list[Any],
+        database_name: str, username: str, password: str, roles: list[Any],
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
@@ -262,12 +255,11 @@ def register_users_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"users"})
     async def drop_user(
-        database_name: str,
-        username: str,
+        database_name: str, username: str,
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
-    ) -> str | dict[str, Any]:
+    ) -> str:
         """Drop a user from the specified database."""
         if not await ctx_confirm_destructive(ctx, "drop user"):
             return {"status": "cancelled", "message": "Operation cancelled by user"}
@@ -310,8 +302,7 @@ def register_users_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"users"})
     def users_info(
-        database_name: str,
-        username: str,
+        database_name: str, username: str,
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
@@ -329,9 +320,7 @@ def register_users_tools(mcp: FastMCP):
 def register_crud_tools(mcp: FastMCP):
     @mcp.tool(tags={"crud"})
     def insert_one(
-        database_name: str,
-        collection_name: str,
-        document: dict[str, Any],
+        database_name: str, collection_name: str, document: dict[str, Any],
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
@@ -349,9 +338,7 @@ def register_crud_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"crud"})
     def insert_many(
-        database_name: str,
-        collection_name: str,
-        documents: list[dict[str, Any]],
+        database_name: str, collection_name: str, documents: list[dict[str, Any]],
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
@@ -369,9 +356,7 @@ def register_crud_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"crud"})
     def find_one(
-        database_name: str,
-        collection_name: str,
-        filter: dict[str, Any],
+        database_name: str, collection_name: str, filter: dict[str, Any],
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
@@ -390,8 +375,9 @@ def register_crud_tools(mcp: FastMCP):
             return {"error": str(e)}
 
     @mcp.tool(tags={"crud"})
-    def find(
+    async def find(
         database_name: str,
+        await ctx_progress(ctx, 0, 100)
         collection_name: str,
         filter: dict[str, Any],
         limit: int = 20,
@@ -426,6 +412,7 @@ def register_crud_tools(mcp: FastMCP):
                 results.append(serialize_oid(doc))
             return results
         except PyMongoError as e:
+            await ctx_progress(ctx, 100, 100)
             return [{"error": str(e)}]
 
     @mcp.tool(tags={"crud"})
@@ -496,13 +483,11 @@ def register_crud_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"crud"})
     async def delete_one(
-        database_name: str,
-        collection_name: str,
-        filter: dict[str, Any],
+        database_name: str, collection_name: str, filter: dict[str, Any],
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
-    ) -> str | dict[str, Any]:
+    ) -> str:
         """Delete a single document matching the filter."""
         if not await ctx_confirm_destructive(ctx, "delete one"):
             return {"status": "cancelled", "message": "Operation cancelled by user"}
@@ -519,13 +504,11 @@ def register_crud_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"crud"})
     async def delete_many(
-        database_name: str,
-        collection_name: str,
-        filter: dict[str, Any],
+        database_name: str, collection_name: str, filter: dict[str, Any],
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
-    ) -> str | dict[str, Any]:
+    ) -> str:
         """Delete multiple documents matching the filter."""
         if not await ctx_confirm_destructive(ctx, "delete many"):
             return {"status": "cancelled", "message": "Operation cancelled by user"}
@@ -542,9 +525,7 @@ def register_crud_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"crud"})
     def count_documents(
-        database_name: str,
-        collection_name: str,
-        filter: dict[str, Any],
+        database_name: str, collection_name: str, filter: dict[str, Any],
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
@@ -622,9 +603,7 @@ def register_crud_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"crud"})
     async def find_one_and_delete(
-        database_name: str,
-        collection_name: str,
-        filter: dict[str, Any],
+        database_name: str, collection_name: str, filter: dict[str, Any],
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
@@ -649,10 +628,7 @@ def register_crud_tools(mcp: FastMCP):
 def register_analysis_tools(mcp: FastMCP):
     @mcp.tool(tags={"analysis"})
     def distinct(
-        database_name: str,
-        collection_name: str,
-        key: str,
-        filter: dict[str, Any],
+        database_name: str, collection_name: str, key: str, filter: dict[str, Any],
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
@@ -668,10 +644,9 @@ def register_analysis_tools(mcp: FastMCP):
             return [f"Error getting distinct values: {str(e)}"]
 
     @mcp.tool(tags={"analysis"})
-    def aggregate(
-        database_name: str,
-        collection_name: str,
-        pipeline: list[dict[str, Any]],
+    async def aggregate(
+        database_name: str, collection_name: str, pipeline: list[dict[str, Any]],
+        await ctx_progress(ctx, 0, 100)
         ctx: Context = Field(
             description="MCP context for progress reporting", default=None
         ),
@@ -688,6 +663,7 @@ def register_analysis_tools(mcp: FastMCP):
                 results.append(serialize_oid(doc))
             return results
         except PyMongoError as e:
+            await ctx_progress(ctx, 100, 100)
             return [{"error": str(e)}]
 
 
@@ -734,7 +710,7 @@ def get_mcp_instance() -> tuple[Any, Any, Any, Any]:
 
     for mw in middlewares:
         mcp.add_middleware(mw)
-    registered_tags: list[str] = []
+    registered_tags = []
     return mcp, args, middlewares, registered_tags
 
 

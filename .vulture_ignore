@@ -1,0 +1,13 @@
+DEFAULT_AGENT_DESCRIPTION
+DEFAULT_AGENT_SYSTEM_PROMPT
+list_collections
+create_database
+rename_collection
+create_user
+drop_user
+update_user
+users_info
+create_user_prompt
+binary_version
+list_databases
+run_command
