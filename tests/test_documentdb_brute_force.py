@@ -1,8 +1,10 @@
-import pytest
-from unittest.mock import patch, MagicMock
-import inspect
 import asyncio
+import inspect
 from typing import Any
+from unittest.mock import MagicMock, patch
+
+import pytest
+
 
 @pytest.fixture
 def mock_mongo():
@@ -28,8 +30,9 @@ def mock_mongo():
 
 def test_mcp_server_coverage(mock_mongo):
     _ = mock_mongo
-    from documentdb_mcp.mcp_server import get_mcp_instance
     from fastmcp.server.middleware.rate_limiting import RateLimitingMiddleware
+
+    from documentdb_mcp.mcp_server import get_mcp_instance
 
     async def mock_on_request(self, context, call_next):
         return await call_next(context)
@@ -72,8 +75,8 @@ def test_mcp_server_coverage(mock_mongo):
         asyncio.run(run_tools())
 
 def test_agent_server_coverage():
-    from documentdb_mcp import agent_server
     import documentdb_mcp.agent_server as mod
+    from documentdb_mcp import agent_server
 
     with patch("documentdb_mcp.agent_server.create_graph_agent_server") as mock_s:
         with patch("sys.argv", ["agent_server.py"]):
