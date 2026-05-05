@@ -35,7 +35,7 @@ from fastmcp.utilities.logging import get_logger
 from pydantic import Field
 from pymongo.errors import PyMongoError
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 
 logger = get_logger(name="TokenMiddleware")
 logger.setLevel(logging.DEBUG)
