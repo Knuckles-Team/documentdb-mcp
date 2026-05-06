@@ -57,7 +57,7 @@ RUN apt-get update \
      && curl -sS https://starship.rs/install.sh | sh -s -- --yes \
     && mkdir -p /root/.config \
     && echo 'eval "$(starship init bash)"' >> /root/.bashrc \ \
-    uv pip install --system --upgrade --verbose --no-cache --break-system-packages --prerelease=allow documentdb-mcp[all]>=0.6.1
+    uv pip install --system --upgrade --verbose --no-cache --break-system-packages --prerelease=allow documentdb-mcp[all]>=0.6.2
 
 COPY starship.toml /root/.config/starship.toml
 
