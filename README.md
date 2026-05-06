@@ -21,7 +21,7 @@
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/documentdb-mcp)
 ![PyPI - Implementation](https://img.shields.io/pypi/implementation/documentdb-mcp)
 
-*Version: 0.4.0*
+*Version: 0.5.0*
 
 ## Overview
 
@@ -272,3 +272,72 @@ python -m build
 ![GitHub followers](https://img.shields.io/github/followers/Knucklessg1)
 
 ![GitHub User's stars](https://img.shields.io/github/stars/Knucklessg1)
+
+
+## MCP Configuration Examples
+
+### 1. Standard IO (stdio) Deployment
+
+```json
+{
+  "mcpServers": {
+    "documentdb-mcp": {
+      "command": "uv",
+      "args": [
+        "run",
+        "documentdb-mcp"
+      ],
+      "env": {
+        "AGENT_DESCRIPTION": "<YOUR_AGENT_DESCRIPTION>",
+        "AGENT_SYSTEM_PROMPT": "<YOUR_AGENT_SYSTEM_PROMPT>",
+        "ANALYSISTOOL": "True",
+        "COLLECTIONSTOOL": "True",
+        "CRUDTOOL": "True",
+        "DEFAULT_AGENT_NAME": "<YOUR_DEFAULT_AGENT_NAME>",
+        "MISCTOOL": "True",
+        "MONGODB_HOST": "<YOUR_MONGODB_HOST>",
+        "MONGODB_PORT": "<YOUR_MONGODB_PORT>",
+        "MONGODB_URI": "<YOUR_MONGODB_URI>",
+        "SYSTEMTOOL": "True",
+        "USERSTOOL": "True"
+      }
+    }
+  }
+}
+```
+
+### 2. Streamable HTTP (SSE) Deployment
+
+```json
+{
+  "mcpServers": {
+    "documentdb-mcp": {
+      "command": "uv",
+      "args": [
+        "run",
+        "documentdb-mcp",
+        "--transport",
+        "http",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000"
+      ],
+      "env": {
+        "AGENT_DESCRIPTION": "<YOUR_AGENT_DESCRIPTION>",
+        "AGENT_SYSTEM_PROMPT": "<YOUR_AGENT_SYSTEM_PROMPT>",
+        "ANALYSISTOOL": "True",
+        "COLLECTIONSTOOL": "True",
+        "CRUDTOOL": "True",
+        "DEFAULT_AGENT_NAME": "<YOUR_DEFAULT_AGENT_NAME>",
+        "MISCTOOL": "True",
+        "MONGODB_HOST": "<YOUR_MONGODB_HOST>",
+        "MONGODB_PORT": "<YOUR_MONGODB_PORT>",
+        "MONGODB_URI": "<YOUR_MONGODB_URI>",
+        "SYSTEMTOOL": "True",
+        "USERSTOOL": "True"
+      }
+    }
+  }
+}
+```

@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "documentdb-mcp": {
+      "command": "uv",
+      "args": [
+        "run",
+        "documentdb-mcp"
+      ],
+      "env": {
+        "MONGODB_URI": "<YOUR_MONGODB_URI>",
+        "AGENT_DESCRIPTION": "<YOUR_AGENT_DESCRIPTION>",
+        "AGENT_SYSTEM_PROMPT": "<YOUR_AGENT_SYSTEM_PROMPT>",
+        "ANALYSISTOOL": "True",
+        "COLLECTIONSTOOL": "True",
+        "CRUDTOOL": "True",
+        "DEFAULT_AGENT_NAME": "<YOUR_DEFAULT_AGENT_NAME>",
+        "MISCTOOL": "True",
+        "MONGODB_HOST": "<YOUR_MONGODB_HOST>",
+        "MONGODB_PORT": "<YOUR_MONGODB_PORT>",
+        "SYSTEMTOOL": "True",
+        "USERSTOOL": "True"
+      }
+    }
+  }
+}
