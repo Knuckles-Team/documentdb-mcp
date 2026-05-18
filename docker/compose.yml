@@ -3,8 +3,8 @@ services:
   documentdb-agent:
     # image: docker.io/knucklessg1/documentdb-mcp:latest
     build:
-      context: .
-      dockerfile: debug.Dockerfile
+      context: ..
+      dockerfile: docker/debug.Dockerfile
     container_name: documentdb-agent
     hostname: documentdb-agent
     command: [ "documentdb-agent" ]
@@ -49,7 +49,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      - ./mcp/documentdb-data:/data
+      - ../mcp/documentdb-data:/data
     logging:
       driver: json-file
       options:

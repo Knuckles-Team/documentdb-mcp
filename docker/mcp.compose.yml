@@ -17,7 +17,7 @@ services:
         max-file: "3"
     restart: always
     env_file:
-      - .env
+      - ../.env
     environment:
       - "PYTHONUNBUFFERED=1"
       - "HOST=0.0.0.0"
@@ -81,7 +81,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      - ./mcp/documentdb-data:/data
+      - ../mcp/documentdb-data:/data
     logging:
       driver: json-file
       options:

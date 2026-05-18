@@ -94,7 +94,7 @@ def test_main_coverage():
             mock_mcp = MagicMock()
             mock_args = MagicMock()
             mock_args.transport = "stdio"
-            mock_inst.return_value = (mock_mcp, mock_args, [], [])
+            mock_inst.return_value = (mock_mcp, mock_args, [])
             try:
                 mcp_server()
             except SystemExit:

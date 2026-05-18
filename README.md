@@ -44,38 +44,17 @@ This package provides:
 
 ## MCP
 
-### MCP Tools
+### Available MCP Tools
 
-| Function Name          | Description                                                                                     | Tag(s)        |
-|:-----------------------|:------------------------------------------------------------------------------------------------|:--------------|
-| `binary_version`       | Get the binary version of the server (using buildInfo).                                         | `system`      |
-| `list_databases`       | List all databases in the connected DocumentDB/MongoDB instance.                                | `system`      |
-| `run_command`          | Run a raw command against the database.                                                         | `system`      |
-| `list_collections`     | List all collections in a specific database.                                                    | `collections` |
-| `create_collection`    | Create a new collection in the specified database.                                              | `collections` |
-| `drop_collection`      | Drop a collection from the specified database.                                                  | `collections` |
-| `create_database`      | Explicitly create a database by creating a collection in it (MongoDB creates DBs lazily).       | `collections` |
-| `drop_database`        | Drop a database.                                                                                | `collections` |
-| `rename_collection`    | Rename a collection.                                                                            | `collections` |
-| `create_user`          | Create a new user on the specified database.                                                    | `users`       |
-| `drop_user`            | Drop a user from the specified database.                                                        | `users`       |
-| `update_user`          | Update a user's password or roles.                                                              | `users`       |
-| `users_info`           | Get information about a user.                                                                   | `users`       |
-| `insert_one`           | Insert a single document into a collection.                                                     | `crud`        |
-| `insert_many`          | Insert multiple documents into a collection.                                                    | `crud`        |
-| `find_one`             | Find a single document matching the filter.                                                     | `crud`        |
-| `find`                 | Find documents matching the filter.                                                             | `crud`        |
-| `replace_one`          | Replace a single document matching the filter.                                                  | `crud`        |
-| `update_one`           | Update a single document matching the filter. 'update' must contain update operators like $set. | `crud`        |
-| `update_many`          | Update multiple documents matching the filter.                                                  | `crud`        |
-| `delete_one`           | Delete a single document matching the filter.                                                   | `crud`        |
-| `delete_many`          | Delete multiple documents matching the filter.                                                  | `crud`        |
-| `count_documents`      | Count documents matching the filter.                                                            | `crud`        |
-| `distinct`             | Find distinct values for a key.                                                                 | `analysis`    |
-| `aggregate`            | Run an aggregation pipeline.                                                                    | `analysis`    |
-| `find_one_and_update`  | Finds a single document and updates it. return_document: 'before' or 'after'.                   | `crud`        |
-| `find_one_and_replace` | Finds a single document and replaces it. return_document: 'before' or 'after'.                  | `crud`        |
-| `find_one_and_delete`  | Finds a single document and deletes it.                                                         | `crud`        |
+This server utilizes dynamic Action-Routed tools to optimize token overhead and maximize IDE compatibility.
+
+| Tool Name | Description |
+|-----------|-------------|
+| `documentdb_analysis` | Consolidated Action-Routed tool for analysis. Methods: distinct, aggregate |
+| `documentdb_collections` | Consolidated Action-Routed tool for collections. Methods: list_collections, create_collection, drop_collection, create_database, drop_database, rename_collection |
+| `documentdb_crud` | Consolidated Action-Routed tool for crud. Methods: insert_one, insert_many, find_one, find, replace_one, update_one, update_many, delete_one, delete_many, count_documents, find_one_and_update, find_one_and_replace, find_one_and_delete |
+| `documentdb_system` | Consolidated Action-Routed tool for system. Methods: binary_version, list_databases, run_command |
+| `documentdb_users` | Consolidated Action-Routed tool for users. Methods: create_user, drop_user, update_user, users_info |
 
 ## A2A Agent
 

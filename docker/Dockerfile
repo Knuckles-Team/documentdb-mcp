@@ -56,9 +56,9 @@ RUN apt-get update \
     && curl -LsSf https://astral.sh/uv/install.sh | sh \
      && curl -sS https://starship.rs/install.sh | sh -s -- --yes \
     && mkdir -p /root/.config \
-    && echo 'eval "$(starship init bash)"' >> /root/.bashrc \ \
-    uv pip install --system --upgrade --verbose --no-cache --break-system-packages --prerelease=allow documentdb-mcp[all]>=0.9.0
+    && echo 'eval "$(starship init bash)"' >> /root/.bashrc \
+    && uv pip install --system --upgrade --verbose --no-cache --break-system-packages --prerelease=allow documentdb-mcp[all]>=0.9.0
 
-COPY starship.toml /root/.config/starship.toml
+COPY docker/starship.toml /root/.config/starship.toml
 
 CMD ["documentdb-mcp"]

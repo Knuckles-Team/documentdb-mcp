@@ -1,0 +1,167 @@
+{
+  "feature_id": "code-enhancement-20260512",
+  "title": "Code Enhancement: documentdb-mcp",
+  "created": "2026-05-12T14:14:40.985758+00:00",
+  "overview": "Automated code enhancement review for documentdb-mcp. Covers 17 analysis domains.",
+  "user_stories": [
+    {
+      "role": "developer",
+      "action": "address Project Analysis findings (grade: C, score: 74)",
+      "value": "improve project project analysis from C to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Test Coverage findings (grade: C, score: 70)",
+      "value": "improve project test coverage from C to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Concept Traceability findings (grade: F, score: 42)",
+      "value": "improve project concept traceability from F to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Linting & Formatting findings (grade: F, score: 0)",
+      "value": "improve project linting & formatting from F to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Changelog Audit findings (grade: C, score: 75)",
+      "value": "improve project changelog audit from C to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Environment Variables findings (grade: C, score: 75)",
+      "value": "improve project environment variables from C to at least B (80+)"
+    }
+  ],
+  "functional_requirements": [
+    {
+      "id": "FR-001",
+      "description": "1 functions exceed 200 lines (actionable refactoring targets): register_crud_tools (318L)",
+      "testable": true
+    },
+    {
+      "id": "FR-002",
+      "description": "Monolithic: mcp_server.py (761L) \u2014 1 functions with high complexity (worst: register_crud_tools at 318L, CC=27); Low cohesion: 15 distinct concepts in one file",
+      "testable": true
+    },
+    {
+      "id": "FR-003",
+      "description": "Test suite lacks intent diversity (only one type)",
+      "testable": true
+    },
+    {
+      "id": "FR-004",
+      "description": "18 potential doc-test drift items",
+      "testable": true
+    },
+    {
+      "id": "FR-005",
+      "description": "README missing: Both bare-metal (pip) and container (Docker) deployment docs",
+      "testable": true
+    },
+    {
+      "id": "FR-006",
+      "description": "README missing: Has a Table of Contents",
+      "testable": true
+    },
+    {
+      "id": "FR-007",
+      "description": "README missing: References /docs directory material",
+      "testable": true
+    },
+    {
+      "id": "FR-008",
+      "description": "README missing: Has bare-metal and container deployment instructions",
+      "testable": true
+    },
+    {
+      "id": "FR-009",
+      "description": "SRP: 1 modules exceed 500 lines (god modules)",
+      "testable": true
+    },
+    {
+      "id": "FR-010",
+      "description": "No discernible layer architecture (no domain/service/adapter separation)",
+      "testable": true
+    },
+    {
+      "id": "FR-011",
+      "description": "Low traceability ratio: 0% concepts fully traced",
+      "testable": true
+    },
+    {
+      "id": "FR-012",
+      "description": "4 test functions missing concept markers",
+      "testable": true
+    },
+    {
+      "id": "FR-013",
+      "description": "37 significant functions (>10 lines) missing concept markers in docstrings",
+      "testable": true
+    },
+    {
+      "id": "FR-014",
+      "description": "Total lint findings: 32 (high/error: 29, medium/warning: 3, low: 0)",
+      "testable": true
+    },
+    {
+      "id": "FR-015",
+      "description": "2 hook(s) may be outdated: ruff-pre-commit, uv-pre-commit",
+      "testable": true
+    },
+    {
+      "id": "FR-016",
+      "description": "CHANGELOG.md exists but could not be parsed \u2014 check format compliance",
+      "testable": true
+    },
+    {
+      "id": "FR-017",
+      "description": "No changelog entries within the last 30 days",
+      "testable": true
+    },
+    {
+      "id": "FR-018",
+      "description": "keepachangelog not installed \u2014 pip install 'universal-skills[code-enhancer]'",
+      "testable": true
+    },
+    {
+      "id": "FR-019",
+      "description": "1 tests have no assertions",
+      "testable": true
+    },
+    {
+      "id": "FR-020",
+      "description": "Partial env var documentation: 32% coverage",
+      "testable": true
+    },
+    {
+      "id": "FR-021",
+      "description": "Undocumented env vars: ALLOWED_CLIENT_REDIRECT_URIS, AUTH_TYPE, DOCUMENT_DB_HOST, DOCUMENT_DB_NAME, DOCUMENT_DB_PASSWORD, DOCUMENT_DB_PORT, DOCUMENT_DB_USERNAME, EUNOMIA_POLICY_FILE, EUNOMIA_REMOTE_URL, EUNOMIA_TYPE",
+      "testable": true
+    },
+    {
+      "id": "FR-022",
+      "description": "10 Python env vars not in .env.example: ANALYSISTOOL, COLLECTIONSTOOL, CRUDTOOL, DEFAULT_AGENT_NAME, MISCTOOL",
+      "testable": true
+    }
+  ],
+  "success_criteria": [
+    {
+      "metric": "Overall GPA",
+      "current": 2.88,
+      "target": 3.0
+    },
+    {
+      "metric": "Domains at B or above",
+      "current": 11,
+      "target": 17
+    },
+    {
+      "metric": "Actionable findings",
+      "current": 22,
+      "target": 0
+    }
+  ]
+}
