@@ -5,13 +5,13 @@ import os
 import pymongo
 from agent_utilities.base_utilities import get_logger
 
+from documentdb_mcp.api_client import DocumentDBApi
+
 logger = get_logger(__name__)
 
 
 def get_client():
     """Get authenticated client for documentdb-mcp."""
-    from documentdb_mcp.api_client import DocumentDBApi
-
     uri = os.getenv("MONGODB_URI")
     if not uri:
         host = os.getenv("MONGODB_HOST", "localhost")

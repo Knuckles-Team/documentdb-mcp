@@ -8,8 +8,10 @@ import pytest
 
 @pytest.fixture
 def mock_mongo():
-    with patch("pymongo.MongoClient") as mock_client, \
-         patch("documentdb_mcp.mcp_server.get_client") as mock_get_client:
+    with (
+        patch("pymongo.MongoClient") as mock_client,
+        patch("documentdb_mcp.mcp_server.get_client") as mock_get_client,
+    ):
         client = mock_client.return_value
         mock_get_client.return_value = client
         # Mock admin.command("ping")
@@ -28,6 +30,7 @@ def mock_mongo():
 
         yield mock_client
 
+
 def test_mcp_server_coverage(mock_mongo):
     _ = mock_mongo
     from fastmcp.server.middleware.rate_limiting import RateLimitingMiddleware
@@ -42,7 +45,11 @@ def test_mcp_server_coverage(mock_mongo):
         mcp = mcp_data[0] if isinstance(mcp_data, tuple) else mcp_data
 
         async def run_tools():
-            tool_objs = await mcp.list_tools() if inspect.iscoroutinefunction(mcp.list_tools) else mcp.list_tools()
+            tool_objs = (
+                await mcp.list_tools()
+                if inspect.iscoroutinefunction(mcp.list_tools)
+                else mcp.list_tools()
+            )
             for tool in tool_objs:
                 try:
                     target_params: dict[str, Any] = {
@@ -58,15 +65,20 @@ def test_mcp_server_coverage(mock_mongo):
                         "roles": [],
                         "command": {"ping": 1},
                         "key": "name",
-                        "pipeline": []
+                        "pipeline": [],
                     }
 
                     # Inspect tool parameters to fill missing ones
                     sig = inspect.signature(tool.fn)
                     for p_name, p in sig.parameters.items():
-                        if p.default == inspect.Parameter.empty and p_name not in ["_client", "context"]:
+                        if p.default == inspect.Parameter.empty and p_name not in [
+                            "_client",
+                            "context",
+                        ]:
                             if p_name not in target_params:
-                                target_params[p_name] = "test" if p.annotation == str else 1
+                                target_params[p_name] = (
+                                    "test" if p.annotation == str else 1
+                                )
 
                     await mcp.call_tool(tool.name, target_params)
                 except Exception as e:
@@ -74,17 +86,19 @@ def test_mcp_server_coverage(mock_mongo):
 
         asyncio.run(run_tools())
 
+
 def test_agent_server_coverage():
     import documentdb_mcp.agent_server as mod
     from documentdb_mcp import agent_server
 
-    with patch("documentdb_mcp.agent_server.create_graph_agent_server") as mock_s:
+    with patch("agent_utilities.create_agent_server") as mock_s:
         with patch("sys.argv", ["agent_server.py"]):
             if inspect.isfunction(agent_server):
                 agent_server()
             else:
                 mod.agent_server()
             assert mock_s.called
+
 
 def test_main_coverage():
     from documentdb_mcp.mcp_server import mcp_server

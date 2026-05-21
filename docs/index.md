@@ -288,12 +288,9 @@ python -m build
         "documentdb-mcp"
       ],
       "env": {
-        "AGENT_DESCRIPTION": "<YOUR_AGENT_DESCRIPTION>",
-        "AGENT_SYSTEM_PROMPT": "<YOUR_AGENT_SYSTEM_PROMPT>",
         "ANALYSISTOOL": "True",
         "COLLECTIONSTOOL": "True",
         "CRUDTOOL": "True",
-        "DEFAULT_AGENT_NAME": "<YOUR_DEFAULT_AGENT_NAME>",
         "MISCTOOL": "True",
         "MONGODB_HOST": "<YOUR_MONGODB_HOST>",
         "MONGODB_PORT": "<YOUR_MONGODB_PORT>",
@@ -324,12 +321,9 @@ python -m build
         "8000"
       ],
       "env": {
-        "AGENT_DESCRIPTION": "<YOUR_AGENT_DESCRIPTION>",
-        "AGENT_SYSTEM_PROMPT": "<YOUR_AGENT_SYSTEM_PROMPT>",
         "ANALYSISTOOL": "True",
         "COLLECTIONSTOOL": "True",
         "CRUDTOOL": "True",
-        "DEFAULT_AGENT_NAME": "<YOUR_DEFAULT_AGENT_NAME>",
         "MISCTOOL": "True",
         "MONGODB_HOST": "<YOUR_MONGODB_HOST>",
         "MONGODB_PORT": "<YOUR_MONGODB_PORT>",

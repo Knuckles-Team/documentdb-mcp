@@ -1,6 +1,11 @@
 #!/usr/bin/python
 import warnings
 
+from fastmcp import FastMCP
+from fastmcp.dependencies import Depends
+from fastmcp.utilities.logging import get_logger
+from pydantic import Field
+
 # Filter RequestsDependencyWarning early to prevent log spam
 with warnings.catch_warnings():
     warnings.simplefilter("ignore")
@@ -22,16 +27,12 @@ from typing import Any
 from agent_utilities.base_utilities import to_boolean
 from agent_utilities.mcp_utilities import create_mcp_server
 from dotenv import find_dotenv, load_dotenv
-from fastmcp import FastMCP
-from fastmcp.dependencies import Depends
-from fastmcp.utilities.logging import get_logger
-from pydantic import Field
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from documentdb_mcp.auth import get_client
 
-__version__ = "0.10.0"
+__version__ = "0.10.1"
 
 logger = get_logger(name="documentdb-mcp")
 logger.setLevel(logging.INFO)
