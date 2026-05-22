@@ -45,6 +45,7 @@ def _import_module_safely(module_name: str):
 
 def __getattr__(name: str) -> Any:
     # Handle availability flags dynamically without eager imports
+    # CONCEPT:ECO-4.1
     if name == "_MCP_AVAILABLE":
         mcp_key = next((k for k in OPTIONAL_MODULES if "mcp_server" in k), None)
         if mcp_key:

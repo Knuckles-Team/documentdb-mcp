@@ -1,0 +1,132 @@
+{
+  "feature_id": "code-enhancement-20260522",
+  "title": "Code Enhancement: documentdb-mcp",
+  "created": "2026-05-22T22:40:33.832475+00:00",
+  "overview": "Automated code enhancement review for documentdb-mcp. Covers 16 analysis domains.",
+  "user_stories": [
+    {
+      "role": "developer",
+      "action": "address Project Analysis findings (grade: C, score: 74)",
+      "value": "improve project project analysis from C to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Architecture & Design Patterns findings (grade: C, score: 75)",
+      "value": "improve project architecture & design patterns from C to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Changelog Audit findings (grade: C, score: 75)",
+      "value": "improve project changelog audit from C to at least B (80+)"
+    }
+  ],
+  "functional_requirements": [
+    {
+      "id": "FR-001",
+      "description": "Minor update: pytest-xdist 3.6.0 (constraint \u2014 not installed) -> 3.8.0",
+      "testable": true
+    },
+    {
+      "id": "FR-002",
+      "description": "Minor update: pymongo 4.16.0 (installed) -> 4.17.0",
+      "testable": true
+    },
+    {
+      "id": "FR-003",
+      "description": "Test suite lacks intent diversity (only one type)",
+      "testable": true
+    },
+    {
+      "id": "FR-004",
+      "description": "15 potential doc-test drift items",
+      "testable": true
+    },
+    {
+      "id": "FR-005",
+      "description": "README.md missing sections: usage|quick start",
+      "testable": true
+    },
+    {
+      "id": "FR-006",
+      "description": "2 broken internal links in README.md",
+      "testable": true
+    },
+    {
+      "id": "FR-007",
+      "description": "README missing: Has a Table of Contents",
+      "testable": true
+    },
+    {
+      "id": "FR-008",
+      "description": "README missing: Has usage examples with code blocks",
+      "testable": true
+    },
+    {
+      "id": "FR-009",
+      "description": "No discernible layer architecture (no domain/service/adapter separation)",
+      "testable": true
+    },
+    {
+      "id": "FR-010",
+      "description": "Low dependency injection ratio: 0%",
+      "testable": true
+    },
+    {
+      "id": "FR-011",
+      "description": "Total lint findings: 0 (high/error: 0, medium/warning: 0, low: 0)",
+      "testable": true
+    },
+    {
+      "id": "FR-012",
+      "description": "2 hook(s) may be outdated: ruff-pre-commit, uv-pre-commit",
+      "testable": true
+    },
+    {
+      "id": "FR-013",
+      "description": "CHANGELOG.md exists but could not be parsed \u2014 check format compliance",
+      "testable": true
+    },
+    {
+      "id": "FR-014",
+      "description": "No changelog entries within the last 30 days",
+      "testable": true
+    },
+    {
+      "id": "FR-015",
+      "description": "keepachangelog not installed \u2014 pip install 'universal-skills[code-enhancer]'",
+      "testable": true
+    },
+    {
+      "id": "FR-016",
+      "description": "Test directory lacks subdirectory organization (consider unit/, integration/, e2e/)",
+      "testable": true
+    },
+    {
+      "id": "FR-017",
+      "description": "4 tests have excessive mocking (>5 mocks) \u2014 test behavior, not implementation",
+      "testable": true
+    },
+    {
+      "id": "FR-018",
+      "description": "1 tests exceed 100 lines \u2014 likely doing too much per test",
+      "testable": true
+    }
+  ],
+  "success_criteria": [
+    {
+      "metric": "Overall GPA",
+      "current": 3.44,
+      "target": 3.0
+    },
+    {
+      "metric": "Domains at B or above",
+      "current": 13,
+      "target": 16
+    },
+    {
+      "metric": "Actionable findings",
+      "current": 18,
+      "target": 0
+    }
+  ]
+}

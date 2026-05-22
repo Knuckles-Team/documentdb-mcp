@@ -43,7 +43,7 @@
 
 This agent wraps the DocumentDB MCP Server & A2A Server. DocumentDB is a MongoDB compatible open source document database built on PostgreSQL. API. You can interact with it programmatically or via its integrated execution entrypoints.
 
-Detailed instructions on how to use the underlying API wrappers, extended schema bindings, and developer SDK references are maintained in [docs/index.md](file:///home/apps/workspace/agent-packages/agents/documentdb-mcp/docs/index.md).
+Detailed instructions on how to use the underlying API wrappers, extended schema bindings, and developer SDK references are maintained in [docs/index.md](index.md).
 
 ---
 
@@ -60,7 +60,7 @@ This server utilizes dynamic Action-Routed tools to optimize token overhead and 
 | **Crud** | `CRUDTOOL` | `True` | Manage crud operations. Action-routed methods: `insert_one`, `insert_many`, `find_one`, `find`, `replace_one`, `update_one`, `update_many`, `delete_one`, `delete_many`, `count_documents`, `find_one_and_update`, `find_one_and_replace`, `find_one_and_delete`. |
 | **Analysis** | `ANALYSISTOOL` | `True` | Manage analysis operations. Action-routed methods: `distinct`, `aggregate`. |
 
-Detailed tool schemas, parameter shapes, and validation constraints are preserved in [docs/mcp.md](file:///home/apps/workspace/agent-packages/agents/documentdb-mcp/docs/mcp.md).
+Detailed tool schemas, parameter shapes, and validation constraints are preserved in [docs/mcp.md](mcp.md).
 
 ### MCP Configuration Examples
 
@@ -207,7 +207,7 @@ services:
 
 ```
 
-Detailed graph node architecture explanations, custom skill configurations, and agentic trace guides are available in [docs/agent.md](file:///home/apps/workspace/agent-packages/agents/documentdb-mcp/docs/agent.md).
+Detailed graph node architecture explanations, custom skill configurations, and agentic trace guides are available in [docs/agent.md](agent.md).
 
 ---
 

@@ -43,7 +43,7 @@
 
 This agent wraps the DocumentDB MCP Server & A2A Server. DocumentDB is a MongoDB compatible open source document database built on PostgreSQL. API. You can interact with it programmatically or via its integrated execution entrypoints.
 
-Detailed instructions on how to use the underlying API wrappers, extended schema bindings, and developer SDK references are maintained in [docs/index.md](file:///home/apps/workspace/agent-packages/agents/documentdb-mcp/docs/index.md).
+Detailed instructions on how to use the underlying API wrappers, extended schema bindings, and developer SDK references are maintained in [docs/index.md](docs/index.md).
 
 ---
 
@@ -54,13 +54,107 @@ This server utilizes dynamic Action-Routed tools to optimize token overhead and 
 ### Available MCP Tools
 | Tool Module | Toggle Env Var | Enabled by Default | Description & Nested Methods |
 |-------------|----------------|--------------------|------------------------------|
-| **System** | `SYSTEMTOOL` | `True` | Manage system operations. Action-routed methods: `binary_version`, `list_databases`, `run_command`. |
-| **Collections** | `COLLECTIONSTOOL` | `True` | Manage collections operations. Action-routed methods: `list_collections`, `create_collection`, `drop_collection`, `create_database`, `drop_database`, `rename_collection`. |
-| **Users** | `USERSTOOL` | `True` | Manage users operations. Action-routed methods: `create_user`, `drop_user`, `update_user`, `users_info`. |
-| **Crud** | `CRUDTOOL` | `True` | Manage crud operations. Action-routed methods: `insert_one`, `insert_many`, `find_one`, `find`, `replace_one`, `update_one`, `update_many`, `delete_one`, `delete_many`, `count_documents`, `find_one_and_update`, `find_one_and_replace`, `find_one_and_delete`. |
-| **Analysis** | `ANALYSISTOOL` | `True` | Manage analysis operations. Action-routed methods: `distinct`, `aggregate`. |
+| **System** | `SYSTEM_TOOL` | `True` | Register system tools.
 
-Detailed tool schemas, parameter shapes, and validation constraints are preserved in [docs/mcp.md](file:///home/apps/workspace/agent-packages/agents/documentdb-mcp/docs/mcp.md).
+    CONCEPT:ECO-4.1 Action-routed methods: `binary_version`, `list_databases`, `run_command`. |
+| **Collections** | `COLLECTIONS_TOOL` | `True` | Register collections tools.
+
+    CONCEPT:ECO-4.1 Action-routed methods: `create_collection`, `create_database`, `drop_collection`, `drop_database`, `list_collections`, `rename_collection`. |
+| **Users** | `USERS_TOOL` | `True` | Register users tools.
+
+    CONCEPT:ECO-4.1 Action-routed methods: `create_user`, `drop_user`, `update_user`, `users_info`. |
+| **Crud** | `CRUD_TOOL` | `True` | Register crud tools.
+
+    CONCEPT:ECO-4.1 Action-routed methods: `count_documents`, `delete_many`, `delete_one`, `find`, `find_one`, `find_one_and_delete`, `find_one_and_replace`, `find_one_and_update`, `insert_many`, `insert_one`, `replace_one`, `update_many`, `update_one`. |
+| **Analysis** | `ANALYSIS_TOOL` | `True` | Register analysis tools.
+
+    CONCEPT:ECO-4.1 Action-routed methods: `aggregate`, `distinct`. |
+
+        Actions:
+          - 'binary_version': Call binary_version
+          - 'list_databases': Call list_databases
+          - 'run_command': Call run_command Action-routed methods: `binary_version`, `list_databases`, `run_command`. |
+| **Collections** | `COLLECTIONS_TOOL` | `True` | Manage collections operations.
+
+        Actions:
+          - 'list_collections': Call list_collections
+          - 'create_collection': Call create_collection
+          - 'drop_collection': Call drop_collection
+          - 'create_database': Call create_database
+          - 'drop_database': Call drop_database
+          - 'rename_collection': Call rename_collection Action-routed methods: `create_collection`, `create_database`, `drop_collection`, `drop_database`, `list_collections`, `rename_collection`. |
+| **Users** | `USERS_TOOL` | `True` | Manage users operations.
+
+        Actions:
+          - 'create_user': Call create_user
+          - 'drop_user': Call drop_user
+          - 'update_user': Call update_user
+          - 'users_info': Call users_info Action-routed methods: `create_user`, `drop_user`, `update_user`, `users_info`. |
+| **Crud** | `CRUD_TOOL` | `True` | Manage crud operations.
+
+        Actions:
+          - 'insert_one': Call insert_one
+          - 'insert_many': Call insert_many
+          - 'find_one': Call find_one
+          - 'find': Call find
+          - 'replace_one': Call replace_one
+          - 'update_one': Call update_one
+          - 'update_many': Call update_many
+          - 'delete_one': Call delete_one
+          - 'delete_many': Call delete_many
+          - 'count_documents': Call count_documents
+          - 'find_one_and_update': Call find_one_and_update
+          - 'find_one_and_replace': Call find_one_and_replace
+          - 'find_one_and_delete': Call find_one_and_delete Action-routed methods: `count_documents`, `delete_many`, `delete_one`, `find`, `find_one`, `find_one_and_delete`, `find_one_and_replace`, `find_one_and_update`, `insert_many`, `insert_one`, `replace_one`, `update_many`, `update_one`. |
+| **Analysis** | `ANALYSIS_TOOL` | `True` | Manage analysis operations.
+
+        Actions:
+          - 'distinct': Call distinct
+          - 'aggregate': Call aggregate Action-routed methods: `aggregate`, `distinct`. |
+
+        Actions:
+          - 'binary_version': Call binary_version
+          - 'list_databases': Call list_databases
+          - 'run_command': Call run_command Action-routed methods: `binary_version`, `list_databases`, `run_command`. |
+| **Collections** | `COLLECTIONS_TOOL` | `True` | Manage collections operations.
+
+        Actions:
+          - 'list_collections': Call list_collections
+          - 'create_collection': Call create_collection
+          - 'drop_collection': Call drop_collection
+          - 'create_database': Call create_database
+          - 'drop_database': Call drop_database
+          - 'rename_collection': Call rename_collection Action-routed methods: `create_collection`, `create_database`, `drop_collection`, `drop_database`, `list_collections`, `rename_collection`. |
+| **Users** | `USERS_TOOL` | `True` | Manage users operations.
+
+        Actions:
+          - 'create_user': Call create_user
+          - 'drop_user': Call drop_user
+          - 'update_user': Call update_user
+          - 'users_info': Call users_info Action-routed methods: `create_user`, `drop_user`, `update_user`, `users_info`. |
+| **Crud** | `CRUD_TOOL` | `True` | Manage crud operations.
+
+        Actions:
+          - 'insert_one': Call insert_one
+          - 'insert_many': Call insert_many
+          - 'find_one': Call find_one
+          - 'find': Call find
+          - 'replace_one': Call replace_one
+          - 'update_one': Call update_one
+          - 'update_many': Call update_many
+          - 'delete_one': Call delete_one
+          - 'delete_many': Call delete_many
+          - 'count_documents': Call count_documents
+          - 'find_one_and_update': Call find_one_and_update
+          - 'find_one_and_replace': Call find_one_and_replace
+          - 'find_one_and_delete': Call find_one_and_delete Action-routed methods: `count_documents`, `delete_many`, `delete_one`, `find`, `find_one`, `find_one_and_delete`, `find_one_and_replace`, `find_one_and_update`, `insert_many`, `insert_one`, `replace_one`, `update_many`, `update_one`. |
+| **Analysis** | `ANALYSIS_TOOL` | `True` | Manage analysis operations.
+
+        Actions:
+          - 'distinct': Call distinct
+          - 'aggregate': Call aggregate Action-routed methods: `aggregate`, `distinct`. |
+
+Detailed tool schemas, parameter shapes, and validation constraints are preserved in [docs/mcp.md](docs/mcp.md).
 
 ### MCP Configuration Examples
 
@@ -234,7 +328,7 @@ services:
 
 ```
 
-Detailed graph node architecture explanations, custom skill configurations, and agentic trace guides are available in [docs/agent.md](file:///home/apps/workspace/agent-packages/agents/documentdb-mcp/docs/agent.md).
+Detailed graph node architecture explanations, custom skill configurations, and agentic trace guides are available in [docs/agent.md](docs/agent.md).
 
 ---
 
@@ -253,6 +347,25 @@ Built directly upon the enterprise-ready [`agent-utilities`](https://github.com/
 | **Tool Guard** | Sensitivity inspection with human-in-the-loop validation | Enabled by default |
 | **Prompt Injection Defense** | Input scanning, repetition monitoring, and recursive loop blocks | Enabled by default |
 | **Context Safety Guard** | Stuck-loop detectors and contextual overflow preemptive alerts | Enabled by default |
+
+## Environment Variables
+
+The server and agent can be configured using the following environment variables:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `MONGODB_URI` | The connection URI for the MongoDB/DocumentDB server. | `mongodb://localhost:27017/` |
+| `MONGODB_HOST` | The MongoDB/DocumentDB server host. | `localhost` |
+| `MONGODB_PORT` | The MongoDB/DocumentDB server port. | `27017` |
+| `AUTH_TYPE` | The authentication mechanism to use (scram-sha-256, scram-sha-1, none). | `scram-sha-256` |
+| `SYSTEMTOOL` | Toggle switch to enable or disable the System tool module. | `True` |
+| `COLLECTIONSTOOL` | Toggle switch to enable or disable the Collections tool module. | `True` |
+| `USERSTOOL` | Toggle switch to enable or disable the Users tool module. | `True` |
+| `CRUDTOOL` | Toggle switch to enable or disable the CRUD tool module. | `True` |
+| `ANALYSISTOOL` | Toggle switch to enable or disable the Analysis tool module. | `True` |
+| `EUNOMIA_TYPE` | Enterprise policy type (none, embedded, remote). | `none` |
+| `EUNOMIA_POLICY_FILE` | Path to Eunomia security policy configuration file. | `mcp_policies.json` |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | OpenTelemetry OTLP receiver endpoint. | `None` |
 
 ---
 

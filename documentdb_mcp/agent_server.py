@@ -20,6 +20,15 @@ DEFAULT_AGENT_SYSTEM_PROMPT = None
 
 
 def agent_server():
+    """Run the Agent server.
+
+    CONCEPT:ECO-4.1
+    CONCEPT:OS-5.4
+    CONCEPT:OS-5.1
+    CONCEPT:OS-5.3
+    CONCEPT:ORCH-1.4
+    CONCEPT:OS-5.2
+    """
     from agent_utilities import (
         build_system_prompt_from_workspace,
         create_agent_parser,

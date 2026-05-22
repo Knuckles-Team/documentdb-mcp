@@ -1,0 +1,1752 @@
+{
+  "project": "documentdb-mcp",
+  "path": "/home/apps/workspace/agent-packages/agents/documentdb-mcp",
+  "domain_results": [
+    {
+      "domain": "Project Analysis",
+      "score": 74,
+      "grade": "C",
+      "findings": [
+        "Detected ecosystem marker: agent-utilities \u2192 Agent-Utilities Ecosystem",
+        "Protocol support: MCP"
+      ],
+      "justifications": [
+        {
+          "criterion": "has_pyproject",
+          "points": 10,
+          "evidence": "pyproject.toml and requirements.txt",
+          "reasoning": "Both pyproject.toml and requirements.txt exist, fulfilling mandatory Python project requirements"
+        },
+        {
+          "criterion": "project_type_detected",
+          "points": 10,
+          "evidence": "Agent-Utilities Ecosystem",
+          "reasoning": "Identified 1 ecosystem marker(s) in dependencies"
+        },
+        {
+          "criterion": "externalized_prompts",
+          "points": 0,
+          "evidence": "/home/apps/workspace/agent-packages/agents/documentdb-mcp",
+          "reasoning": "No prompts/ directory found. Prompts may be hardcoded in source."
+        },
+        {
+          "criterion": "observability",
+          "points": 0,
+          "evidence": "dependency list",
+          "reasoning": "No observability tools (logfire, sentry, opentelemetry) found"
+        },
+        {
+          "criterion": "testing_suite",
+          "points": 10,
+          "evidence": "tests dir: True, pytest dep: True",
+          "reasoning": "Tests directory exists, pytest in dependencies"
+        },
+        {
+          "criterion": "agents_md",
+          "points": 10,
+          "evidence": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/AGENTS.md (5326 bytes)",
+          "reasoning": "AGENTS.md exists with comprehensive content"
+        },
+        {
+          "criterion": "pre_commit_hooks",
+          "points": 10,
+          "evidence": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/.pre-commit-config.yaml",
+          "reasoning": "Pre-commit configuration found for automated code quality checks"
+        },
+        {
+          "criterion": "gitignore",
+          "points": 10,
+          "evidence": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/.gitignore",
+          "reasoning": ".gitignore exists to prevent committing build artifacts and secrets"
+        },
+        {
+          "criterion": "env_template",
+          "points": 10,
+          "evidence": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/.env.example",
+          "reasoning": "Environment template exists for onboarding and secret management"
+        },
+        {
+          "criterion": "protocol_support",
+          "points": 4,
+          "evidence": "MCP",
+          "reasoning": "1 communication protocol(s) detected"
+        }
+      ],
+      "details": {
+        "has_pyproject": true,
+        "has_requirements": true,
+        "dep_count": 6,
+        "project_types": [
+          "Agent-Utilities Ecosystem"
+        ],
+        "has_agent_skills": false
+      }
+    },
+    {
+      "domain": "Dependency Audit",
+      "score": 94,
+      "grade": "A",
+      "findings": [
+        "Minor update: pytest-xdist 3.6.0 (constraint \u2014 not installed) -> 3.8.0",
+        "Minor update: pymongo 4.16.0 (installed) -> 4.17.0"
+      ],
+      "justifications": [
+        {
+          "criterion": "dependency_freshness",
+          "points": 94,
+          "evidence": "source=/home/apps/workspace/agent-packages/agents/documentdb-mcp/pyproject.toml total=6 major=0 minor=2 patch=0 not_installed=1",
+          "reasoning": "Audited 6 deps (5 installed, 1 constraint-only). 0 major, 2 minor, 0 patch updates."
+        }
+      ],
+      "packages": {
+        "pytest-xdist": {
+          "current": "3.6.0",
+          "constraint": "3.6.0",
+          "installed": null,
+          "latest": "3.8.0",
+          "status": "minor",
+          "version_source": "constraint",
+          "summary": "pytest xdist plugin for distributed testing, most importantly across multiple CPUs"
+        },
+        "pytest-asyncio": {
+          "current": "1.3.0",
+          "constraint": "Any",
+          "installed": "1.3.0",
+          "latest": "1.3.0",
+          "status": "up-to-date",
+          "version_source": "installed",
+          "summary": "Pytest support for asyncio"
+        },
+        "pytest-cov": {
+          "current": "7.1.0",
+          "constraint": "Any",
+          "installed": "7.1.0",
+          "latest": "7.1.0",
+          "status": "up-to-date",
+          "version_source": "installed",
+          "summary": "Pytest plugin for measuring coverage."
+        },
+        "agent-utilities": {
+          "current": "0.16.0",
+          "constraint": "0.16.0",
+          "installed": "0.16.0",
+          "latest": "0.16.0",
+          "status": "up-to-date",
+          "version_source": "installed",
+          "summary": "Agent Utilities for Pydantic AI Agents"
+        },
+        "pytest": {
+          "current": "9.0.3",
+          "constraint": "Any",
+          "installed": "9.0.3",
+          "latest": "9.0.3",
+          "status": "up-to-date",
+          "version_source": "installed",
+          "summary": "pytest: simple powerful testing with Python"
+        },
+        "pymongo": {
+          "current": "4.16.0",
+          "constraint": "4.0",
+          "installed": "4.16.0",
+          "latest": "4.17.0",
+          "status": "minor",
+          "version_source": "installed",
+          "summary": "PyMongo - the Official MongoDB Python driver"
+        }
+      }
+    },
+    {
+      "domain": "Codebase Optimization",
+      "score": 82,
+      "grade": "B",
+      "findings": [],
+      "justifications": [
+        {
+          "criterion": "code_quality",
+          "points": 82,
+          "evidence": "{\"file_count\": 32, \"total_lines\": 2929, \"function_count\": 124, \"avg_complexity\": 4.16, \"max_complexity\": 27, \"avg_function_length\": 22.2, \"max_function_length\": 168, \"max_nesting_depth\": 7, \"duplication_ratio\": 0.021, \"long_functions\": 10, \"complex_functions\": 7, \"deep_nesting_functions\": 5, \"parse_errors\": 0, \"structural_issues\": 0, \"truly_monolithic\": 0}",
+          "reasoning": "Analyzed 32 files, 124 functions. Avg CC=4.2, max length=168, duplication=2.1%, 0 structural issues (0 monolithic)."
+        }
+      ],
+      "metrics": {
+        "file_count": 32,
+        "total_lines": 2929,
+        "function_count": 124,
+        "avg_complexity": 4.16,
+        "max_complexity": 27,
+        "avg_function_length": 22.2,
+        "max_function_length": 168,
+        "max_nesting_depth": 7,
+        "duplication_ratio": 0.021,
+        "long_functions": 10,
+        "complex_functions": 7,
+        "deep_nesting_functions": 5,
+        "parse_errors": 0,
+        "structural_issues": 0,
+        "truly_monolithic": 0
+      },
+      "top_complex": [
+        {
+          "name": "register_crud_tools",
+          "line": 8,
+          "length": 168,
+          "complexity": 27,
+          "nesting_depth": 1,
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/crud.py"
+        },
+        {
+          "name": "documentdb_crud",
+          "line": 15,
+          "length": 161,
+          "complexity": 27,
+          "nesting_depth": 1,
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/crud.py"
+        },
+        {
+          "name": "main",
+          "line": 180,
+          "length": 100,
+          "complexity": 19,
+          "nesting_depth": 4,
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/scripts/verify_api_integration.py"
+        },
+        {
+          "name": "parse_mcp_server",
+          "line": 95,
+          "length": 42,
+          "complexity": 14,
+          "nesting_depth": 5,
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/scripts/verify_api_integration.py"
+        },
+        {
+          "name": "register_collections_tools",
+          "line": 8,
+          "length": 74,
+          "complexity": 13,
+          "nesting_depth": 1,
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/collections.py"
+        }
+      ],
+      "top_long": [
+        {
+          "name": "register_crud_tools",
+          "line": 8,
+          "length": 168,
+          "complexity": 27,
+          "nesting_depth": 1,
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/crud.py"
+        },
+        {
+          "name": "documentdb_crud",
+          "line": 15,
+          "length": 161,
+          "complexity": 27,
+          "nesting_depth": 1,
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/crud.py"
+        },
+        {
+          "name": "test_mcp_server_coverage",
+          "line": 71,
+          "length": 107,
+          "complexity": 10,
+          "nesting_depth": 7,
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_documentdb_brute_force.py"
+        },
+        {
+          "name": "main",
+          "line": 180,
+          "length": 100,
+          "complexity": 19,
+          "nesting_depth": 4,
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/scripts/verify_api_integration.py"
+        },
+        {
+          "name": "register_collections_tools",
+          "line": 8,
+          "length": 74,
+          "complexity": 13,
+          "nesting_depth": 1,
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/collections.py"
+        }
+      ],
+      "structural_issues": [],
+      "flat_directories": []
+    },
+    {
+      "domain": "Security Analysis",
+      "score": 100,
+      "grade": "A",
+      "findings": [],
+      "justifications": [
+        {
+          "criterion": "security_posture",
+          "points": 100,
+          "evidence": "high=0 med=0 low=0 attack_surface={\"subprocess_calls\": 0, \"file_io_calls\": 4, \"network_endpoints\": 0, \"eval_exec_usage\": 0, \"sql_usage\": 8}",
+          "reasoning": "Scanned 32 files. Found 0 security findings. High: -0pts, Med: -0pts, Low: -0pts."
+        }
+      ],
+      "vulnerabilities": [],
+      "attack_surface": {
+        "subprocess_calls": 0,
+        "file_io_calls": 4,
+        "network_endpoints": 0,
+        "eval_exec_usage": 0,
+        "sql_usage": 8
+      }
+    },
+    {
+      "domain": "Test Coverage",
+      "score": 80,
+      "grade": "B",
+      "findings": [
+        "Test suite lacks intent diversity (only one type)",
+        "15 potential doc-test drift items"
+      ],
+      "justifications": [
+        {
+          "criterion": "test_coverage_quality",
+          "points": 80,
+          "evidence": "{\"test_file_count\": 11, \"test_count\": 53, \"source_file_count\": 32, \"test_to_source_ratio\": 1.66, \"intent_distribution\": {\"unit\": 53}, \"tests_without_assertions\": 0, \"concept_traced_tests\": 53, \"drift_items\": 15}",
+          "reasoning": "53 tests across 11 files. Ratio: 1.66. Intent: {'unit': 53}. 0 without assertions, 15 drift items."
+        }
+      ],
+      "metrics": {
+        "test_file_count": 11,
+        "test_count": 53,
+        "source_file_count": 32,
+        "test_to_source_ratio": 1.66,
+        "intent_distribution": {
+          "unit": 53
+        },
+        "tests_without_assertions": 0,
+        "concept_traced_tests": 53,
+        "drift_items": 15
+      },
+      "tests": [
+        {
+          "name": "test_server_startup",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_startup.py",
+          "line": 1,
+          "length": 21,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_distinct",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_analysis.py",
+          "line": 18,
+          "length": 17,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_aggregate",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_analysis.py",
+          "line": 37,
+          "length": 20,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_tools_registered",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_mcp_server.py",
+          "line": 10,
+          "length": 17,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_get_mcp_instance",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_mcp_server.py",
+          "line": 30,
+          "length": 11,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_version_defined",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_mcp_server.py",
+          "line": 44,
+          "length": 6,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_concept_parity",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_concept_parity.py",
+          "line": 59,
+          "length": 31,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_insert_one",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "line": 19,
+          "length": 20,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_insert_many",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "line": 41,
+          "length": 24,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_find_one",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "line": 67,
+          "length": 21,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_find",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "line": 90,
+          "length": 28,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_replace_one",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "line": 120,
+          "length": 20,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_update_one",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "line": 142,
+          "length": 20,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_update_many",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "line": 164,
+          "length": 20,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_delete_one",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "line": 186,
+          "length": 15,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_delete_many",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "line": 203,
+          "length": 17,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_count_documents",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "line": 222,
+          "length": 13,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_find_one_and_update",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "line": 237,
+          "length": 35,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_find_one_and_replace",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "line": 274,
+          "length": 35,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_find_one_and_delete",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "line": 311,
+          "length": 23,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_parse_json_arg",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_base.py",
+          "line": 19,
+          "length": 13,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_serialize_oid",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_base.py",
+          "line": 34,
+          "length": 24,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_binary_version",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
+          "line": 18,
+          "length": 11,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_list_databases",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
+          "line": 31,
+          "length": 5,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_run_command",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
+          "line": 38,
+          "length": 12,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_create_database",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
+          "line": 52,
+          "length": 17,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_drop_database",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
+          "line": 71,
+          "length": 10,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_list_collections",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
+          "line": 83,
+          "length": 6,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_create_collection",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
+          "line": 91,
+          "length": 15,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        },
+        {
+          "name": "test_drop_collection",
+          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
+          "line": 108,
+          "length": 15,
+          "intent": "unit",
+          "markers": [],
+          "concept_id": "ECO-4.1",
+          "has_assertions": true
+        }
+      ],
+      "drift": [
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "overview",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "key features",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "cli or api",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "mcp",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "mcp configuration examples",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "stdio transport (recommended for local ides e.g., cursor, claude desktop)",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "streamable-http transport (recommended for production deployments)",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "docker compose orchestration",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "security & governance",
+          "detail": "Feature heading in README has no corresponding test"
+        },
+        {
+          "type": "untested_feature",
+          "source": "README.md",
+          "feature": "access control & policy enforcement",
+          "detail": "Feature heading in README has no corresponding test"
+        }
+      ]
+    },
+    {
+      "domain": "Documentation & Governance",
+      "score": 97,
+      "grade": "A",
+      "findings": [
+        "README.md missing sections: usage|quick start",
+        "2 broken internal links in README.md",
+        "README missing: Has a Table of Contents",
+        "README missing: Has usage examples with code blocks"
+      ],
+      "justifications": [
+        {
+          "criterion": "documentation_quality",
+          "points": 97,
+          "evidence": "{\"README.md\": {\"exists\": true, \"missing\": [\"usage|quick start\"]}, \"AGENTS.md\": {\"exists\": true, \"missing\": []}, \"STANDARDS.md\": {\"exists\": false, \"missing\": []}, \"CONTRIBUTING.md\": {\"exists\": false, \"missing\": []}, \"CHANGELOG.md\": {\"exists\": true, \"missing\": []}, \"LICENSE\": {\"exists\": true, \"missing\": []}, \"docs/\": {\"exists\": true, \"missing\": []}}",
+          "reasoning": "Audited 6 standard docs + docs/ directory. 0 broken references, 5 docs present. README industry grade: B (81.2%)."
+        }
+      ],
+      "doc_results": {
+        "README.md": {
+          "exists": true,
+          "size": 16593,
+          "headings": [
+            "Documentdb Mcp",
+            "CLI or API | MCP | Agent",
+            "Overview",
+            "Key Features",
+            "CLI or API",
+            "MCP",
+            "Available MCP Tools",
+            "MCP Configuration Examples",
+            "stdio Transport (Recommended for local IDEs e.g., Cursor, Claude Desktop)",
+            "Streamable-HTTP Transport (Recommended for production deployments)",
+            "Agent",
+            "Running the Agent CLI",
+            "Set credentials",
+            "Run the agent server",
+            "Docker Compose Orchestration",
+            "Security & Governance",
+            "Access Control & Policy Enforcement",
+            "Runtime Security Grid",
+            "Environment Variables",
+            "Installation"
+          ],
+          "missing_sections": [
+            "usage|quick start"
+          ],
+          "heading_count": 24,
+          "stale": false,
+          "last_modified": "2026-05-22 08:18:08 -0500",
+          "category": "project_overview"
+        },
+        "AGENTS.md": {
+          "exists": true,
+          "size": 5078,
+          "headings": [
+            "AGENTS.md",
+            "Tech Stack & Architecture",
+            "Architecture Diagram",
+            "Workflow Diagram",
+            "Commands (run these exactly)",
+            "Installation",
+            "Quality & Linting (run from project root)",
+            "Execution Commands",
+            "documentdb-mcp\\ndocumentdb_mcp.mcp:mcp_server\\n# documentdb-agent\\ndocumentdb_mcp.agent:agent_server",
+            "Project Structure Quick Reference",
+            "File Tree",
+            "Code Style & Conventions",
+            "Dos and Don'ts",
+            "Safety & Boundaries",
+            "When Stuck",
+            "Graph Architecture",
+            "Testing with Timeout"
+          ],
+          "missing_sections": [],
+          "heading_count": 17,
+          "stale": false,
+          "last_modified": "2026-05-05 09:25:46 -0500",
+          "category": "agentic_metadata"
+        },
+        "STANDARDS.md": {
+          "exists": false,
+          "missing_sections": [],
+          "size": 0,
+          "headings": [],
+          "stale": true,
+          "last_modified": "unknown",
+          "category": "standards"
+        },
+        "CONTRIBUTING.md": {
+          "exists": false,
+          "missing_sections": [],
+          "size": 0,
+          "headings": [],
+          "stale": true,
+          "last_modified": "unknown",
+          "category": "contributing"
+        },
+        "CHANGELOG.md": {
+          "exists": true,
+          "size": 978,
+          "headings": [
+            "Changelog",
+            "[Unreleased]",
+            "Added",
+            "Changed",
+            "Fixed",
+            "[0.13.0] - 2026-05-22",
+            "Added",
+            "Changed",
+            "[0.1.54] - 2026-04-29",
+            "Added"
+          ],
+          "missing_sections": [],
+          "heading_count": 10,
+          "stale": false,
+          "last_modified": "2026-04-30 08:18:25 -0500",
+          "category": "changelog"
+        },
+        "LICENSE": {
+          "exists": true,
+          "size": 1060,
+          "headings": [],
+          "missing_sections": [],
+          "heading_count": 0,
+          "stale": false,
+          "last_modified": "2025-12-13 10:26:15 -0600",
+          "category": "license"
+        },
+        "docs/": {
+          "exists": true,
+          "file_count": 3,
+          "files": [
+            "docs/legacy_readme.md",
+            "docs/overview.md",
+            "docs/index.md"
+          ]
+        }
+      },
+      "drift": [
+        {
+          "type": "info",
+          "doc": "README.md",
+          "reference": "documentdb-mcp[all], documentdb-mcp[all]",
+          "detail": "README references 2 install commands"
+        }
+      ],
+      "readme_grade": {
+        "score": 26,
+        "max_score": 32,
+        "percentage": 81.2,
+        "grade": "B",
+        "criteria": {
+          "has_title": true,
+          "has_badges": true,
+          "has_description": true,
+          "has_toc": false,
+          "has_installation": true,
+          "has_usage": false,
+          "has_api_docs": true,
+          "has_architecture": true,
+          "has_contributing": true,
+          "has_license": false,
+          "has_code_blocks": true,
+          "has_docs_refs": true,
+          "no_broken_links": false,
+          "reasonable_length": true,
+          "has_cli_api_details": true,
+          "has_mcp_configs": true,
+          "has_agent_configs": true,
+          "has_env_var_docs": true,
+          "has_mcp_tool_table": true,
+          "has_deployment_docs": true
+        },
+        "findings": [
+          "2 broken internal links in README.md",
+          "README missing: Has a Table of Contents",
+          "README missing: Has usage examples with code blocks"
+        ]
+      }
+    },
+    {
+      "domain": "Architecture & Design Patterns",
+      "score": 75,
+      "grade": "C",
+      "findings": [
+        "No discernible layer architecture (no domain/service/adapter separation)",
+        "Low dependency injection ratio: 0%"
+      ],
+      "justifications": [
+        {
+          "criterion": "architecture_quality",
+          "points": 75,
+          "evidence": "{\"layers\": 0, \"di_ratio\": 0.0, \"solid_violations\": 0}",
+          "reasoning": "Analyzed 32 files. 0/5 architecture layers present, DI ratio: 0%, 0 SOLID violations."
+        }
+      ],
+      "analysis": {
+        "solid_findings": [],
+        "layer_architecture": {
+          "has_domain_layer": false,
+          "has_adapter_layer": false,
+          "has_port_interfaces": false,
+          "has_service_layer": false,
+          "has_model_layer": false
+        },
+        "dependency_injection": {
+          "total_classes": 11,
+          "di_classes": 0,
+          "di_ratio": 0.0
+        },
+        "event_driven": {
+          "event_classes": 0,
+          "callback_patterns": 0,
+          "observer_patterns": 0,
+          "signal_patterns": 0
+        },
+        "file_count": 32
+      }
+    },
+    {
+      "domain": "Concept Traceability",
+      "score": 100,
+      "grade": "A",
+      "findings": [],
+      "justifications": [
+        {
+          "criterion": "concept_traceability",
+          "points": 100,
+          "evidence": "{\"total_concepts\": 6, \"well_traced\": 6, \"orphans\": 0, \"drift\": 0, \"code_concepts\": 165, \"doc_concepts\": 18, \"test_concepts\": 212, \"decorator_concepts\": 89, \"tests_missing_markers\": 0, \"functions_missing_docstrings\": 0, \"registry_concepts\": 6, \"unimplemented_concepts\": 0}",
+          "reasoning": "6 unique concepts found. 6 fully traced (code+docs+tests), 0 orphans, 0 drifted. 0 tests without concept markers. 0 functions without concept docstrings."
+        }
+      ],
+      "metrics": {
+        "total_concepts": 6,
+        "well_traced": 6,
+        "orphans": 0,
+        "drift": 0,
+        "code_concepts": 165,
+        "doc_concepts": 18,
+        "test_concepts": 212,
+        "decorator_concepts": 89,
+        "tests_missing_markers": 0,
+        "functions_missing_docstrings": 0,
+        "registry_concepts": 6,
+        "unimplemented_concepts": 0
+      },
+      "concept_map": {
+        "ECO-4.1": {
+          "code": 105,
+          "docs": 6,
+          "test": 69,
+          "test_decorator": 0,
+          "test_docstring": 53
+        },
+        "OS-5.4": {
+          "code": 35,
+          "docs": 3,
+          "test": 34,
+          "test_decorator": 0,
+          "test_docstring": 30
+        },
+        "OS-5.1": {
+          "code": 7,
+          "docs": 2,
+          "test": 6,
+          "test_decorator": 0,
+          "test_docstring": 2
+        },
+        "OS-5.3": {
+          "code": 6,
+          "docs": 3,
+          "test": 5,
+          "test_decorator": 0,
+          "test_docstring": 1
+        },
+        "ORCH-1.4": {
+          "code": 6,
+          "docs": 2,
+          "test": 5,
+          "test_decorator": 0,
+          "test_docstring": 1
+        },
+        "OS-5.2": {
+          "code": 6,
+          "docs": 2,
+          "test": 5,
+          "test_decorator": 0,
+          "test_docstring": 1
+        }
+      },
+      "orphans": [],
+      "drift": [],
+      "tests_missing_markers": [],
+      "functions_missing_docstrings": [],
+      "unimplemented_concepts": []
+    },
+    {
+      "domain": "Linting & Formatting",
+      "score": 100,
+      "grade": "A",
+      "findings": [
+        "Total lint findings: 0 (high/error: 0, medium/warning: 0, low: 0)"
+      ],
+      "justifications": [
+        {
+          "criterion": "lint_compliance",
+          "points": 100,
+          "evidence": "ruff=0, bandit=0, mypy=0",
+          "reasoning": "0 total findings across 3 tools. High/error: -0pts, Med/warning: -0pts, Low: -0pt."
+        }
+      ],
+      "tool_results": {
+        "ruff": {
+          "available": true,
+          "finding_count": 0,
+          "returncode": 1
+        },
+        "bandit": {
+          "available": true,
+          "finding_count": 0,
+          "returncode": 1
+        },
+        "mypy": {
+          "available": true,
+          "finding_count": 0,
+          "returncode": 1
+        }
+      },
+      "all_findings": []
+    },
+    {
+      "domain": "Pre-Commit Compliance",
+      "score": 89,
+      "grade": "B",
+      "findings": [
+        "1/27 pre-commit hooks failed: don't commit to branch",
+        "2 hook(s) may be outdated: ruff-pre-commit, uv-pre-commit",
+        "Pytest hooks skipped (handled by CE-016 Test Execution): pytest, local-pytest"
+      ],
+      "justifications": [
+        {
+          "criterion": "precommit_compliance",
+          "points": 89,
+          "evidence": "{\"total_hooks\": 27, \"passed\": 25, \"failed\": 1, \"skipped\": 1, \"outdated_hooks\": 2, \"pytest_hooks_skipped\": 2, \"exit_code\": 1}",
+          "reasoning": "Ran pre-commit with 27 hooks: 25 passed, 1 failed, 1 skipped. 2 potentially outdated. 2 pytest hooks deferred to CE-016."
+        }
+      ],
+      "hook_results": [
+        {
+          "hook": "check for added large files",
+          "status": "passed"
+        },
+        {
+          "hook": "check python ast",
+          "status": "passed"
+        },
+        {
+          "hook": "check yaml",
+          "status": "passed"
+        },
+        {
+          "hook": "check toml",
+          "status": "passed"
+        },
+        {
+          "hook": "check json",
+          "status": "passed"
+        },
+        {
+          "hook": "fix utf-8 byte order marker",
+          "status": "passed"
+        },
+        {
+          "hook": "check for merge conflicts",
+          "status": "passed"
+        },
+        {
+          "hook": "detect private key",
+          "status": "passed"
+        },
+        {
+          "hook": "trim trailing whitespace",
+          "status": "passed"
+        },
+        {
+          "hook": "fix end of files",
+          "status": "passed"
+        },
+        {
+          "hook": "don't commit to branch",
+          "status": "failed"
+        },
+        {
+          "hook": "ruff check",
+          "status": "passed"
+        },
+        {
+          "hook": "ruff format",
+          "status": "passed"
+        },
+        {
+          "hook": "mypy",
+          "status": "passed"
+        },
+        {
+          "hook": "vulture",
+          "status": "passed"
+        },
+        {
+          "hook": "codespell",
+          "status": "passed"
+        },
+        {
+          "hook": "bandit",
+          "status": "passed"
+        },
+        {
+          "hook": "nbqa-ruff",
+          "status": "passed"
+        },
+        {
+          "hook": "uv-lock",
+          "status": "passed"
+        },
+        {
+          "hook": "mermaid-validate",
+          "status": "passed"
+        },
+        {
+          "hook": "check agent standards",
+          "status": "passed"
+        },
+        {
+          "hook": "check cli help",
+          "status": "passed"
+        },
+        {
+          "hook": "validate bumpversion config",
+          "status": "passed"
+        },
+        {
+          "hook": "pytest",
+          "status": "skipped"
+        },
+        {
+          "hook": "Hadolint",
+          "status": "passed"
+        },
+        {
+          "hook": "Validate docker compose files",
+          "status": "passed"
+        },
+        {
+          "hook": "Verify API-to-MCP Integration Coverage",
+          "status": "passed"
+        }
+      ],
+      "pytest_hooks_skipped": [
+        "pytest",
+        "local-pytest"
+      ],
+      "outdated_hooks": [
+        {
+          "repo": "https://github.com/astral-sh/ruff-pre-commit",
+          "current_rev": "v0.15.12",
+          "issue": "Pre-1.0 version \u2014 check for updates"
+        },
+        {
+          "repo": "https://github.com/astral-sh/uv-pre-commit",
+          "current_rev": "0.11.8",
+          "issue": "Pre-1.0 version \u2014 check for updates"
+        }
+      ],
+      "metrics": {
+        "total_hooks": 27,
+        "passed": 25,
+        "failed": 1,
+        "skipped": 1,
+        "outdated_hooks": 2,
+        "pytest_hooks_skipped": 2,
+        "exit_code": 1
+      }
+    },
+    {
+      "domain": "Test Execution",
+      "score": 100,
+      "grade": "A",
+      "findings": [],
+      "justifications": [
+        {
+          "criterion": "test_execution",
+          "points": 100,
+          "evidence": "{\"frameworks_detected\": 1, \"total_passed\": 55, \"total_failed\": 0, \"total_errors\": 0, \"pass_rate\": 1.0, \"timeout\": 300}",
+          "reasoning": "Executed 1 framework(s). 55 passed, 0 failed, 0 errors. Pass rate: 100%."
+        }
+      ],
+      "framework_results": [
+        {
+          "language": "python",
+          "framework": "pytest",
+          "command": [
+            "/home/apps/workspace/agent-packages/agents/documentdb-mcp/.venv/bin/python",
+            "-m",
+            "pytest",
+            "--tb=line",
+            "-q",
+            "--timeout=300",
+            "--no-header"
+          ],
+          "status": "passed",
+          "exit_code": 0,
+          "parsed": {
+            "passed": 55,
+            "failed": 0,
+            "errors": 0,
+            "warnings": 2,
+            "skipped": 0,
+            "failures": []
+          }
+        }
+      ],
+      "metrics": {
+        "frameworks_detected": 1,
+        "total_passed": 55,
+        "total_failed": 0,
+        "total_errors": 0,
+        "pass_rate": 1.0,
+        "timeout": 300
+      }
+    },
+    {
+      "domain": "Directory Organization",
+      "score": 100,
+      "grade": "A",
+      "findings": [],
+      "justifications": [
+        {
+          "criterion": "directory_organization",
+          "points": 100,
+          "evidence": "{\"total_source_files\": 96, \"total_directories\": 25, \"max_depth\": 3, \"avg_depth\": 1.8, \"crowded_dirs_20plus\": 0, \"severely_crowded_40plus\": 0, \"monolithic_dirs\": 0, \"empty_dirs\": 1, \"avg_files_per_dir\": 3.8, \"rogue_scripts\": 0}",
+          "reasoning": "96 files across 25 directories. Max depth: 3, avg files/dir: 3.8. 0 crowded, 0 severely crowded, 0 monolithic, 0 rogue scripts."
+        }
+      ],
+      "metrics": {
+        "total_source_files": 96,
+        "total_directories": 25,
+        "max_depth": 3,
+        "avg_depth": 1.8,
+        "crowded_dirs_20plus": 0,
+        "severely_crowded_40plus": 0,
+        "monolithic_dirs": 0,
+        "empty_dirs": 1,
+        "avg_files_per_dir": 3.8,
+        "rogue_scripts": 0
+      },
+      "crowded_dirs": [],
+      "monolithic_dirs": [],
+      "suggestions": [],
+      "rogue_scripts": []
+    },
+    {
+      "domain": "Version Sync Analysis",
+      "score": 100,
+      "grade": "A",
+      "findings": [
+        "All version '0.13.0' declarations appear to be tracked correctly."
+      ],
+      "justifications": [
+        {
+          "criterion": "bumpversion_exists",
+          "points": 20,
+          "evidence": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/.bumpversion.cfg",
+          "reasoning": ".bumpversion.cfg found"
+        },
+        {
+          "criterion": "current_version_defined",
+          "points": 20,
+          "evidence": "0.13.0",
+          "reasoning": "Current version tracked is 0.13.0"
+        },
+        {
+          "criterion": "files_tracked",
+          "points": 20,
+          "evidence": "5 files tracked",
+          "reasoning": "Found 5 files tracked in .bumpversion.cfg"
+        },
+        {
+          "criterion": "version_drift_check",
+          "points": 40,
+          "evidence": "0 drifted files",
+          "reasoning": "No version drift detected in codebase files"
+        }
+      ],
+      "details": {
+        "tracked_files": [
+          "pyproject.toml",
+          "README.md",
+          "docker/Dockerfile",
+          "documentdb_mcp/agent_server.py",
+          "documentdb_mcp/mcp_server.py"
+        ],
+        "drifted_files": []
+      }
+    },
+    {
+      "domain": "Changelog Audit",
+      "score": 75,
+      "grade": "C",
+      "findings": [
+        "CHANGELOG.md exists but could not be parsed \u2014 check format compliance",
+        "No changelog entries within the last 30 days",
+        "keepachangelog not installed \u2014 pip install 'universal-skills[code-enhancer]'"
+      ],
+      "justifications": [
+        {
+          "criterion": "changelog_quality",
+          "points": 75,
+          "evidence": "{\"exists\": true, \"parseable\": false, \"version_count\": 0, \"has_drift\": false, \"dep_deltas_found\": 0}",
+          "reasoning": "CHANGELOG.md exists. 0 versions tracked. 0 dependency changelogs analyzed."
+        }
+      ],
+      "format_validation": {
+        "exists": true,
+        "parseable": false,
+        "has_unreleased": false,
+        "version_count": 0,
+        "uses_semver": true,
+        "valid_categories": true,
+        "has_dates": true,
+        "has_header": true,
+        "issues": [
+          "keepachangelog not installed \u2014 pip install 'universal-skills[code-enhancer]'"
+        ]
+      },
+      "version_drift": {
+        "has_drift": false,
+        "changelog_version": null,
+        "pyproject_version": "0.13.0"
+      },
+      "dependency_deltas": {}
+    },
+    {
+      "domain": "Pytest Quality",
+      "score": 91,
+      "grade": "A",
+      "findings": [
+        "Test directory lacks subdirectory organization (consider unit/, integration/, e2e/)",
+        "4 tests have excessive mocking (>5 mocks) \u2014 test behavior, not implementation",
+        "1 tests exceed 100 lines \u2014 likely doing too much per test"
+      ],
+      "justifications": [
+        {
+          "criterion": "pytest_quality",
+          "points": 91,
+          "evidence": "{\"test_files\": 11, \"total_tests\": 53, \"descriptive_name_ratio\": 0.83, \"generic_names\": 0, \"fixture_usage_ratio\": 0.57, \"parametrize_users\": 1, \"conftest_fixtures\": 2, \"no_assertion_tests\": 0, \"weak_assertion_tests\": 1, \"duplicate_groups\": 0, \"large_files\": 0, \"over_mocked_tests\": 4, \"very_long_tests\": 1, \"subscores\": {\"naming\": 20, \"structure\": 17, \"fixtures\": 20, \"assertions\": 20, \"ai_slop\": 14}}",
+          "reasoning": "53 tests across 11 files. Naming: 20/20, Structure: 17/20, Fixtures: 20/20, Assertions: 20/20, AI Slop: 14/20."
+        }
+      ],
+      "metrics": {
+        "test_files": 11,
+        "total_tests": 53,
+        "descriptive_name_ratio": 0.83,
+        "generic_names": 0,
+        "fixture_usage_ratio": 0.57,
+        "parametrize_users": 1,
+        "conftest_fixtures": 2,
+        "no_assertion_tests": 0,
+        "weak_assertion_tests": 1,
+        "duplicate_groups": 0,
+        "large_files": 0,
+        "over_mocked_tests": 4,
+        "very_long_tests": 1,
+        "subscores": {
+          "naming": 20,
+          "structure": 17,
+          "fixtures": 20,
+          "assertions": 20,
+          "ai_slop": 14
+        }
+      },
+      "conftest": {
+        "conftest_count": 1,
+        "total_shared_fixtures": 2,
+        "has_root_conftest": true
+      },
+      "duplicates": [],
+      "large_files": []
+    },
+    {
+      "domain": "Environment Variables",
+      "score": 100,
+      "grade": "A",
+      "findings": [],
+      "justifications": [
+        {
+          "criterion": "env_var_documentation",
+          "points": 100,
+          "evidence": "{\"total_vars\": 21, \"python_vars\": 8, \"dockerfile_vars\": 4, \"compose_vars\": 0, \"dotenv_vars\": 21, \"readme_documented\": 21, \"readme_undocumented\": 0, \"documentation_coverage\": 1.0}",
+          "reasoning": "Found 21 unique env vars across 54 occurrences. README documents 21/21. Has .env.example."
+        }
+      ],
+      "metrics": {
+        "total_vars": 21,
+        "python_vars": 8,
+        "dockerfile_vars": 4,
+        "compose_vars": 0,
+        "dotenv_vars": 21,
+        "readme_documented": 21,
+        "readme_undocumented": 0,
+        "documentation_coverage": 1.0
+      },
+      "variables": {
+        "SYSTEMTOOL": {
+          "name": "SYSTEMTOOL",
+          "sources": [
+            "documentdb_mcp/mcp_server.py:61",
+            ".env:30",
+            ".env.example:36"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "dotenv",
+            "python"
+          ]
+        },
+        "COLLECTIONSTOOL": {
+          "name": "COLLECTIONSTOOL",
+          "sources": [
+            "documentdb_mcp/mcp_server.py:64",
+            ".env:31",
+            ".env.example:37"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "dotenv",
+            "python"
+          ]
+        },
+        "USERSTOOL": {
+          "name": "USERSTOOL",
+          "sources": [
+            "documentdb_mcp/mcp_server.py:67",
+            ".env:32",
+            ".env.example:38"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "dotenv",
+            "python"
+          ]
+        },
+        "CRUDTOOL": {
+          "name": "CRUDTOOL",
+          "sources": [
+            "documentdb_mcp/mcp_server.py:70",
+            ".env:33",
+            ".env.example:39"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "dotenv",
+            "python"
+          ]
+        },
+        "ANALYSISTOOL": {
+          "name": "ANALYSISTOOL",
+          "sources": [
+            "documentdb_mcp/mcp_server.py:73",
+            ".env:34",
+            ".env.example:40"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "dotenv",
+            "python"
+          ]
+        },
+        "MONGODB_URI": {
+          "name": "MONGODB_URI",
+          "sources": [
+            "documentdb_mcp/auth.py:15",
+            ".env.example:31"
+          ],
+          "defaults": [
+            "mongodb://localhost:27017/"
+          ],
+          "source_types": [
+            "dotenv",
+            "python"
+          ]
+        },
+        "MONGODB_HOST": {
+          "name": "MONGODB_HOST",
+          "sources": [
+            "documentdb_mcp/auth.py:17",
+            ".env.example:32"
+          ],
+          "defaults": [
+            "localhost"
+          ],
+          "source_types": [
+            "dotenv",
+            "python"
+          ]
+        },
+        "MONGODB_PORT": {
+          "name": "MONGODB_PORT",
+          "sources": [
+            "documentdb_mcp/auth.py:18",
+            ".env.example:33"
+          ],
+          "defaults": [
+            "27017"
+          ],
+          "source_types": [
+            "dotenv",
+            "python"
+          ]
+        },
+        "HOST": {
+          "name": "HOST",
+          "sources": [
+            "docker/Dockerfile:8",
+            "docker/Dockerfile:3",
+            "docker/debug.Dockerfile:8",
+            "docker/debug.Dockerfile:3",
+            ".env:6"
+          ],
+          "defaults": [
+            "0.0.0.0"
+          ],
+          "source_types": [
+            "dockerfile",
+            "dotenv"
+          ]
+        },
+        "PORT": {
+          "name": "PORT",
+          "sources": [
+            "docker/Dockerfile:4",
+            "docker/debug.Dockerfile:4",
+            ".env:7",
+            ".env.example:7"
+          ],
+          "defaults": [
+            "8000"
+          ],
+          "source_types": [
+            "dockerfile",
+            "dotenv"
+          ]
+        },
+        "TRANSPORT": {
+          "name": "TRANSPORT",
+          "sources": [
+            "docker/Dockerfile:5",
+            "docker/debug.Dockerfile:5",
+            ".env:8",
+            ".env.example:8"
+          ],
+          "defaults": [
+            "stdio # options: stdio, streamable-http, sse",
+            "stdio"
+          ],
+          "source_types": [
+            "dockerfile",
+            "dotenv"
+          ]
+        },
+        "AUTH_TYPE": {
+          "name": "AUTH_TYPE",
+          "sources": [
+            "docker/Dockerfile:6",
+            "docker/debug.Dockerfile:6",
+            ".env.example:23"
+          ],
+          "defaults": [
+            "scram-sha-256 # options: scram-sha-1, scram-sha-256, standard, none"
+          ],
+          "source_types": [
+            "dockerfile",
+            "dotenv"
+          ]
+        },
+        "ENABLE_OTEL": {
+          "name": "ENABLE_OTEL",
+          "sources": [
+            ".env:11",
+            ".env.example:11"
+          ],
+          "defaults": [
+            "True"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        },
+        "OTEL_EXPORTER_OTLP_ENDPOINT": {
+          "name": "OTEL_EXPORTER_OTLP_ENDPOINT",
+          "sources": [
+            ".env:12"
+          ],
+          "defaults": [
+            "http://langfuse.arpa/api/public/otel"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        },
+        "EUNOMIA_TYPE": {
+          "name": "EUNOMIA_TYPE",
+          "sources": [
+            ".env:18",
+            ".env.example:18"
+          ],
+          "defaults": [
+            "none # options: none, embedded, remote",
+            "none"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        },
+        "EUNOMIA_POLICY_FILE": {
+          "name": "EUNOMIA_POLICY_FILE",
+          "sources": [
+            ".env:19",
+            ".env.example:19"
+          ],
+          "defaults": [
+            "mcp_policies.json"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        },
+        "DOCUMENT_DB_HOST": {
+          "name": "DOCUMENT_DB_HOST",
+          "sources": [
+            ".env:23",
+            ".env.example:24"
+          ],
+          "defaults": [
+            "localhost"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        },
+        "DOCUMENT_DB_PORT": {
+          "name": "DOCUMENT_DB_PORT",
+          "sources": [
+            ".env:24",
+            ".env.example:25"
+          ],
+          "defaults": [
+            "5432"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        },
+        "DOCUMENT_DB_USERNAME": {
+          "name": "DOCUMENT_DB_USERNAME",
+          "sources": [
+            ".env:25",
+            ".env.example:26"
+          ],
+          "defaults": [
+            "admin"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        },
+        "DOCUMENT_DB_NAME": {
+          "name": "DOCUMENT_DB_NAME",
+          "sources": [
+            ".env:26",
+            ".env.example:27"
+          ],
+          "defaults": [
+            "documentation_db"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        },
+        "DOCUMENT_DB_PASSWORD": {
+          "name": "DOCUMENT_DB_PASSWORD",
+          "sources": [
+            ".env:27"
+          ],
+          "defaults": [
+            "your_password_here"
+          ],
+          "source_types": [
+            "dotenv"
+          ]
+        }
+      },
+      "readme_coverage": {
+        "documented": [
+          "ANALYSISTOOL",
+          "AUTH_TYPE",
+          "COLLECTIONSTOOL",
+          "CRUDTOOL",
+          "DOCUMENT_DB_HOST",
+          "DOCUMENT_DB_NAME",
+          "DOCUMENT_DB_PASSWORD",
+          "DOCUMENT_DB_PORT",
+          "DOCUMENT_DB_USERNAME",
+          "ENABLE_OTEL",
+          "EUNOMIA_POLICY_FILE",
+          "EUNOMIA_TYPE",
+          "HOST",
+          "MONGODB_HOST",
+          "MONGODB_PORT",
+          "MONGODB_URI",
+          "OTEL_EXPORTER_OTLP_ENDPOINT",
+          "PORT",
+          "SYSTEMTOOL",
+          "TRANSPORT",
+          "USERSTOOL"
+        ],
+        "undocumented": [],
+        "coverage": 1.0
+      }
+    }
+  ],
+  "gpa": 3.44,
+  "domain_count": 16,
+  "timing": {
+    "analyze_project": 0.76,
+    "audit_dependencies": 0.62,
+    "analyze_codebase": 0.77,
+    "analyze_security": 0.61,
+    "analyze_tests": 0.69,
+    "audit_documentation": 1.64,
+    "analyze_architecture": 0.17,
+    "trace_concepts": 1.9,
+    "run_linters": 0.87,
+    "run_precommit": 33.54,
+    "run_tests": 4.99,
+    "analyze_directory_density": 1.94,
+    "analyze_ui": 1.47,
+    "analyze_version_sync": 0.67,
+    "audit_changelog": 0.0,
+    "grade_pytest": 0.13,
+    "scan_env_vars": 0.75
+  }
+}
