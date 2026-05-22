@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  documentdb-mcp-mcp:
+    image: knucklessg1/documentdb-mcp:latest
+    container_name: documentdb-mcp-mcp
+    hostname: documentdb-mcp-mcp
+    restart: always
+    env_file:
+      - ../.env
+    environment:
+      - PYTHONUNBUFFERED=1
+      - HOST=0.0.0.0
+      - PORT=8000
+      - TRANSPORT=streamable-http
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  documentdb-mcp-agent:
+    image: knucklessg1/documentdb-mcp:latest
+    container_name: documentdb-mcp-agent
+    hostname: documentdb-mcp-agent
+    restart: always
+    depends_on:
+      - documentdb-mcp-mcp
+    env_file:
+      - ../.env
+    command: [ "documentdb-agent" ]
+    environment:
+      - PYTHONUNBUFFERED=1
+      - HOST=0.0.0.0
+      - PORT=9015
+      - MCP_URL=http://documentdb-mcp-mcp:8000/mcp
+      - PROVIDER=${PROVIDER:-openai}
+      - MODEL_ID=${MODEL_ID:-gpt-4o}
+      - ENABLE_WEB_UI=True
+      - ENABLE_OTEL=True
+    ports:
+      - "9015:9015"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9015/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

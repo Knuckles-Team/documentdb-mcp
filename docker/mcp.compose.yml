@@ -1,91 +1,28 @@
----
+version: '3.8'
+
 services:
-  documentdb-mcp:
-    image: docker.io/knucklessg1/documentdb-mcp:latest
-    # build: . # Debug
-    container_name: documentdb-mcp
-    hostname: documentdb-mcp
-    command: [ "documentdb-mcp" ]
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    depends_on:
-      - documentdb
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
+  documentdb-mcp-mcp:
+    image: knucklessg1/documentdb-mcp:latest
+    container_name: documentdb-mcp-mcp
+    hostname: documentdb-mcp-mcp
     restart: always
     env_file:
       - ../.env
     environment:
-      - "PYTHONUNBUFFERED=1"
-      - "HOST=0.0.0.0"
-      - "PORT=8015"
-      - "TRANSPORT=streamable-http"
-      - "MONGODB_URI=${MONGODB_URI}" # Required
+      - PYTHONUNBUFFERED=1
+      - HOST=0.0.0.0
+      - PORT=8000
+      - TRANSPORT=streamable-http
     ports:
-      - "8015:8015"
+      - "8000:8000"
     healthcheck:
-      test: [ "CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8015/health')" ]
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 10s
-
-  documentdb-agent:
-    image: docker.io/knucklessg1/documentdb-mcp:latest
-    # build: . # Debug
-    container_name: documentdb-agent
-    hostname: documentdb-agent
-    command: [ "documentdb-agent" ]
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    depends_on:
-      - documentdb-mcp
     logging:
       driver: json-file
       options:
         max-size: "10m"
         max-file: "3"
-    restart: always
-    environment:
-      - "PYTHONUNBUFFERED=1"
-      - "HOST=0.0.0.0"
-      - "PORT=9015"
-      - "MCP_URL=http://documentdb-mcp:8015/mcp"
-      - "PROVIDER=openai"
-      - "LLM_BASE_URL=${LLM_BASE_URL:-http://host.docker.internal:1234/v1}"
-      - "LLM_API_KEY=${LLM_API_KEY:-llama}"
-      - "MODEL_ID=${MODEL_ID:-nvidia/nemotron-3-super}"
-      - "DEBUG=False"
-      - "ENABLE_WEB_UI=True"
-      - "ENABLE_OTEL=True"
-    ports:
-      - "9015:9015"
-    healthcheck:
-      test: [ "CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9015/health')" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-
-  documentdb:
-    image: ghcr.io/microsoft/documentdb/documentdb-local:latest
-    container_name: documentdb
-    hostname: documentdb
-    environment:
-      - "PYTHONUNBUFFERED=1"
-      - USERNAME=${DOCUMENTDB_USERNAME:-administrator}
-      - PASSWORD=${DOCUMENTDB_PASSWORD:-documentdbadmin}
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    volumes:
-      - ../mcp/documentdb-data:/data
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
-    ports:
-      - "10260:10260"

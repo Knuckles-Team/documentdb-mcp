@@ -81,8 +81,8 @@ Configure your IDE's `mcp.json` to launch the MCP server via `uvx`:
         "DOCUMENT_DB_HOST": "your_document_db_host_here",
         "DOCUMENT_DB_PORT": "your_document_db_port_here",
         "DOCUMENT_DB_USERNAME": "your_document_db_username_here",
-        "DOCUMENT_DB_NAME": "your_document_db_name_here",
-        "DOCUMENT_DB_PASSWORD": "your_document_db_password_here"
+        "DOCUMENT_DB_PASSWORD": "your_document_db_password_here",
+        "DOCUMENT_DB_NAME": "your_document_db_name_here"
       }
     }
   }
@@ -90,34 +90,7 @@ Configure your IDE's `mcp.json` to launch the MCP server via `uvx`:
 ```
 
 #### Streamable-HTTP Transport (Recommended for production deployments)
-Configure your client's `mcp.json` to launch the Streamable-HTTP server via `uvx` with explicit host and port definition:
-
-```json
-{
-  "mcpServers": {
-    "documentdb-mcp": {
-      "command": "uvx",
-      "args": [
-        "--from",
-        "documentdb-mcp",
-        "documentdb-mcp"
-      ],
-      "env": {
-        "TRANSPORT": "streamable-http",
-        "HOST": "0.0.0.0",
-        "PORT": "8000",
-        "DOCUMENT_DB_HOST": "your_document_db_host_here",
-        "DOCUMENT_DB_PORT": "your_document_db_port_here",
-        "DOCUMENT_DB_USERNAME": "your_document_db_username_here",
-        "DOCUMENT_DB_NAME": "your_document_db_name_here",
-        "DOCUMENT_DB_PASSWORD": "your_document_db_password_here"
-      }
-    }
-  }
-}
-```
-
-Alternatively, connect to a pre-deployed remote or local Streamable-HTTP instance:
+To run the server as a long-running Streamable-HTTP service:
 
 ```json
 {
@@ -140,8 +113,8 @@ docker run -d \
   -e DOCUMENT_DB_HOST="your_value" \
   -e DOCUMENT_DB_PORT="your_value" \
   -e DOCUMENT_DB_USERNAME="your_value" \
-  -e DOCUMENT_DB_NAME="your_value" \
   -e DOCUMENT_DB_PASSWORD="your_value" \
+  -e DOCUMENT_DB_NAME="your_value" \
   knucklessg1/documentdb-mcp:latest
 ```
 
@@ -159,8 +132,8 @@ To start the interactive command-line agent:
 export DOCUMENT_DB_HOST="your_value"
 export DOCUMENT_DB_PORT="your_value"
 export DOCUMENT_DB_USERNAME="your_value"
-export DOCUMENT_DB_NAME="your_value"
 export DOCUMENT_DB_PASSWORD="your_value"
+export DOCUMENT_DB_NAME="your_value"
 
 # Run the agent server
 documentdb-agent --provider openai --model-id gpt-4o
