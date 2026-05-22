@@ -32,7 +32,7 @@ from starlette.responses import JSONResponse
 
 from documentdb_mcp.auth import get_client
 
-__version__ = "0.10.1"
+__version__ = "0.11.0"
 
 logger = get_logger(name="documentdb-mcp")
 logger.setLevel(logging.INFO)
