@@ -94,9 +94,8 @@ def test_create_collection(api_client, mock_client):
     db_mock = mock_client.__getitem__.return_value
 
     # Success
-    assert (
-        "Collection 'c1' created in database 'db1'"
-        in api_client.create_collection("db1", "c1")
+    assert "Collection 'c1' created in database 'db1'" in api_client.create_collection(
+        "db1", "c1"
     )
     db_mock.create_collection.assert_called_with("c1")
 
@@ -111,9 +110,8 @@ def test_drop_collection(api_client, mock_client):
     db_mock = mock_client.__getitem__.return_value
 
     # Success
-    assert (
-        "Collection 'c1' dropped from database 'db1'"
-        in api_client.drop_collection("db1", "c1")
+    assert "Collection 'c1' dropped from database 'db1'" in api_client.drop_collection(
+        "db1", "c1"
     )
     db_mock.drop_collection.assert_called_with("c1")
 
@@ -129,9 +127,8 @@ def test_rename_collection(api_client, mock_client):
     col_mock = db_mock.__getitem__.return_value
 
     # Success
-    assert (
-        "Collection 'old' renamed to 'new'"
-        in api_client.rename_collection("db1", "old", "new")
+    assert "Collection 'old' renamed to 'new'" in api_client.rename_collection(
+        "db1", "old", "new"
     )
     col_mock.rename.assert_called_with("new")
 

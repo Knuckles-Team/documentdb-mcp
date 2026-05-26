@@ -18,4 +18,5 @@ def test_server_startup():
 
     print("Startup tests handled correctly.")
     import documentdb_mcp
+
     assert documentdb_mcp is not None

@@ -53,9 +53,11 @@ def test_drop_user(api_client, mock_client):
         ("new_password", None, {"pwd": "new_password"}),
         (None, ["dbAdmin"], {"roles": ["dbAdmin"]}),
         ("new_password", ["dbAdmin"], {"pwd": "new_password", "roles": ["dbAdmin"]}),
-    ]
+    ],
 )
-def test_update_user_success(api_client, mock_client, password, roles, expected_call_args):
+def test_update_user_success(
+    api_client, mock_client, password, roles, expected_call_args
+):
     # CONCEPT:ECO-4.1
     # CONCEPT:OS-5.4
     db_mock = mock_client.__getitem__.return_value

@@ -9,7 +9,7 @@
 ```mermaid
 xychart-beta
     title "Domain Scores"
-    x-axis ["Project Anal", "Dependency A", "Codebase Opt", "Security Ana", "Test Coverag", "Documentatio", "Architecture", "Concept Trac", "Linting & Fo", "Pre-Commit C", "Test Executi", "Directory Or", "Version Sync", "Changelog Au", "Pytest Quali", "Environment "]
+    x-axis ["Project Anal", "Dependency A", "Codebase Opt", "Security Ana", "Test Coverag", "Documentatio", "Architecture", "Concept Trac", "Lint & Form", "Pre-Commit C", "Test Executi", "Directory Or", "Version Sync", "Changelog Au", "Pytest Quali", "Environment "]
     y-axis "Score" 0 --> 100
     bar [74, 94, 82, 100, 80, 97, 75, 100, 100, 89, 100, 100, 100, 75, 91, 100]
 ```
@@ -71,7 +71,7 @@ xychart-beta
 
 | Criterion | Points | Evidence | Reasoning |
 |-----------|--------|----------|-----------|
-| dependency_freshness | 94 | `source=/home/apps/workspace/agent-packages/agents/documentdb` | Audited 6 deps (5 installed, 1 constraint-only). 0 major, 2 minor, 0 patch updat |
+| dependency_freshness | 94 | `source=/home/apps/workspace/agent-packages/agents/documentdb` | Audited 6 deps (5 installed, 1 constraint-only). 0 major, 2 minor, 0 patch update |
 
 **Findings:**
 - Minor update: pymongo 4.16.0 (installed) -> 4.17.0
