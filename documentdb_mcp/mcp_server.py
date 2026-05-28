@@ -36,14 +36,14 @@ from documentdb_mcp.tools import (
     register_users_tools,
 )
 
-__version__ = "0.13.0"
+__version__ = "0.14.0"
 
 logger = get_logger(name="documentdb-mcp")
 logger.setLevel(logging.INFO)
 
+
 def get_mcp_instance() -> tuple[Any, ...]:
-    """Initialize and return the MCP instance.
-"""
+    """Initialize and return the MCP instance."""
     load_dotenv(find_dotenv())
     args, mcp, middlewares = create_mcp_server(
         name="documentdb-mcp MCP",
@@ -75,9 +75,9 @@ def get_mcp_instance() -> tuple[Any, ...]:
         mcp.add_middleware(mw)
     return mcp, args, middlewares
 
+
 def mcp_server() -> None:
-    """Run the MCP server.
-"""
+    """Run the MCP server."""
     mcp, args, middlewares = get_mcp_instance()
     print(f"documentdb-mcp MCP v{__version__}", file=sys.stderr)
     print("\nStarting MCP Server", file=sys.stderr)
@@ -93,6 +93,7 @@ def mcp_server() -> None:
     else:
         logger.error("Invalid transport", extra={"transport": args.transport})
         sys.exit(1)
+
 
 if __name__ == "__main__":
     mcp_server()
