@@ -20,7 +20,7 @@
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/documentdb-mcp)
 ![PyPI - Implementation](https://img.shields.io/pypi/implementation/documentdb-mcp)
 
-*Version: 0.23.0*
+*Version: 0.25.0*
 
 ---
 
