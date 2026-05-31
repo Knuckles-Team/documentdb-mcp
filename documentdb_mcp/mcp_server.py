@@ -36,7 +36,7 @@ from documentdb_mcp.tools import (
     register_users_tools,
 )
 
-__version__ = "0.31.0"
+__version__ = "0.31.4"
 
 logger = get_logger(name="documentdb-mcp")
 logger.setLevel(logging.INFO)
