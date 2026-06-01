@@ -4,7 +4,7 @@ import os
 import sys
 import warnings
 
-__version__ = "0.31.4"
+__version__ = "0.33.0"
 
 logging.basicConfig(
     level=logging.INFO,
