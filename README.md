@@ -22,6 +22,10 @@
 
 *Version: 0.38.0*
 
+> **Documentation** — Installation, deployment, usage across the API, CLI, MCP, and
+> agent interfaces, and guidance for provisioning the DocumentDB backing service are
+> maintained in the [official documentation](https://knuckles-team.github.io/documentdb-mcp/).
+
 ---
 
 ## Overview
@@ -401,6 +405,23 @@ uv pip install documentdb-mcp[all]
 # Using standard pip
 python -m pip install documentdb-mcp[all]
 ```
+
+---
+
+## Documentation
+
+The complete documentation is published as the
+[official documentation site](https://knuckles-team.github.io/documentdb-mcp/) and is
+the recommended reference for installation, deployment, and day-to-day operation.
+
+| Page | Contents |
+|---|---|
+| [Installation](https://knuckles-team.github.io/documentdb-mcp/installation/) | pip, source, extras, prebuilt Docker image |
+| [Deployment](https://knuckles-team.github.io/documentdb-mcp/deployment/) | run the MCP server and agent, Compose, Caddy + Technitium, env config |
+| [Usage](https://knuckles-team.github.io/documentdb-mcp/usage/) | the MCP tools, the `DocumentDBApi` client, the CLI |
+| [Backing Platform](https://knuckles-team.github.io/documentdb-mcp/platform/) | deploy DocumentDB with Docker |
+| [Overview](https://knuckles-team.github.io/documentdb-mcp/overview/) | ecosystem role, tool modules, configuration |
+| [Concepts](https://knuckles-team.github.io/documentdb-mcp/concepts/) | concept registry (`CONCEPT:DOCDB-*`) |
 
 ---
 
