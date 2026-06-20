@@ -22,8 +22,7 @@ import sys
 from typing import Any
 
 from agent_utilities.base_utilities import to_boolean
-from agent_utilities.mcp_utilities import create_mcp_server
-from dotenv import find_dotenv, load_dotenv
+from agent_utilities.mcp_utilities import create_mcp_server, load_config
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
@@ -44,7 +43,7 @@ logger.setLevel(logging.INFO)
 
 def get_mcp_instance() -> tuple[Any, ...]:
     """Initialize and return the MCP instance."""
-    load_dotenv(find_dotenv())
+    load_config()
     args, mcp, middlewares = create_mcp_server(
         name="documentdb-mcp MCP",
         version=__version__,
