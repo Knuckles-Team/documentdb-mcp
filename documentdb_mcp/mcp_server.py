@@ -17,22 +17,25 @@ warnings.filterwarnings("ignore", message=".*urllib3.*or chardet.*")
 warnings.filterwarnings("ignore", message=".*urllib3.*or charset_normalizer.*")
 
 import logging
-import os
 import sys
 from typing import Any
 
-from agent_utilities.base_utilities import to_boolean
-from agent_utilities.mcp_utilities import create_mcp_server, load_config
+from agent_utilities.mcp_utilities import (
+    create_mcp_server,
+    load_config,
+    register_tool_surface,
+)
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from documentdb_mcp.auth import get_client  # noqa: F401
+from documentdb_mcp.api_client import DocumentDBApi
+from documentdb_mcp.auth import get_client
 from documentdb_mcp.tools import (
-    register_analysis_tools,
-    register_collections_tools,
-    register_crud_tools,
-    register_system_tools,
-    register_users_tools,
+    register_analysis_tools,  # noqa: F401
+    register_collections_tools,  # noqa: F401
+    register_crud_tools,  # noqa: F401
+    register_system_tools,  # noqa: F401
+    register_users_tools,  # noqa: F401
 )
 
 __version__ = "0.43.0"
@@ -54,21 +57,13 @@ def get_mcp_instance() -> tuple[Any, ...]:
     async def health_check(request: Request) -> JSONResponse:
         return JSONResponse({"status": "OK"})
 
-    DEFAULT_SYSTEMTOOL = to_boolean(os.getenv("SYSTEMTOOL", "True"))
-    if DEFAULT_SYSTEMTOOL:
-        register_system_tools(mcp)
-    DEFAULT_COLLECTIONSTOOL = to_boolean(os.getenv("COLLECTIONSTOOL", "True"))
-    if DEFAULT_COLLECTIONSTOOL:
-        register_collections_tools(mcp)
-    DEFAULT_USERSTOOL = to_boolean(os.getenv("USERSTOOL", "True"))
-    if DEFAULT_USERSTOOL:
-        register_users_tools(mcp)
-    DEFAULT_CRUDTOOL = to_boolean(os.getenv("CRUDTOOL", "True"))
-    if DEFAULT_CRUDTOOL:
-        register_crud_tools(mcp)
-    DEFAULT_ANALYSISTOOL = to_boolean(os.getenv("ANALYSISTOOL", "True"))
-    if DEFAULT_ANALYSISTOOL:
-        register_analysis_tools(mcp)
+    register_tool_surface(
+        mcp,
+        client_cls=DocumentDBApi,
+        get_client=get_client,
+        service="documentdb-mcp",
+        tools_module=sys.modules[__name__],
+    )
 
     for mw in middlewares:
         mcp.add_middleware(mw)
