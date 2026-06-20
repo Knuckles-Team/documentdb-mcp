@@ -56,107 +56,21 @@ Detailed instructions on how to use the underlying API wrappers, extended schema
 This server utilizes dynamic Action-Routed tools to optimize token overhead and maximize IDE compatibility.
 
 ### Available MCP Tools
-| Tool Module | Toggle Env Var | Enabled by Default | Description & Nested Methods |
-|-------------|----------------|--------------------|------------------------------|
-| **System** | `SYSTEM_TOOL` | `True` | Register system tools.
 
-    CONCEPT:ECO-4.1 Action-routed methods: `binary_version`, `list_databases`, `run_command`. |
-| **Collections** | `COLLECTIONS_TOOL` | `True` | Register collections tools.
+_Auto-generated — do not edit (synced by the `mcp-readme-table` pre-commit hook)._
 
-    CONCEPT:ECO-4.1 Action-routed methods: `create_collection`, `create_database`, `drop_collection`, `drop_database`, `list_collections`, `rename_collection`. |
-| **Users** | `USERS_TOOL` | `True` | Register users tools.
+<!-- MCP-TOOLS-TABLE:START -->
 
-    CONCEPT:ECO-4.1 Action-routed methods: `create_user`, `drop_user`, `update_user`, `users_info`. |
-| **Crud** | `CRUD_TOOL` | `True` | Register crud tools.
+| MCP Tool | Toggle Env Var | Description |
+|----------|----------------|-------------|
+| `documentdb_analysis` | `ANALYSISTOOL` | Manage analysis operations. |
+| `documentdb_collections` | `COLLECTIONSTOOL` | Manage collections operations. |
+| `documentdb_crud` | `CRUDTOOL` | Manage crud operations. |
+| `documentdb_system` | `SYSTEMTOOL` | Manage system operations. |
+| `documentdb_users` | `USERSTOOL` | Manage users operations. |
 
-    CONCEPT:ECO-4.1 Action-routed methods: `count_documents`, `delete_many`, `delete_one`, `find`, `find_one`, `find_one_and_delete`, `find_one_and_replace`, `find_one_and_update`, `insert_many`, `insert_one`, `replace_one`, `update_many`, `update_one`. |
-| **Analysis** | `ANALYSIS_TOOL` | `True` | Register analysis tools.
-
-    CONCEPT:ECO-4.1 Action-routed methods: `aggregate`, `distinct`. |
-
-        Actions:
-          - 'binary_version': Call binary_version
-          - 'list_databases': Call list_databases
-          - 'run_command': Call run_command Action-routed methods: `binary_version`, `list_databases`, `run_command`. |
-| **Collections** | `COLLECTIONS_TOOL` | `True` | Manage collections operations.
-
-        Actions:
-          - 'list_collections': Call list_collections
-          - 'create_collection': Call create_collection
-          - 'drop_collection': Call drop_collection
-          - 'create_database': Call create_database
-          - 'drop_database': Call drop_database
-          - 'rename_collection': Call rename_collection Action-routed methods: `create_collection`, `create_database`, `drop_collection`, `drop_database`, `list_collections`, `rename_collection`. |
-| **Users** | `USERS_TOOL` | `True` | Manage users operations.
-
-        Actions:
-          - 'create_user': Call create_user
-          - 'drop_user': Call drop_user
-          - 'update_user': Call update_user
-          - 'users_info': Call users_info Action-routed methods: `create_user`, `drop_user`, `update_user`, `users_info`. |
-| **Crud** | `CRUD_TOOL` | `True` | Manage crud operations.
-
-        Actions:
-          - 'insert_one': Call insert_one
-          - 'insert_many': Call insert_many
-          - 'find_one': Call find_one
-          - 'find': Call find
-          - 'replace_one': Call replace_one
-          - 'update_one': Call update_one
-          - 'update_many': Call update_many
-          - 'delete_one': Call delete_one
-          - 'delete_many': Call delete_many
-          - 'count_documents': Call count_documents
-          - 'find_one_and_update': Call find_one_and_update
-          - 'find_one_and_replace': Call find_one_and_replace
-          - 'find_one_and_delete': Call find_one_and_delete Action-routed methods: `count_documents`, `delete_many`, `delete_one`, `find`, `find_one`, `find_one_and_delete`, `find_one_and_replace`, `find_one_and_update`, `insert_many`, `insert_one`, `replace_one`, `update_many`, `update_one`. |
-| **Analysis** | `ANALYSIS_TOOL` | `True` | Manage analysis operations.
-
-        Actions:
-          - 'distinct': Call distinct
-          - 'aggregate': Call aggregate Action-routed methods: `aggregate`, `distinct`. |
-
-        Actions:
-          - 'binary_version': Call binary_version
-          - 'list_databases': Call list_databases
-          - 'run_command': Call run_command Action-routed methods: `binary_version`, `list_databases`, `run_command`. |
-| **Collections** | `COLLECTIONS_TOOL` | `True` | Manage collections operations.
-
-        Actions:
-          - 'list_collections': Call list_collections
-          - 'create_collection': Call create_collection
-          - 'drop_collection': Call drop_collection
-          - 'create_database': Call create_database
-          - 'drop_database': Call drop_database
-          - 'rename_collection': Call rename_collection Action-routed methods: `create_collection`, `create_database`, `drop_collection`, `drop_database`, `list_collections`, `rename_collection`. |
-| **Users** | `USERS_TOOL` | `True` | Manage users operations.
-
-        Actions:
-          - 'create_user': Call create_user
-          - 'drop_user': Call drop_user
-          - 'update_user': Call update_user
-          - 'users_info': Call users_info Action-routed methods: `create_user`, `drop_user`, `update_user`, `users_info`. |
-| **Crud** | `CRUD_TOOL` | `True` | Manage crud operations.
-
-        Actions:
-          - 'insert_one': Call insert_one
-          - 'insert_many': Call insert_many
-          - 'find_one': Call find_one
-          - 'find': Call find
-          - 'replace_one': Call replace_one
-          - 'update_one': Call update_one
-          - 'update_many': Call update_many
-          - 'delete_one': Call delete_one
-          - 'delete_many': Call delete_many
-          - 'count_documents': Call count_documents
-          - 'find_one_and_update': Call find_one_and_update
-          - 'find_one_and_replace': Call find_one_and_replace
-          - 'find_one_and_delete': Call find_one_and_delete Action-routed methods: `count_documents`, `delete_many`, `delete_one`, `find`, `find_one`, `find_one_and_delete`, `find_one_and_replace`, `find_one_and_update`, `insert_many`, `insert_one`, `replace_one`, `update_many`, `update_one`. |
-| **Analysis** | `ANALYSIS_TOOL` | `True` | Manage analysis operations.
-
-        Actions:
-          - 'distinct': Call distinct
-          - 'aggregate': Call aggregate Action-routed methods: `aggregate`, `distinct`. |
+_5 action-routed tools (default `MCP_TOOL_MODE=condensed`). Each is enabled unless its toggle is set false; set `MCP_TOOL_MODE=verbose` (or `both`) for the 1:1 per-operation surface. Auto-generated — do not edit._
+<!-- MCP-TOOLS-TABLE:END -->
 
 Detailed tool schemas, parameter shapes, and validation constraints are preserved in [docs/mcp.md](docs/mcp.md).
 
