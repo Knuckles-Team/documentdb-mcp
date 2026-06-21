@@ -27,6 +27,12 @@ test = [
 documentdb-mcp = "documentdb_mcp.mcp_server:mcp_server"
 documentdb-agent = "documentdb_mcp.agent_server:agent_server"
 
+[project.entry-points."agent_utilities.skill_providers"]
+documentdb-mcp = "documentdb_mcp.skills"
+
+[project.entry-points."agent_utilities.prompt_providers"]
+documentdb-mcp = "documentdb_mcp.prompts"
+
 [tool.setuptools]
 include-package-data = true
 
@@ -45,7 +51,7 @@ dev = [
 ]
 
 [tool.setuptools.package-data]
-documentdb_mcp = [ "mcp_config.json", "agent_data/**",]
+documentdb_mcp = [ "mcp_config.json", "agent_data/**", "prompts/**", "skills/**",]
 
 [tool.ruff.lint]
 select = [ "E", "F", "I", "UP", "B",]
