@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   documentdb-mcp-mcp:
-    image: knucklessg1/documentdb-mcp:latest
+    image: knucklessg1/documentdb-mcp:mcp
     container_name: documentdb-mcp-mcp
     hostname: documentdb-mcp-mcp
     restart: always
