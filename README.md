@@ -97,6 +97,14 @@ When query strings or parameters are supplied, an LLM-free **Knowledge Graph res
 
 ### MCP Configuration Examples
 
+> **Install the slim `[mcp]` extra.** All examples below install
+> `documentdb-mcp[mcp]` — the MCP-server extra that pulls only the FastMCP /
+> FastAPI tooling (`agent-utilities[mcp]`). It deliberately **excludes** the heavy
+> agent runtime (the epistemic-graph engine, `pydantic-ai`, `dspy`, `llama-index`,
+> `tree-sitter`), so `uvx`/container installs are dramatically smaller and faster.
+> Use the full `[agent]` extra only when you need the integrated Pydantic AI agent
+> (see [Installation](#installation)).
+
 #### stdio Transport (Recommended for local IDEs e.g., Cursor, Claude Desktop)
 Configure your IDE's `mcp.json` to launch the MCP server via `uvx`:
 
@@ -107,7 +115,7 @@ Configure your IDE's `mcp.json` to launch the MCP server via `uvx`:
       "command": "uvx",
       "args": [
         "--from",
-        "documentdb-mcp",
+        "documentdb-mcp[mcp]",
         "documentdb-mcp"
       ],
       "env": {
@@ -132,7 +140,7 @@ Configure your client's `mcp.json` to launch the Streamable-HTTP server via `uvx
       "command": "uvx",
       "args": [
         "--from",
-        "documentdb-mcp",
+        "documentdb-mcp[mcp]",
         "documentdb-mcp"
       ],
       "env": {
@@ -175,8 +183,15 @@ docker run -d \
   -e DOCUMENT_DB_USERNAME="your_value" \
   -e DOCUMENT_DB_NAME="your_value" \
   -e DOCUMENT_DB_PASSWORD="your_value" \
-  knucklessg1/documentdb-mcp:latest
+  knucklessg1/documentdb-mcp:mcp
 ```
+
+> The `:mcp` tag is the **slim MCP-server image** (built from
+> `docker/Dockerfile --target mcp`, installing `documentdb-mcp[mcp]`). The default
+> `:latest` tag is the **full agent image** (`--target agent`, `documentdb-mcp[agent]`)
+> which also bundles the Pydantic AI agent and the epistemic-graph engine — use it
+> when you run `documentdb-agent` (the agent), not just the MCP server. See
+> [Container images](#container-images-mcp-vs-agent).
 
 ---
 
@@ -222,7 +237,7 @@ version: '3.8'
 
 services:
   documentdb-mcp-mcp:
-    image: knucklessg1/documentdb-mcp:latest
+    image: knucklessg1/documentdb-mcp:mcp
     container_name: documentdb-mcp-mcp
     hostname: documentdb-mcp-mcp
     restart: always
@@ -304,36 +319,115 @@ Built directly upon the enterprise-ready [`agent-utilities`](https://github.com/
 
 ## Environment Variables
 
-The server and agent can be configured using the following environment variables:
+Every variable the server reads, grouped by purpose.
 
+### MCP server / transport
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `MONGODB_URI` | The connection URI for the MongoDB/DocumentDB server. | `mongodb://localhost:27017/` |
-| `MONGODB_HOST` | The MongoDB/DocumentDB server host. | `localhost` |
-| `MONGODB_PORT` | The MongoDB/DocumentDB server port. | `27017` |
-| `AUTH_TYPE` | The authentication mechanism to use (scram-sha-256, scram-sha-1, none). | `scram-sha-256` |
-| `SYSTEMTOOL` | Toggle switch to enable or disable the System tool module. | `True` |
-| `COLLECTIONSTOOL` | Toggle switch to enable or disable the Collections tool module. | `True` |
-| `USERSTOOL` | Toggle switch to enable or disable the Users tool module. | `True` |
-| `CRUDTOOL` | Toggle switch to enable or disable the CRUD tool module. | `True` |
-| `ANALYSISTOOL` | Toggle switch to enable or disable the Analysis tool module. | `True` |
-| `EUNOMIA_TYPE` | Enterprise policy type (none, embedded, remote). | `none` |
-| `EUNOMIA_POLICY_FILE` | Path to Eunomia security policy configuration file. | `mcp_policies.json` |
-| `OTEL_EXPORTER_OTLP_ENDPOINT` | OpenTelemetry OTLP receiver endpoint. | `None` |
+| `TRANSPORT` | `stdio`, `streamable-http`, or `sse` | `stdio` |
+| `HOST` | Bind host (HTTP transports) | `0.0.0.0` |
+| `PORT` | Bind port (HTTP transports) | `8000` |
+| `MCP_TOOL_MODE` | Tool surface: `condensed`, `verbose`, or `both` | `condensed` |
+| `MCP_ENABLED_TOOLS` / `MCP_DISABLED_TOOLS` | Comma-separated tool allow/deny list | — |
+| `MCP_ENABLED_TAGS` / `MCP_DISABLED_TAGS` | Comma-separated tag allow/deny list | — |
+| `DEBUG` | Verbose logging | `False` |
+| `PYTHONUNBUFFERED` | Unbuffered stdout (recommended in containers) | `1` |
+
+### Connection & Credentials
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `DOCUMENT_DB_HOST` | DocumentDB (PostgreSQL) host | `localhost` |
+| `DOCUMENT_DB_PORT` | DocumentDB (PostgreSQL) port | `5432` |
+| `DOCUMENT_DB_USERNAME` | DocumentDB username | `admin` |
+| `DOCUMENT_DB_NAME` | DocumentDB database name | `documentation_db` |
+| `DOCUMENT_DB_PASSWORD` | DocumentDB password | — |
+| `AUTH_TYPE` | Auth mechanism: `scram-sha-256`, `scram-sha-1`, `standard`, `none` | `scram-sha-256` |
+| `MONGODB_URI` | MongoDB-compatible driver connection URI | `mongodb://localhost:27017/` |
+| `MONGODB_HOST` | MongoDB-compatible driver host | `localhost` |
+| `MONGODB_PORT` | MongoDB-compatible driver port | `27017` |
+
+### Tool toggles
+Each action-routed tool can be disabled individually via its toggle env var (set to `false`).
+The full list is in the [Available MCP Tools](#available-mcp-tools) table above.
+| Variable | Tool |
+|----------|------|
+| `SYSTEMTOOL` | `documentdb_system` |
+| `COLLECTIONSTOOL` | `documentdb_collections` |
+| `USERSTOOL` | `documentdb_users` |
+| `CRUDTOOL` | `documentdb_crud` |
+| `ANALYSISTOOL` | `documentdb_analysis` |
+
+### Telemetry & governance
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `ENABLE_OTEL` | Enable OpenTelemetry export | `True` |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | OTLP collector endpoint | — |
+| `OTEL_EXPORTER_OTLP_PUBLIC_KEY` / `OTEL_EXPORTER_OTLP_SECRET_KEY` | OTLP auth keys | — |
+| `OTEL_EXPORTER_OTLP_PROTOCOL` | OTLP protocol (e.g. `http/protobuf`) | — |
+| `EUNOMIA_TYPE` | Authorization mode: `none`, `embedded`, `remote` | `none` |
+| `EUNOMIA_POLICY_FILE` | Embedded policy file | `mcp_policies.json` |
+| `EUNOMIA_REMOTE_URL` | Remote Eunomia server URL | — |
+
+### Agent CLI (full `[agent]` runtime only)
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `MCP_URL` | URL of the MCP server the agent connects to | `http://localhost:8000/mcp` |
+| `PROVIDER` | LLM provider (e.g. `openai`) | `openai` |
+| `MODEL_ID` | Model id (e.g. `gpt-4o`) | `gpt-4o` |
+| `ENABLE_WEB_UI` | Serve the AG-UI web interface | `True` |
+
+See [`.env.example`](.env.example) for a copy-paste starting point.
 
 ---
 
 ## Installation
 
-Install the Python package locally:
+Pick the extra that matches what you want to run:
+
+| Extra | Installs | Use when |
+|-------|----------|----------|
+| `documentdb-mcp[mcp]` | Slim MCP server only (`agent-utilities[mcp]` — FastMCP/FastAPI) | You only run the **MCP server** (smallest install / image) |
+| `documentdb-mcp[agent]` | Full agent runtime (`agent-utilities[agent,logfire]` — Pydantic AI + the epistemic-graph engine) | You run the **integrated agent** |
+| `documentdb-mcp[all]` | Everything (`mcp` + `agent` + `logfire`) | Development / both surfaces |
 
 ```bash
-# Using uv (highly recommended)
-uv pip install documentdb-mcp[all]
+# MCP server only (recommended for tool hosting — slim deps)
+uv pip install "documentdb-mcp[mcp]"
 
-# Using standard pip
-python -m pip install documentdb-mcp[all]
+# Full agent runtime (Pydantic AI + epistemic-graph engine)
+uv pip install "documentdb-mcp[agent]"
+
+# Everything (development)
+uv pip install "documentdb-mcp[all]"      # or: python -m pip install "documentdb-mcp[all]"
 ```
+
+### Container images (`:mcp` vs `:agent`)
+
+One multi-stage `docker/Dockerfile` builds two right-sized images, selected by `--target`:
+
+| Image tag | Build target | Contents | Entrypoint |
+|-----------|--------------|----------|------------|
+| `knucklessg1/documentdb-mcp:mcp` | `--target mcp` | `documentdb-mcp[mcp]` — **slim**, no engine/`pydantic-ai`/`dspy`/`llama-index`/`tree-sitter` | `documentdb-mcp` |
+| `knucklessg1/documentdb-mcp:latest` | `--target agent` (default) | `documentdb-mcp[agent]` — **full** agent runtime + epistemic-graph engine | `documentdb-agent` |
+
+```bash
+docker build --target mcp   -t knucklessg1/documentdb-mcp:mcp    docker/   # slim MCP server
+docker build --target agent -t knucklessg1/documentdb-mcp:latest docker/   # full agent
+```
+
+`docker/mcp.compose.yml` runs the slim `:mcp` server; `docker/agent.compose.yml` runs the
+agent (`:latest`) with a co-located `:mcp` sidecar.
+
+### Knowledge-graph database (`epistemic-graph`)
+
+The **full agent** (`[agent]` / `:latest`) embeds the **epistemic-graph** engine (pulled in
+transitively via `agent-utilities[agent]`). For production — or to share one knowledge graph
+across multiple agents — run **epistemic-graph as its own database container** and point the
+agent at it instead of embedding it. Deployment recipes (single-node + Raft HA), connection
+config, and the full database architecture (with diagrams) are documented in the
+[epistemic-graph deployment guide](https://knuckles-team.github.io/epistemic-graph/deployment/).
+The slim `[mcp]` server does **not** require the database. (This is distinct from the
+DocumentDB backing store the MCP tools operate on — see the connection variables above.)
 
 ---
 
