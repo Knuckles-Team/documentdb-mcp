@@ -7,6 +7,7 @@
         "documentdb-mcp"
       ],
       "env": {
+        "MCP_TOOL_MODE": "condensed",
         "MONGODB_URI": "<YOUR_MONGODB_URI>",
         "AGENT_DESCRIPTION": "<YOUR_AGENT_DESCRIPTION>",
         "AGENT_SYSTEM_PROMPT": "<YOUR_AGENT_SYSTEM_PROMPT>",
@@ -14,7 +15,6 @@
         "COLLECTIONSTOOL": "True",
         "CRUDTOOL": "True",
         "DEFAULT_AGENT_NAME": "<YOUR_DEFAULT_AGENT_NAME>",
-        "MISCTOOL": "True",
         "MONGODB_HOST": "<YOUR_MONGODB_HOST>",
         "MONGODB_PORT": "<YOUR_MONGODB_PORT>",
         "SYSTEMTOOL": "True",
