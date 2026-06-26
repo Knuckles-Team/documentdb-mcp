@@ -8,11 +8,25 @@ PKG_NAME = __name__.rsplit(".", 1)[0] if "." in __name__ else None
 
 
 def _get_pkg_name():
-    """Derive package name from test location."""
+    """Derive package name from the project layout.
+
+    Prefer the actual package directory (the one containing ``__init__.py``)
+    so the test is correct even when the checkout directory name differs from
+    the package name (e.g. inside a git worktree). Fall back to the directory
+    name for unusual layouts.
+    """
     import pathlib
 
     test_dir = pathlib.Path(__file__).resolve().parent
     project_dir = test_dir.parent
+    for child in sorted(project_dir.iterdir()):
+        if (
+            child.is_dir()
+            and child.name not in {"tests", "test", "docs", "scripts"}
+            and not child.name.startswith(".")
+            and (child / "__init__.py").exists()
+        ):
+            return child.name
     return project_dir.name.replace("-", "_")
 
 

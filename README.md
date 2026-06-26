@@ -61,6 +61,8 @@ _Auto-generated — do not edit (synced by the `mcp-readme-table` pre-commit hoo
 
 <!-- MCP-TOOLS-TABLE:START -->
 
+#### Condensed action-routed tools (default — `MCP_TOOL_MODE=condensed`)
+
 | MCP Tool | Toggle Env Var | Description |
 |----------|----------------|-------------|
 | `documentdb_analysis` | `ANALYSISTOOL` | Manage analysis operations. |
@@ -69,7 +71,45 @@ _Auto-generated — do not edit (synced by the `mcp-readme-table` pre-commit hoo
 | `documentdb_system` | `SYSTEMTOOL` | Manage system operations. |
 | `documentdb_users` | `USERSTOOL` | Manage users operations. |
 
-_5 action-routed tools (default `MCP_TOOL_MODE=condensed`). Each is enabled unless its toggle is set false; set `MCP_TOOL_MODE=verbose` (or `both`) for the 1:1 per-operation surface. Auto-generated — do not edit._
+#### Verbose 1:1 API-mapped tools (`MCP_TOOL_MODE=verbose` or `both`)
+
+<details>
+<summary>28 per-operation tools — one per public API method (click to expand)</summary>
+
+| MCP Tool | Toggle Env Var | Description |
+|----------|----------------|-------------|
+| `documentdb_aggregate` | `ANALYSIS_CLIENTTOOL` | Invoke the aggregate operation. |
+| `documentdb_binary_version` | `SYSTEM_CLIENTTOOL` | Invoke the binary_version operation. |
+| `documentdb_count_documents` | `CRUD_CLIENTTOOL` | Invoke the count_documents operation. |
+| `documentdb_create_collection` | `SYSTEM_CLIENTTOOL` | Invoke the create_collection operation. |
+| `documentdb_create_database` | `SYSTEM_CLIENTTOOL` | Invoke the create_database operation. |
+| `documentdb_create_user` | `USERS_CLIENTTOOL` | Invoke the create_user operation. |
+| `documentdb_delete_many` | `CRUD_CLIENTTOOL` | Invoke the delete_many operation. |
+| `documentdb_delete_one` | `CRUD_CLIENTTOOL` | Invoke the delete_one operation. |
+| `documentdb_distinct` | `ANALYSIS_CLIENTTOOL` | Invoke the distinct operation. |
+| `documentdb_drop_collection` | `SYSTEM_CLIENTTOOL` | Invoke the drop_collection operation. |
+| `documentdb_drop_database` | `SYSTEM_CLIENTTOOL` | Invoke the drop_database operation. |
+| `documentdb_drop_user` | `USERS_CLIENTTOOL` | Invoke the drop_user operation. |
+| `documentdb_find` | `CRUD_CLIENTTOOL` | Invoke the find operation. |
+| `documentdb_find_one` | `CRUD_CLIENTTOOL` | Invoke the find_one operation. |
+| `documentdb_find_one_and_delete` | `CRUD_CLIENTTOOL` | Invoke the find_one_and_delete operation. |
+| `documentdb_find_one_and_replace` | `CRUD_CLIENTTOOL` | Invoke the find_one_and_replace operation. |
+| `documentdb_find_one_and_update` | `CRUD_CLIENTTOOL` | Invoke the find_one_and_update operation. |
+| `documentdb_insert_many` | `CRUD_CLIENTTOOL` | Invoke the insert_many operation. |
+| `documentdb_insert_one` | `CRUD_CLIENTTOOL` | Invoke the insert_one operation. |
+| `documentdb_list_collections` | `SYSTEM_CLIENTTOOL` | Invoke the list_collections operation. |
+| `documentdb_list_databases` | `SYSTEM_CLIENTTOOL` | Invoke the list_databases operation. |
+| `documentdb_rename_collection` | `SYSTEM_CLIENTTOOL` | Invoke the rename_collection operation. |
+| `documentdb_replace_one` | `CRUD_CLIENTTOOL` | Invoke the replace_one operation. |
+| `documentdb_run_command` | `SYSTEM_CLIENTTOOL` | Invoke the run_command operation. |
+| `documentdb_update_many` | `CRUD_CLIENTTOOL` | Invoke the update_many operation. |
+| `documentdb_update_one` | `CRUD_CLIENTTOOL` | Invoke the update_one operation. |
+| `documentdb_update_user` | `USERS_CLIENTTOOL` | Invoke the update_user operation. |
+| `documentdb_users_info` | `USERS_CLIENTTOOL` | Invoke the users_info operation. |
+
+</details>
+
+_5 action-routed tool(s) (default) · 28 verbose 1:1 tool(s). Each is enabled unless its `<DOMAIN>TOOL` toggle is set false; `MCP_TOOL_MODE` selects the surface (`condensed` default · `verbose` 1:1 · `both`). Auto-generated — do not edit._
 <!-- MCP-TOOLS-TABLE:END -->
 
 Detailed tool schemas, parameter shapes, and validation constraints are preserved in [docs/mcp.md](docs/mcp.md).
@@ -119,11 +159,9 @@ Configure your IDE's `mcp.json` to launch the MCP server via `uvx`:
         "documentdb-mcp"
       ],
       "env": {
-        "DOCUMENT_DB_HOST": "your_document_db_host_here",
-        "DOCUMENT_DB_PORT": "your_document_db_port_here",
-        "DOCUMENT_DB_USERNAME": "your_document_db_username_here",
-        "DOCUMENT_DB_NAME": "your_document_db_name_here",
-        "DOCUMENT_DB_PASSWORD": "your_document_db_password_here"
+        "MONGODB_URI": "mongodb://localhost:27017/",
+        "MONGODB_HOST": "localhost",
+        "MONGODB_PORT": "27017"
       }
     }
   }
@@ -147,11 +185,9 @@ Configure your client's `mcp.json` to launch the Streamable-HTTP server via `uvx
         "TRANSPORT": "streamable-http",
         "HOST": "0.0.0.0",
         "PORT": "8000",
-        "DOCUMENT_DB_HOST": "your_document_db_host_here",
-        "DOCUMENT_DB_PORT": "your_document_db_port_here",
-        "DOCUMENT_DB_USERNAME": "your_document_db_username_here",
-        "DOCUMENT_DB_NAME": "your_document_db_name_here",
-        "DOCUMENT_DB_PASSWORD": "your_document_db_password_here"
+        "MONGODB_URI": "mongodb://localhost:27017/",
+        "MONGODB_HOST": "localhost",
+        "MONGODB_PORT": "27017"
       }
     }
   }
@@ -178,11 +214,9 @@ docker run -d \
   -p 8000:8000 \
   -e TRANSPORT=streamable-http \
   -e PORT=8000 \
-  -e DOCUMENT_DB_HOST="your_value" \
-  -e DOCUMENT_DB_PORT="your_value" \
-  -e DOCUMENT_DB_USERNAME="your_value" \
-  -e DOCUMENT_DB_NAME="your_value" \
-  -e DOCUMENT_DB_PASSWORD="your_value" \
+  -e MONGODB_URI="mongodb://localhost:27017/" \
+  -e MONGODB_HOST="localhost" \
+  -e MONGODB_PORT="27017" \
   knucklessg1/documentdb-mcp:mcp
 ```
 
@@ -219,11 +253,9 @@ To start the interactive command-line agent:
 
 ```bash
 # Set credentials
-export DOCUMENT_DB_HOST="your_value"
-export DOCUMENT_DB_PORT="your_value"
-export DOCUMENT_DB_USERNAME="your_value"
-export DOCUMENT_DB_NAME="your_value"
-export DOCUMENT_DB_PASSWORD="your_value"
+export MONGODB_URI="mongodb://localhost:27017/"
+export MONGODB_HOST="localhost"
+export MONGODB_PORT="27017"
 
 # Run the agent server
 documentdb-agent --provider openai --model-id gpt-4o
@@ -337,11 +369,6 @@ Built directly upon the enterprise-ready [`agent-utilities`](https://github.com/
 | `EUNOMIA_POLICY_FILE` | `mcp_policies.json` |  |
 | `EUNOMIA_REMOTE_URL` | `http://eunomia-server:8000` |  |
 | `AUTH_TYPE` | `scram-sha-256` | options: scram-sha-1, scram-sha-256, standard, none |
-| `DOCUMENT_DB_HOST` | `localhost` |  |
-| `DOCUMENT_DB_PORT` | `5432` |  |
-| `DOCUMENT_DB_USERNAME` | `admin` |  |
-| `DOCUMENT_DB_NAME` | `documentation_db` |  |
-| `DOCUMENT_DB_PASSWORD` | `your_document_db_password_here` |  |
 | `MONGODB_URI` | `mongodb://localhost:27017/` |  |
 | `MONGODB_HOST` | `localhost` |  |
 | `MONGODB_PORT` | `27017` |  |
@@ -370,7 +397,7 @@ Built directly upon the enterprise-ready [`agent-utilities`](https://github.com/
 | `MODEL_ID` | `gpt-4o` | Model id for the agent |
 | `ENABLE_WEB_UI` | `True` | Serve the AG-UI web interface |
 
-_25 package + 14 inherited variable(s). Auto-generated from `.env.example` + the shared agent-utilities set — do not edit._
+_20 package + 14 inherited variable(s). Auto-generated from `.env.example` + the shared agent-utilities set — do not edit._
 <!-- ENV-VARS-TABLE:END -->
 
 
@@ -391,11 +418,6 @@ Every variable the server reads, grouped by purpose.
 ### Connection & Credentials
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `DOCUMENT_DB_HOST` | DocumentDB (PostgreSQL) host | `localhost` |
-| `DOCUMENT_DB_PORT` | DocumentDB (PostgreSQL) port | `5432` |
-| `DOCUMENT_DB_USERNAME` | DocumentDB username | `admin` |
-| `DOCUMENT_DB_NAME` | DocumentDB database name | `documentation_db` |
-| `DOCUMENT_DB_PASSWORD` | DocumentDB password | — |
 | `AUTH_TYPE` | Auth mechanism: `scram-sha-256`, `scram-sha-1`, `standard`, `none` | `scram-sha-256` |
 | `MONGODB_URI` | MongoDB-compatible driver connection URI | `mongodb://localhost:27017/` |
 | `MONGODB_HOST` | MongoDB-compatible driver host | `localhost` |
