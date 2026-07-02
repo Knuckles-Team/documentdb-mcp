@@ -137,16 +137,15 @@ When query strings or parameters are supplied, an LLM-free **Knowledge Graph res
 
 ### MCP Configuration Examples
 
-> **Install the slim `[mcp]` extra.** All examples below install
-> `documentdb-mcp[mcp]` — the MCP-server extra that pulls only the FastMCP /
-> FastAPI tooling (`agent-utilities[mcp]`). It deliberately **excludes** the heavy
-> agent runtime (the epistemic-graph engine, `pydantic-ai`, `dspy`, `llama-index`,
-> `tree-sitter`), so `uvx`/container installs are dramatically smaller and faster.
-> Use the full `[agent]` extra only when you need the integrated Pydantic AI agent
-> (see [Installation](#installation)).
+<!-- MCP-CONFIG-EXAMPLES:START -->
 
-#### stdio Transport (Recommended for local IDEs e.g., Cursor, Claude Desktop)
-Configure your IDE's `mcp.json` to launch the MCP server via `uvx`:
+> **Install the slim `[mcp]` extra.** All examples install `documentdb-mcp[mcp]` — the
+> MCP-server extra that pulls only the FastMCP / FastAPI tooling (`agent-utilities[mcp]`).
+> It deliberately **excludes** the heavy agent runtime (`pydantic-ai`, the epistemic-graph
+> engine, `dspy`, `llama-index`), so `uvx` / container installs are far smaller. Use the
+> full `[agent]` extra only when you need the integrated Pydantic AI agent.
+
+#### stdio Transport (local IDEs — Cursor, Claude Desktop, VS Code)
 
 ```json
 {
@@ -159,17 +158,22 @@ Configure your IDE's `mcp.json` to launch the MCP server via `uvx`:
         "documentdb-mcp"
       ],
       "env": {
-        "MONGODB_URI": "mongodb://localhost:27017/",
+        "MCP_TOOL_MODE": "condensed",
+        "ANALYSISTOOL": "True",
+        "COLLECTIONSTOOL": "True",
+        "CRUDTOOL": "True",
         "MONGODB_HOST": "localhost",
-        "MONGODB_PORT": "27017"
+        "MONGODB_PORT": "27017",
+        "MONGODB_URI": "mongodb://localhost:27017/",
+        "SYSTEMTOOL": "True",
+        "USERSTOOL": "True"
       }
     }
   }
 }
 ```
 
-#### Streamable-HTTP Transport (Recommended for production deployments)
-Configure your client's `mcp.json` to launch the Streamable-HTTP server via `uvx` with explicit host and port definition:
+#### Streamable-HTTP Transport (networked / production)
 
 ```json
 {
@@ -179,22 +183,32 @@ Configure your client's `mcp.json` to launch the Streamable-HTTP server via `uvx
       "args": [
         "--from",
         "documentdb-mcp[mcp]",
-        "documentdb-mcp"
+        "documentdb-mcp",
+        "--transport",
+        "streamable-http",
+        "--port",
+        "8000"
       ],
       "env": {
         "TRANSPORT": "streamable-http",
         "HOST": "0.0.0.0",
         "PORT": "8000",
-        "MONGODB_URI": "mongodb://localhost:27017/",
+        "MCP_TOOL_MODE": "condensed",
+        "ANALYSISTOOL": "True",
+        "COLLECTIONSTOOL": "True",
+        "CRUDTOOL": "True",
         "MONGODB_HOST": "localhost",
-        "MONGODB_PORT": "27017"
+        "MONGODB_PORT": "27017",
+        "MONGODB_URI": "mongodb://localhost:27017/",
+        "SYSTEMTOOL": "True",
+        "USERSTOOL": "True"
       }
     }
   }
 }
 ```
 
-Alternatively, connect to a pre-deployed remote or local Streamable-HTTP instance:
+Alternatively, connect to a pre-deployed Streamable-HTTP instance by `url`:
 
 ```json
 {
@@ -213,21 +227,22 @@ docker run -d \
   --name documentdb-mcp-mcp \
   -p 8000:8000 \
   -e TRANSPORT=streamable-http \
+  -e HOST=0.0.0.0 \
   -e PORT=8000 \
-  -e MONGODB_URI="mongodb://localhost:27017/" \
-  -e MONGODB_HOST="localhost" \
-  -e MONGODB_PORT="27017" \
+  -e MCP_TOOL_MODE=condensed \
+  -e ANALYSISTOOL=True \
+  -e COLLECTIONSTOOL=True \
+  -e CRUDTOOL=True \
+  -e MONGODB_HOST=localhost \
+  -e MONGODB_PORT=27017 \
+  -e MONGODB_URI=mongodb://localhost:27017/ \
+  -e SYSTEMTOOL=True \
+  -e USERSTOOL=True \
   knucklessg1/documentdb-mcp:mcp
 ```
 
-> The `:mcp` tag is the **slim MCP-server image** (built from
-> `docker/Dockerfile --target mcp`, installing `documentdb-mcp[mcp]`). The default
-> `:latest` tag is the **full agent image** (`--target agent`, `documentdb-mcp[agent]`)
-> which also bundles the Pydantic AI agent and the epistemic-graph engine — use it
-> when you run `documentdb-agent` (the agent), not just the MCP server. See
-> [Container images](#container-images-mcp-vs-agent).
-
----
+_Auto-generated from the code-read env surface (`MCP_TOOL_MODE` + package vars) — do not edit._
+<!-- MCP-CONFIG-EXAMPLES:END -->
 
 <!-- BEGIN GENERATED: additional-deployment-options -->
 ### Additional Deployment Options
