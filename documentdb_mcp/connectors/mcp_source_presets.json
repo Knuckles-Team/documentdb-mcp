@@ -1,0 +1,14 @@
+{
+  "_comment": "Tier-1 mcp_tool source preset for documentdb-mcp (AU-KG.ingest.mcp-tool-connector). Mirrors documents from a DocumentDB collection into the KG via the documentdb-mcp server's find tool. Tune 'params' (database_name/collection_name/filter) per deployment — it is pinned to a sample collection. For the full typed catalog (:DatabaseServer/:Database/:Collection) and richer :Document ingestion, prefer the native documentdb_ingest_catalog / documentdb_ingest_documents tools (documentdb_mcp.kg_ingest). Contributed presets win over the central MCP_TOOL_PRESETS.",
+  "documentdb-collection-documents": {
+    "server": "documentdb-mcp",
+    "tool": "documentdb_crud",
+    "action": "find",
+    "params": {"database_name": "app", "collection_name": "documents", "filter": {}, "limit": 100},
+    "records_path": "",
+    "id_field": "_id",
+    "title_field": "_id",
+    "text_field": "text",
+    "doc_type": "documentdb_document"
+  }
+}

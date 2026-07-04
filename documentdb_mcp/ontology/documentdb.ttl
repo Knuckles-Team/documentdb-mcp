@@ -1,0 +1,89 @@
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix : <http://knuckles.team/kg#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# DocumentDB (MongoDB-compatible, on PostgreSQL) ontology — servers, databases,
+# collections, stored documents, and database users. All classes and properties live
+# in the shared `:` (kg#) namespace; only the owl:Ontology node gets the per-package
+# IRI. Backs the documentdb-mcp tool surface (documentdb_system / documentdb_collections
+# / documentdb_crud / documentdb_users / documentdb_analysis). The shared `:Document`
+# and `:Person` classes are REUSED (federated from the hub), never redefined here.
+
+:DatabaseServer a owl:Class ;
+    rdfs:label "Database Server" ;
+    rdfs:comment "A DocumentDB / MongoDB-compatible server instance, identified by its connection URI and build version (documentdb_system binary_version/list_databases)." .
+
+:Database a owl:Class ;
+    rdfs:label "Database" ;
+    rdfs:comment "A logical database on a DocumentDB server, containing collections (documentdb_system list_databases / documentdb_collections create_database)." .
+
+:Collection a owl:Class ;
+    rdfs:label "Collection" ;
+    rdfs:comment "A collection of documents within a Database — the MongoDB analogue of a table (documentdb_collections list_collections)." .
+
+:DatabaseUser a owl:Class ;
+    rdfs:label "Database User" ;
+    rdfs:comment "An authentication principal (role-bearing account) scoped to a Database (documentdb_users create_user / users_info)." .
+
+# --- links (owl:ObjectProperty) ---
+
+:hostedOnServer a owl:ObjectProperty ;
+    rdfs:label "hosted on server" ;
+    rdfs:comment "Links a Database to the DatabaseServer that hosts it." ;
+    rdfs:domain :Database ;
+    rdfs:range :DatabaseServer .
+
+:inDatabase a owl:ObjectProperty ;
+    rdfs:label "in database" ;
+    rdfs:comment "Links a Collection or DatabaseUser to the Database it belongs to." ;
+    rdfs:range :Database .
+
+:inCollection a owl:ObjectProperty ;
+    rdfs:label "in collection" ;
+    rdfs:comment "Links a stored :Document to the Collection it was read from." ;
+    rdfs:range :Collection .
+
+:authorizedOn a owl:ObjectProperty ;
+    rdfs:label "authorized on" ;
+    rdfs:comment "Links a DatabaseUser to a Database it holds roles on." ;
+    rdfs:domain :DatabaseUser ;
+    rdfs:range :Database .
+
+# --- fields (owl:DatatypeProperty) ---
+
+:serverVersion a owl:DatatypeProperty ;
+    rdfs:label "server version" ;
+    rdfs:comment "Build/binary version string reported by the DocumentDB server (buildInfo.version)." ;
+    rdfs:range xsd:string .
+
+:databaseName a owl:DatatypeProperty ;
+    rdfs:label "database name" ;
+    rdfs:comment "Name of the Database on its server." ;
+    rdfs:range xsd:string .
+
+:collectionName a owl:DatatypeProperty ;
+    rdfs:label "collection name" ;
+    rdfs:comment "Name of the Collection within its Database." ;
+    rdfs:range xsd:string .
+
+:documentCount a owl:DatatypeProperty ;
+    rdfs:label "document count" ;
+    rdfs:comment "Number of documents in a Collection at ingestion time (count_documents)." ;
+    rdfs:range xsd:integer .
+
+:userRoles a owl:DatatypeProperty ;
+    rdfs:label "user roles" ;
+    rdfs:comment "Role grants held by a DatabaseUser, rendered as a string." ;
+    rdfs:range xsd:string .
+
+<http://knuckles.team/kg/documentdb> a owl:Ontology ;
+    rdfs:label "DocumentDB Ontology" ;
+    rdfs:comment """DocumentDB (MongoDB-compatible, PostgreSQL-backed) model — servers,
+    databases, collections, stored documents and database users, with their containment
+    and authorization relationships — federated into the agent-utilities knowledge-graph
+    hub. Reuses the shared :Document and :Person classes.""" ;
+    owl:imports <http://knuckles.team/kg> .

@@ -34,6 +34,7 @@ from documentdb_mcp.tools import (
     register_analysis_tools,  # noqa: F401
     register_collections_tools,  # noqa: F401
     register_crud_tools,  # noqa: F401
+    register_kg_tools,  # noqa: F401
     register_system_tools,  # noqa: F401
     register_users_tools,  # noqa: F401
 )
