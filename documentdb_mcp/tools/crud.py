@@ -10,7 +10,7 @@ from documentdb_mcp.auth import get_client
 def register_crud_tools(mcp: FastMCP):
     """Register crud tools.
 
-    CONCEPT:ECO-4.1
+    CONCEPT:AU-ECO.mcp.fastmcp-middleware
     """
 
     @mcp.tool(tags={"crud"})
@@ -39,7 +39,7 @@ def register_crud_tools(mcp: FastMCP):
         ),
         client=Depends(get_client),
     ) -> dict:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         """Manage crud operations.
 
         Actions:

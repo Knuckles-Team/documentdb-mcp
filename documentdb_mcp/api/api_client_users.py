@@ -14,7 +14,7 @@ class UsersClient(BaseApiClient):
     def create_user(
         self, database_name: str, username: str, password: str, roles: list[Any]
     ) -> str:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         db = self.client[database_name]
         try:
             parsed_roles = parse_json_arg(roles)
@@ -38,7 +38,7 @@ class UsersClient(BaseApiClient):
         password: str | None = None,
         roles: list[Any] | None = None,
     ) -> str:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         db = self.client[database_name]
         update_fields: dict[str, Any] = {}
         if password:

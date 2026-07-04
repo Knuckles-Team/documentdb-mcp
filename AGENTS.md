@@ -139,12 +139,12 @@ To run tests with a timeout to prevent hanging, use the `pytest-timeout` plugin.
 uv run pytest --timeout=60 -k "test_name_pattern"
 ```
 
-<!-- CONCEPT:ECO-4.1 -->
-<!-- CONCEPT:OS-5.4 -->
-<!-- CONCEPT:OS-5.1 -->
-<!-- CONCEPT:OS-5.3 -->
-<!-- CONCEPT:ORCH-1.4 -->
-<!-- CONCEPT:OS-5.2 -->
+<!-- CONCEPT:AU-ECO.mcp.fastmcp-middleware -->
+<!-- CONCEPT:AU-OS.governance.wasm-micro-agent-sandbox -->
+<!-- CONCEPT:AU-OS.config.secrets-authentication -->
+<!-- CONCEPT:AU-OS.governance.reactive-multi-axis-budget -->
+<!-- CONCEPT:AU-ORCH.adapter.kg-graph-materialization -->
+<!-- CONCEPT:AU-OS.state.cognitive-scheduler-preemption -->
 
 ## ⛔ No Scratch or Temporary Files in Repository
 
@@ -268,7 +268,7 @@ alone).
 Working in parallel with other sessions/worktrees? **Reserve a concept id before you write its `CONCEPT:` marker** so two sessions never collide:
 
 ```bash
-agent-utilities --json concept reserve --ns KG-2   # or a package prefix, e.g. KEY
+agent-utilities --json concept reserve --ns EG-KG.compute.backend   # or a package prefix, e.g. KEY
 ```
 
 Full protocol (ledger, merge=union, reconcile, MCP/REST): <https://knuckles-team.github.io/agent-utilities/concept_coordination/>

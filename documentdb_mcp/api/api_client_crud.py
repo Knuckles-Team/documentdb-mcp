@@ -15,7 +15,7 @@ class CrudClient(BaseApiClient):
     def insert_one(
         self, database_name: str, collection_name: str, document: dict[str, Any]
     ) -> str:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         db = self.client[database_name]
         col = db[collection_name]
         doc = parse_json_arg(document)
@@ -28,7 +28,7 @@ class CrudClient(BaseApiClient):
     def insert_many(
         self, database_name: str, collection_name: str, documents: list[dict[str, Any]]
     ) -> list[str]:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         db = self.client[database_name]
         col = db[collection_name]
         docs = [parse_json_arg(d) for d in documents]
@@ -41,7 +41,7 @@ class CrudClient(BaseApiClient):
     def find_one(
         self, database_name: str, collection_name: str, filter: dict[str, Any]
     ) -> dict[str, Any] | None:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         db = self.client[database_name]
         col = db[collection_name]
         query = parse_json_arg(filter)
@@ -62,7 +62,7 @@ class CrudClient(BaseApiClient):
         skip: int = 0,
         sort: list[Any] | None = None,
     ) -> list[dict[str, Any]]:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         db = self.client[database_name]
         col = db[collection_name]
         query = parse_json_arg(filter)
@@ -92,7 +92,7 @@ class CrudClient(BaseApiClient):
         filter: dict[str, Any],
         replacement: dict[str, Any],
     ) -> str:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         db = self.client[database_name]
         col = db[collection_name]
         query = parse_json_arg(filter)
@@ -110,7 +110,7 @@ class CrudClient(BaseApiClient):
         filter: dict[str, Any],
         update: dict[str, Any],
     ) -> str:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         db = self.client[database_name]
         col = db[collection_name]
         query = parse_json_arg(filter)
@@ -128,7 +128,7 @@ class CrudClient(BaseApiClient):
         filter: dict[str, Any],
         update: dict[str, Any],
     ) -> str:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         db = self.client[database_name]
         col = db[collection_name]
         query = parse_json_arg(filter)
@@ -142,7 +142,7 @@ class CrudClient(BaseApiClient):
     def delete_one(
         self, database_name: str, collection_name: str, filter: dict[str, Any]
     ) -> str:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         db = self.client[database_name]
         col = db[collection_name]
         query = parse_json_arg(filter)
@@ -155,7 +155,7 @@ class CrudClient(BaseApiClient):
     def delete_many(
         self, database_name: str, collection_name: str, filter: dict[str, Any]
     ) -> str:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         db = self.client[database_name]
         col = db[collection_name]
         query = parse_json_arg(filter)
@@ -168,7 +168,7 @@ class CrudClient(BaseApiClient):
     def count_documents(
         self, database_name: str, collection_name: str, filter: dict[str, Any]
     ) -> int:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         db = self.client[database_name]
         col = db[collection_name]
         query = parse_json_arg(filter)
@@ -185,7 +185,7 @@ class CrudClient(BaseApiClient):
         update: dict[str, Any],
         return_document: str = "before",
     ) -> dict[str, Any] | None:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         db = self.client[database_name]
         col = db[collection_name]
         query = parse_json_arg(filter)
@@ -211,7 +211,7 @@ class CrudClient(BaseApiClient):
         replacement: dict[str, Any],
         return_document: str = "before",
     ) -> dict[str, Any] | None:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         db = self.client[database_name]
         col = db[collection_name]
         query = parse_json_arg(filter)
@@ -232,7 +232,7 @@ class CrudClient(BaseApiClient):
     def find_one_and_delete(
         self, database_name: str, collection_name: str, filter: dict[str, Any]
     ) -> dict[str, Any] | None:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         db = self.client[database_name]
         col = db[collection_name]
         query = parse_json_arg(filter)

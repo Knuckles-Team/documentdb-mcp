@@ -1,11 +1,11 @@
 """System and Collections client tests for DocumentDBApi.
 
-CONCEPT:ECO-4.1
-CONCEPT:OS-5.4
-CONCEPT:OS-5.1
-CONCEPT:OS-5.3
-CONCEPT:ORCH-1.4
-CONCEPT:OS-5.2
+CONCEPT:AU-ECO.mcp.fastmcp-middleware
+CONCEPT:AU-OS.governance.wasm-micro-agent-sandbox
+CONCEPT:AU-OS.config.secrets-authentication
+CONCEPT:AU-OS.governance.reactive-multi-axis-budget
+CONCEPT:AU-ORCH.adapter.kg-graph-materialization
+CONCEPT:AU-OS.state.cognitive-scheduler-preemption
 """
 
 from unittest.mock import MagicMock
@@ -17,27 +17,27 @@ from tests.test_api_base import ObjectId as MockObjectId
 
 def test_binary_version(api_client, mock_client):
     # Success
-    # CONCEPT:ECO-4.1
-    # CONCEPT:OS-5.4
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
+    # CONCEPT:AU-OS.governance.wasm-micro-agent-sandbox
     mock_client.admin.command.return_value = {"version": "5.0.4"}
     assert api_client.binary_version() == "5.0.4"
 
     # Error fallback
-    # CONCEPT:OS-5.1
+    # CONCEPT:AU-OS.config.secrets-authentication
     mock_client.admin.command.side_effect = Exception("Connection lost")
     assert "Error: Connection lost" in api_client.binary_version()
 
 
 def test_list_databases(api_client, mock_client):
-    # CONCEPT:ECO-4.1
-    # CONCEPT:OS-5.4
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
+    # CONCEPT:AU-OS.governance.wasm-micro-agent-sandbox
     mock_client.list_database_names.return_value = ["admin", "local", "test"]
     assert api_client.list_databases() == ["admin", "local", "test"]
 
 
 def test_run_command(api_client, mock_client):
-    # CONCEPT:ECO-4.1
-    # CONCEPT:OS-5.4
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
+    # CONCEPT:AU-OS.governance.wasm-micro-agent-sandbox
     db_mock = mock_client.__getitem__.return_value
     oid = MockObjectId("507f1f77bcf86cd799439011")
     db_mock.command.return_value = {"ok": 1.0, "_id": oid}
@@ -50,8 +50,8 @@ def test_run_command(api_client, mock_client):
 
 
 def test_create_database(api_client, mock_client):
-    # CONCEPT:ECO-4.1
-    # CONCEPT:OS-5.4
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
+    # CONCEPT:AU-OS.governance.wasm-micro-agent-sandbox
     db_mock = mock_client.__getitem__.return_value
 
     # Success
@@ -70,8 +70,8 @@ def test_create_database(api_client, mock_client):
 
 def test_drop_database(api_client, mock_client):
     # Success
-    # CONCEPT:ECO-4.1
-    # CONCEPT:OS-5.4
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
+    # CONCEPT:AU-OS.governance.wasm-micro-agent-sandbox
     assert "Database 'temp_db' dropped" in api_client.drop_database("temp_db")
     mock_client.drop_database.assert_called_with("temp_db")
 
@@ -81,16 +81,16 @@ def test_drop_database(api_client, mock_client):
 
 
 def test_list_collections(api_client, mock_client):
-    # CONCEPT:ECO-4.1
-    # CONCEPT:OS-5.4
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
+    # CONCEPT:AU-OS.governance.wasm-micro-agent-sandbox
     db_mock = mock_client.__getitem__.return_value
     db_mock.list_collection_names.return_value = ["c1", "c2"]
     assert api_client.list_collections("db1") == ["c1", "c2"]
 
 
 def test_create_collection(api_client, mock_client):
-    # CONCEPT:ECO-4.1
-    # CONCEPT:OS-5.4
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
+    # CONCEPT:AU-OS.governance.wasm-micro-agent-sandbox
     db_mock = mock_client.__getitem__.return_value
 
     # Success
@@ -105,8 +105,8 @@ def test_create_collection(api_client, mock_client):
 
 
 def test_drop_collection(api_client, mock_client):
-    # CONCEPT:ECO-4.1
-    # CONCEPT:OS-5.4
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
+    # CONCEPT:AU-OS.governance.wasm-micro-agent-sandbox
     db_mock = mock_client.__getitem__.return_value
 
     # Success
@@ -121,8 +121,8 @@ def test_drop_collection(api_client, mock_client):
 
 
 def test_rename_collection(api_client, mock_client):
-    # CONCEPT:ECO-4.1
-    # CONCEPT:OS-5.4
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
+    # CONCEPT:AU-OS.governance.wasm-micro-agent-sandbox
     db_mock = mock_client.__getitem__.return_value
     col_mock = db_mock.__getitem__.return_value
 

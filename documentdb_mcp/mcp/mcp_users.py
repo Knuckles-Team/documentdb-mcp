@@ -10,7 +10,7 @@ from documentdb_mcp.auth import get_client
 def register_users_tools(mcp: FastMCP):
     """Register users tools.
 
-    CONCEPT:ECO-4.1
+    CONCEPT:AU-ECO.mcp.fastmcp-middleware
     """
 
     @mcp.tool(tags={"users"})
@@ -24,7 +24,7 @@ def register_users_tools(mcp: FastMCP):
         roles: Any | None = Field(default=None, description="roles"),
         client=Depends(get_client),
     ) -> dict:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         """Manage users operations.
 
         Actions:

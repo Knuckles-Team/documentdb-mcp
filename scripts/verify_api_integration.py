@@ -31,7 +31,7 @@ BASELINES = {
 
 
 def parse_api_client(filepath):
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     """
     Parses api_client.py to find the main API/Client class and its public methods.
     Returns a set of method names.
@@ -93,7 +93,7 @@ class MethodCallVisitor(ast.NodeVisitor):
 
 
 def parse_mcp_server(filepath, api_methods):
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     """
     Parses mcp_server.py to extract registered tools and identify which
     api_methods they leverage.
@@ -138,7 +138,7 @@ def parse_mcp_server(filepath, api_methods):
 
 def verify_agent(agent_dir):
     # Find api_client.py and mcp_server.py
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     api_clients = glob.glob(
         os.path.join(agent_dir, "**", "api_client.py"), recursive=True
     )
@@ -178,7 +178,7 @@ def verify_agent(agent_dir):
 
 
 def main():
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     args = sys.argv[1:]
 
     # --- Local Mode (Single Agent Validation) ---

@@ -10,7 +10,7 @@ from documentdb_mcp.auth import get_client
 def register_system_tools(mcp: FastMCP):
     """Register system tools.
 
-    CONCEPT:ECO-4.1
+    CONCEPT:AU-ECO.mcp.fastmcp-middleware
     """
 
     @mcp.tool(tags={"system"})
@@ -22,7 +22,7 @@ def register_system_tools(mcp: FastMCP):
         command: dict[str, Any] | None = Field(default=None, description="command"),
         client=Depends(get_client),
     ) -> dict:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         """Manage system operations.
 
         Actions:

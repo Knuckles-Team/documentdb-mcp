@@ -10,7 +10,7 @@ from documentdb_mcp.auth import get_client
 def register_analysis_tools(mcp: FastMCP):
     """Register analysis tools.
 
-    CONCEPT:ECO-4.1
+    CONCEPT:AU-ECO.mcp.fastmcp-middleware
     """
 
     @mcp.tool(tags={"analysis"})
@@ -29,7 +29,7 @@ def register_analysis_tools(mcp: FastMCP):
         ),
         client=Depends(get_client),
     ) -> dict:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         """Manage analysis operations.
 
         Actions:

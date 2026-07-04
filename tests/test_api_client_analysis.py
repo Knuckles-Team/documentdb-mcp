@@ -1,11 +1,11 @@
 """Analysis client tests for DocumentDBApi.
 
-CONCEPT:ECO-4.1
-CONCEPT:OS-5.4
-CONCEPT:OS-5.1
-CONCEPT:OS-5.3
-CONCEPT:ORCH-1.4
-CONCEPT:OS-5.2
+CONCEPT:AU-ECO.mcp.fastmcp-middleware
+CONCEPT:AU-OS.governance.wasm-micro-agent-sandbox
+CONCEPT:AU-OS.config.secrets-authentication
+CONCEPT:AU-OS.governance.reactive-multi-axis-budget
+CONCEPT:AU-ORCH.adapter.kg-graph-materialization
+CONCEPT:AU-OS.state.cognitive-scheduler-preemption
 """
 
 from unittest.mock import MagicMock
@@ -16,8 +16,8 @@ from tests.test_api_base import ObjectId as MockObjectId
 
 
 def test_distinct(api_client, mock_client):
-    # CONCEPT:ECO-4.1
-    # CONCEPT:OS-5.4
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
+    # CONCEPT:AU-OS.governance.wasm-micro-agent-sandbox
     db_mock = mock_client.__getitem__.return_value
     col_mock = db_mock.__getitem__.return_value
 
@@ -35,8 +35,8 @@ def test_distinct(api_client, mock_client):
 
 
 def test_aggregate(api_client, mock_client):
-    # CONCEPT:ECO-4.1
-    # CONCEPT:OS-5.4
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
+    # CONCEPT:AU-OS.governance.wasm-micro-agent-sandbox
     db_mock = mock_client.__getitem__.return_value
     col_mock = db_mock.__getitem__.return_value
 

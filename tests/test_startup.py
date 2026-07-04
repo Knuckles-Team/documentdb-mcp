@@ -1,12 +1,12 @@
 def test_server_startup():
     """Validates that the server module can start successfully.
 
-    CONCEPT:ECO-4.1
-    CONCEPT:OS-5.4
-    CONCEPT:OS-5.1
-    CONCEPT:OS-5.3
-    CONCEPT:ORCH-1.4
-    CONCEPT:OS-5.2
+    CONCEPT:AU-ECO.mcp.fastmcp-middleware
+    CONCEPT:AU-OS.governance.wasm-micro-agent-sandbox
+    CONCEPT:AU-OS.config.secrets-authentication
+    CONCEPT:AU-OS.governance.reactive-multi-axis-budget
+    CONCEPT:AU-ORCH.adapter.kg-graph-materialization
+    CONCEPT:AU-OS.state.cognitive-scheduler-preemption
     """
     # If this is not an agent, just pass
     import os

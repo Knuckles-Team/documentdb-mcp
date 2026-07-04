@@ -1,6 +1,6 @@
 """Tests for base API client helpers in documentdb_mcp/api/api_client_base.py.
 
-CONCEPT:ECO-4.1
+CONCEPT:AU-ECO.mcp.fastmcp-middleware
 """
 
 from documentdb_mcp.api.api_client_base import parse_json_arg, serialize_oid
@@ -8,18 +8,18 @@ from documentdb_mcp.api.api_client_base import parse_json_arg, serialize_oid
 
 class ObjectId:
     def __init__(self, val):
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         self.val = val
 
     def __str__(self):
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         return self.val
 
 
 def test_parse_json_arg():
     """Test parse_json_arg function.
 
-    CONCEPT:ECO-4.1
+    CONCEPT:AU-ECO.mcp.fastmcp-middleware
     """
     # Valid JSON string
     assert parse_json_arg('{"a": 1, "b": "test"}') == {"a": 1, "b": "test"}
@@ -33,7 +33,7 @@ def test_parse_json_arg():
 
 def test_serialize_oid():
     # Primitive types
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     assert serialize_oid(123) == 123
     assert serialize_oid("test") == "test"
     assert serialize_oid(None) is None

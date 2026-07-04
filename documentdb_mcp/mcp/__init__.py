@@ -1,6 +1,6 @@
 """Tools package containing modular FastMCP tool registration functions.
 
-CONCEPT:ECO-4.1
+CONCEPT:AU-ECO.mcp.fastmcp-middleware
 """
 
 from documentdb_mcp.mcp.analysis import register_analysis_tools

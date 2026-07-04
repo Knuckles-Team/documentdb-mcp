@@ -14,7 +14,7 @@ import pytest
 
 @pytest.fixture
 def mock_mongo():
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     with (
         patch("pymongo.MongoClient") as mock_client,
         patch("documentdb_mcp.mcp_server.get_client") as mock_get_client,
@@ -75,7 +75,7 @@ def test_mcp_server_coverage(mock_mongo):
     from documentdb_mcp.mcp_server import get_mcp_instance
 
     async def mock_on_request(self, context, call_next):
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         return await call_next(context)
 
     with patch.object(RateLimitingMiddleware, "on_request", mock_on_request):
@@ -126,7 +126,7 @@ def test_mcp_server_coverage(mock_mongo):
         }
 
         async def run_tools():
-            # CONCEPT:ECO-4.1
+            # CONCEPT:AU-ECO.mcp.fastmcp-middleware
             tool_objs = (
                 await mcp.list_tools()
                 if inspect.iscoroutinefunction(mcp.list_tools)
@@ -178,7 +178,7 @@ def test_mcp_server_coverage(mock_mongo):
 
 
 def test_agent_server_coverage():
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     import documentdb_mcp.agent_server as mod
     from documentdb_mcp import agent_server
 
@@ -192,7 +192,7 @@ def test_agent_server_coverage():
 
 
 def test_main_coverage():
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     from documentdb_mcp.mcp_server import mcp_server
 
     with patch("sys.argv", ["mcp_server.py"]):

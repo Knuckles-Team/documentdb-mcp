@@ -1,6 +1,6 @@
 """Tests for auth, package init loading, health check custom routes, and command line arg routing.
 
-CONCEPT:ECO-4.1
+CONCEPT:AU-ECO.mcp.fastmcp-middleware
 """
 
 import importlib
@@ -28,7 +28,7 @@ from documentdb_mcp.mcp_server import get_mcp_instance, mcp_server
 def test_package_init_attributes():
     """Verify package init attributes.
 
-    CONCEPT:ECO-4.1
+    CONCEPT:AU-ECO.mcp.fastmcp-middleware
     """
     # Verify presence of standard module attributes
     assert hasattr(documentdb_mcp, "__getattr__")
@@ -42,7 +42,7 @@ def test_package_init_attributes():
 
 def test_package_getattr_availability():
     # Test MCP availability flag lookup
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     with patch("documentdb_mcp._import_module_safely") as mock_import:
         mock_import.return_value = MagicMock()
         mcp_avail = documentdb_mcp._MCP_AVAILABLE
@@ -70,7 +70,7 @@ def test_package_getattr_availability():
 
 
 def test_import_module_safely_real():
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     from documentdb_mcp import _import_module_safely
 
     # Existing module
@@ -80,14 +80,14 @@ def test_import_module_safely_real():
 
 
 def test_empty_optional_modules():
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     with patch("documentdb_mcp.OPTIONAL_MODULES", {}):
         assert documentdb_mcp._MCP_AVAILABLE is False
         assert documentdb_mcp._AGENT_AVAILABLE is False
 
 
 def test_dynamic_getattr_success():
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     with patch.dict("documentdb_mcp._loaded_optional_modules", {}, clear=True):
         val = documentdb_mcp.agent_server
         assert val is not None
@@ -97,7 +97,7 @@ def test_dynamic_getattr_success():
 
 
 def test_get_client_uri_scenarios():
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     with patch("pymongo.MongoClient") as mock_mongo:
         # Scenario 1: MONGODB_URI is specified
         with patch.dict(
@@ -133,7 +133,7 @@ async def test_health_check_endpoint():
 
     def mock_custom_route(path, methods):
         def decorator(fn):
-            # CONCEPT:ECO-4.1
+            # CONCEPT:AU-ECO.mcp.fastmcp-middleware
             nonlocal health_fn
             if path == "/health":
                 health_fn = fn
@@ -157,7 +157,7 @@ async def test_health_check_endpoint():
 
 def test_mcp_server_cli_routing():
     # We will test call routing inside mcp_server() for all transport branches
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     mock_mcp = MagicMock()
     mock_args = MagicMock()
     mock_args.auth_type = "none"
@@ -195,7 +195,7 @@ def test_mcp_server_cli_routing():
 
 def test_agent_server_debug_mode():
     # Test setting level to debug in agent_server()
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     mock_args = MagicMock()
     mock_args.mcp_url = "http://localhost:8000"
     mock_args.mcp_config = "mcp_config.json"
@@ -236,7 +236,7 @@ def test_agent_server_debug_mode():
 
 def test_direct_getattr_call():
     # Force a direct call to __getattr__ to bypass globals lookup order and cover line 69
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     mock_module = MagicMock()
     mock_module.some_attribute = "test_value"
     with patch.dict(
@@ -252,7 +252,7 @@ def test_requests_import_error():
     real_import = __import__
 
     def mock_import(name, *args, **kwargs):
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         if name.startswith("requests"):
             raise ImportError("Mocked import error for requests")
         return real_import(name, *args, **kwargs)

@@ -1,6 +1,6 @@
 """Tests for mcp_server.py - MCP server tool registration.
 
-CONCEPT:ECO-4.1
+CONCEPT:AU-ECO.mcp.fastmcp-middleware
 """
 
 from unittest.mock import MagicMock, patch
@@ -10,7 +10,7 @@ class TestToolRegistration:
     def test_tools_registered(self):
         """Verify that tools are registered successfully.
 
-        CONCEPT:ECO-4.1
+        CONCEPT:AU-ECO.mcp.fastmcp-middleware
         """
         from unittest.mock import MagicMock, patch
 
@@ -28,7 +28,7 @@ class TestToolRegistration:
 
 class TestGetMcpInstance:
     def test_get_mcp_instance(self):
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         from documentdb_mcp.mcp_server import get_mcp_instance
 
         with patch("documentdb_mcp.mcp_server.get_client", return_value=MagicMock()):
@@ -42,7 +42,7 @@ class TestGetMcpInstance:
 
 class TestVersion:
     def test_version_defined(self):
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         from documentdb_mcp.mcp_server import __version__
 
         assert __version__ is not None

@@ -1,6 +1,6 @@
 """Shared Pytest fixtures for documentdb-mcp.
 
-Inherits or implements: CONCEPT:ECO-4.1
+Inherits or implements: CONCEPT:AU-ECO.mcp.fastmcp-middleware
 """
 
 from unittest.mock import MagicMock
@@ -12,7 +12,7 @@ from documentdb_mcp.api_client import DocumentDBApi
 def mock_client():
     """Mock MongoClient instance for testing.
 
-    CONCEPT:ECO-4.1
+    CONCEPT:AU-ECO.mcp.fastmcp-middleware
     """
     client = MagicMock()
     # Mock admin command return
@@ -26,6 +26,6 @@ def mock_client():
 def api_client(mock_client):
     """Authenticated DocumentDBApi instance for testing.
 
-    CONCEPT:ECO-4.1
+    CONCEPT:AU-ECO.mcp.fastmcp-middleware
     """
     return DocumentDBApi(client=mock_client)

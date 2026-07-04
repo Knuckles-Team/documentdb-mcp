@@ -10,7 +10,7 @@ MASTER_OVERVIEW_PATH = os.path.join(
 
 
 def extract_concepts_from_overview(filepath):
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     """Extracts concepts from the markdown table in the master overview.md"""
     if not os.path.exists(filepath):
         return set()
@@ -57,7 +57,7 @@ def extract_concepts_from_codebase(directory):
 
 
 def test_concept_parity():
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     """
     Enforces that all concepts documented or used in documentdb-mcp
     exist in the master agent-utilities registry.

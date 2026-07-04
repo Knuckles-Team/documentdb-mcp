@@ -10,7 +10,7 @@ from documentdb_mcp.auth import get_client
 def register_collections_tools(mcp: FastMCP):
     """Register collections tools.
 
-    CONCEPT:ECO-4.1
+    CONCEPT:AU-ECO.mcp.fastmcp-middleware
     """
 
     @mcp.tool(tags={"collections"})
@@ -29,7 +29,7 @@ def register_collections_tools(mcp: FastMCP):
         new_name: str | None = Field(default=None, description="new name"),
         client=Depends(get_client),
     ) -> dict:
-        # CONCEPT:ECO-4.1
+        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         """Manage collections operations.
 
         Actions:

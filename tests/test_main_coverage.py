@@ -1,6 +1,6 @@
 """Unit tests to cover __main__ script executions and module entrypoints safely.
 
-CONCEPT:ECO-4.1
+CONCEPT:AU-ECO.mcp.fastmcp-middleware
 """
 
 import runpy
@@ -16,7 +16,7 @@ sys.modules["agent_utilities"] = mock_agent_utils
 def test_main_module_execution():
     """Verify that __main__ executes the agent server command correctly.
 
-    CONCEPT:ECO-4.1
+    CONCEPT:AU-ECO.mcp.fastmcp-middleware
     """
     with patch("documentdb_mcp.agent_server.agent_server") as mock_agent:
         runpy.run_module("documentdb_mcp.__main__", run_name="__main__")
@@ -24,7 +24,7 @@ def test_main_module_execution():
 
 
 def test_agent_server_module_execution():
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     mock_parser = MagicMock()
     mock_args = MagicMock()
     mock_args.debug = False
@@ -57,7 +57,7 @@ def test_agent_server_module_execution():
 
 
 def test_mcp_server_module_execution():
-    # CONCEPT:ECO-4.1
+    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     mock_mcp = MagicMock()
     mock_mcp.custom_route.return_value = lambda fn: fn
     mock_args = MagicMock()
