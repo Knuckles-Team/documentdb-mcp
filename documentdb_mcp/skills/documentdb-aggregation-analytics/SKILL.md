@@ -1,5 +1,6 @@
 ---
 name: documentdb-aggregation-analytics
+skill_type: skill
 description: >-
   Read-only analytics on a DocumentDB (MongoDB-compatible, PostgreSQL-backed) collection
   via the documentdb-mcp MCP server — run aggregation pipelines ($match/$group/$sort/…)

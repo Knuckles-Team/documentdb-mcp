@@ -1,5 +1,6 @@
 ---
 name: documentdb-starter
+skill_type: skill
 description: >-
   Documentdb API + MCP Server + A2A Server Use when working with Documentdb via this package's MCP
   server/agent — discover its tools, run an operation, or check its reference

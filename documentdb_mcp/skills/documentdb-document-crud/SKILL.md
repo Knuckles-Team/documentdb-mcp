@@ -1,5 +1,6 @@
 ---
 name: documentdb-document-crud
+skill_type: skill
 description: >-
   Document create/read/update/delete operations on a DocumentDB (MongoDB-compatible,
   PostgreSQL-backed) collection via the documentdb-mcp MCP server — insert one/many,

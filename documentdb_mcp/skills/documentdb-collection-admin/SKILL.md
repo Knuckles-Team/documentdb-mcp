@@ -1,5 +1,6 @@
 ---
 name: documentdb-collection-admin
+skill_type: skill
 description: >-
   Database, collection, and user administration on a DocumentDB (MongoDB-compatible,
   PostgreSQL-backed) server via the documentdb-mcp MCP server — list/create/drop/rename
