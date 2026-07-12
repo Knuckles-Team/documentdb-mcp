@@ -7,6 +7,25 @@ from pydantic import Field
 from documentdb_mcp.auth import get_client
 
 
+def _entitled(namespace: str, names: list[str]) -> list[str]:
+    """Filter ``names`` to what the calling identity may reach.
+
+    Routes the set through agent-utilities' shared identity-scoped resolver
+    (CONCEPT:AU-OS.identity.identity-scoped-resource-autoload): a caller's
+    Okta/Keycloak groups decide which resources they see by default. The
+    ambient ``SYSTEM_ACTOR`` (unauthenticated/local) holds ``admin`` → sees
+    all, so behaviour is unchanged until a real identity scopes it down.
+    Degrades to the full set if agent-utilities predates the resolver.
+    """
+    try:
+        from agent_utilities.security.entitlements import (
+            identity_scoped_resources,
+        )
+    except Exception:
+        return list(names)
+    return list(identity_scoped_resources(namespace, names))
+
+
 def register_system_tools(mcp: FastMCP):
     """Register system tools.
 
@@ -38,7 +57,8 @@ def register_system_tools(mcp: FastMCP):
         if action == "list_databases":
             kwargs = {}
             kwargs = {k: v for k, v in kwargs.items() if v is not None}
-            return client.list_databases(**kwargs)
+            databases = client.list_databases(**kwargs)
+            return _entitled("db", databases)
         if action == "run_command":
             kwargs = {
                 "database_name": database_name,
