@@ -21,7 +21,7 @@ class AnalysisClient(BaseApiClient):
         try:
             return col.distinct(key, query)
         except PyMongoError as e:
-            return [f"Error getting distinct values: {str(e)}"]
+            return [f"Error getting distinct values: {type(e).__name__}"]
 
     def aggregate(
         self, database_name: str, collection_name: str, pipeline: list[dict[str, Any]]
@@ -37,4 +37,4 @@ class AnalysisClient(BaseApiClient):
                 results.append(serialize_oid(doc))
             return results
         except PyMongoError as e:
-            return [{"error": str(e)}]
+            return [{"error": "Operation failed"}]

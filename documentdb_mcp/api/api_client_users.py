@@ -21,7 +21,7 @@ class UsersClient(BaseApiClient):
             db.command("createUser", username, pwd=password, roles=parsed_roles)
             return f"User '{username}' created on '{database_name}'"
         except PyMongoError as e:
-            return f"Error creating user: {str(e)}"
+            return f"Error creating user: {type(e).__name__}"
 
     def drop_user(self, database_name: str, username: str) -> str:
         db = self.client[database_name]
@@ -29,7 +29,7 @@ class UsersClient(BaseApiClient):
             db.command("dropUser", username)
             return f"User '{username}' dropped from '{database_name}'"
         except PyMongoError as e:
-            return f"Error dropping user: {str(e)}"
+            return f"Error dropping user: {type(e).__name__}"
 
     def update_user(
         self,
@@ -53,7 +53,7 @@ class UsersClient(BaseApiClient):
             db.command("updateUser", username, **update_fields)
             return f"User '{username}' updated on '{database_name}'"
         except PyMongoError as e:
-            return f"Error updating user: {str(e)}"
+            return f"Error updating user: {type(e).__name__}"
 
     def users_info(self, database_name: str, username: str) -> dict[str, Any]:
         db = self.client[database_name]
@@ -61,4 +61,4 @@ class UsersClient(BaseApiClient):
             result = db.command("usersInfo", username)
             return serialize_oid(result)
         except PyMongoError as e:
-            return {"error": str(e)}
+            return {"error": "Operation failed"}

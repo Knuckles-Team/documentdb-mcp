@@ -23,7 +23,7 @@ class CrudClient(BaseApiClient):
             result = col.insert_one(doc)
             return str(result.inserted_id)
         except PyMongoError as e:
-            return f"Error inserting document: {str(e)}"
+            return f"Error inserting document: {type(e).__name__}"
 
     def insert_many(
         self, database_name: str, collection_name: str, documents: list[dict[str, Any]]
@@ -36,7 +36,7 @@ class CrudClient(BaseApiClient):
             result = col.insert_many(docs)
             return [str(id) for id in result.inserted_ids]
         except PyMongoError as e:
-            return [f"Error inserting documents: {str(e)}"]
+            return [f"Error inserting documents: {type(e).__name__}"]
 
     def find_one(
         self, database_name: str, collection_name: str, filter: dict[str, Any]
@@ -51,7 +51,7 @@ class CrudClient(BaseApiClient):
                 return serialize_oid(result)
             return None
         except PyMongoError as e:
-            return {"error": str(e)}
+            return {"error": "Operation failed"}
 
     def find(
         self,
@@ -83,7 +83,7 @@ class CrudClient(BaseApiClient):
                 results.append(serialize_oid(doc))
             return results
         except PyMongoError as e:
-            return [{"error": str(e)}]
+            return [{"error": "Operation failed"}]
 
     def replace_one(
         self,
@@ -101,7 +101,7 @@ class CrudClient(BaseApiClient):
             result = col.replace_one(query, repl)
             return f"Matched: {result.matched_count}, Modified: {result.modified_count}"
         except PyMongoError as e:
-            return f"Error replacing document: {str(e)}"
+            return f"Error replacing document: {type(e).__name__}"
 
     def update_one(
         self,
@@ -119,7 +119,7 @@ class CrudClient(BaseApiClient):
             result = col.update_one(query, upd)
             return f"Matched: {result.matched_count}, Modified: {result.modified_count}"
         except PyMongoError as e:
-            return f"Error updating document: {str(e)}"
+            return f"Error updating document: {type(e).__name__}"
 
     def update_many(
         self,
@@ -137,7 +137,7 @@ class CrudClient(BaseApiClient):
             result = col.update_many(query, upd)
             return f"Matched: {result.matched_count}, Modified: {result.modified_count}"
         except PyMongoError as e:
-            return f"Error updating documents: {str(e)}"
+            return f"Error updating documents: {type(e).__name__}"
 
     def delete_one(
         self, database_name: str, collection_name: str, filter: dict[str, Any]
@@ -150,7 +150,7 @@ class CrudClient(BaseApiClient):
             result = col.delete_one(query)
             return f"Deleted: {result.deleted_count}"
         except PyMongoError as e:
-            return f"Error deleting document: {str(e)}"
+            return f"Error deleting document: {type(e).__name__}"
 
     def delete_many(
         self, database_name: str, collection_name: str, filter: dict[str, Any]
@@ -163,7 +163,7 @@ class CrudClient(BaseApiClient):
             result = col.delete_many(query)
             return f"Deleted: {result.deleted_count}"
         except PyMongoError as e:
-            return f"Error deleting documents: {str(e)}"
+            return f"Error deleting documents: {type(e).__name__}"
 
     def count_documents(
         self, database_name: str, collection_name: str, filter: dict[str, Any]
@@ -201,7 +201,7 @@ class CrudClient(BaseApiClient):
                 return serialize_oid(result)
             return None
         except PyMongoError as e:
-            return {"error": str(e)}
+            return {"error": "Operation failed"}
 
     def find_one_and_replace(
         self,
@@ -227,7 +227,7 @@ class CrudClient(BaseApiClient):
                 return serialize_oid(result)
             return None
         except PyMongoError as e:
-            return {"error": str(e)}
+            return {"error": "Operation failed"}
 
     def find_one_and_delete(
         self, database_name: str, collection_name: str, filter: dict[str, Any]
@@ -242,4 +242,4 @@ class CrudClient(BaseApiClient):
                 return serialize_oid(result)
             return None
         except PyMongoError as e:
-            return {"error": str(e)}
+            return {"error": "Operation failed"}

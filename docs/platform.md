@@ -21,7 +21,7 @@ recipe:
 # docker/documentdb.compose.yml
 services:
   documentdb:
-    image: ghcr.io/microsoft/documentdb/documentdb-local:latest
+    image: ghcr.io/microsoft/documentdb/documentdb-local@sha256:<digest>
     container_name: documentdb
     hostname: documentdb
     restart: unless-stopped
@@ -69,7 +69,7 @@ server reaches the database by container name:
 # docker/stack.compose.yml
 services:
   documentdb:
-    image: ghcr.io/microsoft/documentdb/documentdb-local:latest
+    image: ghcr.io/microsoft/documentdb/documentdb-local@sha256:<digest>
     hostname: documentdb
     environment:
       - USERNAME=admin
@@ -78,7 +78,7 @@ services:
     volumes: ["documentdb-data:/data"]
 
   documentdb-mcp:
-    image: knucklessg1/documentdb-mcp:latest
+    image: example/documentdb-mcp@sha256:<digest>
     depends_on: [documentdb]
     environment:
       - MONGODB_URI=mongodb://admin:change-me@documentdb:10260/?authMechanism=SCRAM-SHA-256

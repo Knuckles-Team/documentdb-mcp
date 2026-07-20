@@ -171,7 +171,7 @@ def test_mcp_server_coverage(mock_mongo):
                         await mcp.call_tool(tool.name, tool_params)
                     except Exception as e:
                         # ValueError exceptions will raise and be caught here
-                        print(f"Tool {tool.name} with action {action} failed: {e}")
+                        print(f"Operation failed: {type(e).__name__}")
 
         asyncio.run(run_tools())
         assert mcp is not None

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Documentdb MCP Operations"
+  short_description: "Help with Documentdb MCP Operations tasks"
+  default_prompt: "Use $documentdb-mcp-operations to complete a governed provider workflow."
