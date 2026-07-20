@@ -1,5 +1,6 @@
 ---
 name: documentdb-mcp-operations
+skill_type: skill
 description: >-
   Operate documentdb-mcp through its governed MCP and GraphOS capabilities, including documentdb aggregation analytics, documentdb collection admin, documentdb document crud, documentdb starter. Use when a request requires this provider's read, change, automation, ingestion, troubleshooting, or evidence workflows.
 ---
