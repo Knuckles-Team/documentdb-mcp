@@ -1,0 +1,6 @@
+{
+  "connector": "documentdb-mcp",
+  "current_ontology_source": "documentdb",
+  "migrations": [],
+  "schema_version": "1"
+}

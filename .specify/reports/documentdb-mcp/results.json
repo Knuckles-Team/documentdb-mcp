@@ -1,6 +1,6 @@
 {
   "project": "documentdb-mcp",
-  "path": "/home/apps/workspace/agent-packages/agents/documentdb-mcp",
+  "path": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp",
   "domain_results": [
     {
       "domain": "Project Analysis",
@@ -26,7 +26,7 @@
         {
           "criterion": "externalized_prompts",
           "points": 0,
-          "evidence": "/home/apps/workspace/agent-packages/agents/documentdb-mcp",
+          "evidence": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp",
           "reasoning": "No prompts/ directory found. Prompts may be hardcoded in source."
         },
         {
@@ -44,25 +44,25 @@
         {
           "criterion": "agents_md",
           "points": 10,
-          "evidence": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/AGENTS.md (5326 bytes)",
+          "evidence": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/AGENTS.md (5326 bytes)",
           "reasoning": "AGENTS.md exists with comprehensive content"
         },
         {
           "criterion": "pre_commit_hooks",
           "points": 10,
-          "evidence": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/.pre-commit-config.yaml",
+          "evidence": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/.pre-commit-config.yaml",
           "reasoning": "Pre-commit configuration found for automated code quality checks"
         },
         {
           "criterion": "gitignore",
           "points": 10,
-          "evidence": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/.gitignore",
+          "evidence": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/.gitignore",
           "reasoning": ".gitignore exists to prevent committing build artifacts and secrets"
         },
         {
           "criterion": "env_template",
           "points": 10,
-          "evidence": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/.env.example",
+          "evidence": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/.env.example",
           "reasoning": "Environment template exists for onboarding and secret management"
         },
         {
@@ -94,7 +94,7 @@
         {
           "criterion": "dependency_freshness",
           "points": 94,
-          "evidence": "source=/home/apps/workspace/agent-packages/agents/documentdb-mcp/pyproject.toml total=6 major=0 minor=2 patch=0 not_installed=1",
+          "evidence": "source=${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/pyproject.toml total=6 major=0 minor=2 patch=0 not_installed=1",
           "reasoning": "Audited 6 deps (5 installed, 1 constraint-only). 0 major, 2 minor, 0 patch updates."
         }
       ],
@@ -192,7 +192,7 @@
           "length": 168,
           "complexity": 27,
           "nesting_depth": 1,
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/crud.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/crud.py"
         },
         {
           "name": "documentdb_crud",
@@ -200,7 +200,7 @@
           "length": 161,
           "complexity": 27,
           "nesting_depth": 1,
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/crud.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/crud.py"
         },
         {
           "name": "main",
@@ -208,7 +208,7 @@
           "length": 100,
           "complexity": 19,
           "nesting_depth": 4,
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/scripts/verify_api_integration.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/scripts/verify_api_integration.py"
         },
         {
           "name": "parse_mcp_server",
@@ -216,7 +216,7 @@
           "length": 42,
           "complexity": 14,
           "nesting_depth": 5,
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/scripts/verify_api_integration.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/scripts/verify_api_integration.py"
         },
         {
           "name": "register_collections_tools",
@@ -224,7 +224,7 @@
           "length": 74,
           "complexity": 13,
           "nesting_depth": 1,
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/collections.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/collections.py"
         }
       ],
       "top_long": [
@@ -234,7 +234,7 @@
           "length": 168,
           "complexity": 27,
           "nesting_depth": 1,
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/crud.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/crud.py"
         },
         {
           "name": "documentdb_crud",
@@ -242,7 +242,7 @@
           "length": 161,
           "complexity": 27,
           "nesting_depth": 1,
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/crud.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/crud.py"
         },
         {
           "name": "test_mcp_server_coverage",
@@ -250,7 +250,7 @@
           "length": 107,
           "complexity": 10,
           "nesting_depth": 7,
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_documentdb_brute_force.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_documentdb_brute_force.py"
         },
         {
           "name": "main",
@@ -258,7 +258,7 @@
           "length": 100,
           "complexity": 19,
           "nesting_depth": 4,
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/scripts/verify_api_integration.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/scripts/verify_api_integration.py"
         },
         {
           "name": "register_collections_tools",
@@ -266,7 +266,7 @@
           "length": 74,
           "complexity": 13,
           "nesting_depth": 1,
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/collections.py"
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/documentdb_mcp/tools/collections.py"
         }
       ],
       "structural_issues": [],
@@ -325,7 +325,7 @@
       "tests": [
         {
           "name": "test_server_startup",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_startup.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_startup.py",
           "line": 1,
           "length": 21,
           "intent": "unit",
@@ -335,7 +335,7 @@
         },
         {
           "name": "test_distinct",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_analysis.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_analysis.py",
           "line": 18,
           "length": 17,
           "intent": "unit",
@@ -345,7 +345,7 @@
         },
         {
           "name": "test_aggregate",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_analysis.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_analysis.py",
           "line": 37,
           "length": 20,
           "intent": "unit",
@@ -355,7 +355,7 @@
         },
         {
           "name": "test_tools_registered",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_mcp_server.py",
           "line": 10,
           "length": 17,
           "intent": "unit",
@@ -365,7 +365,7 @@
         },
         {
           "name": "test_get_mcp_instance",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_mcp_server.py",
           "line": 30,
           "length": 11,
           "intent": "unit",
@@ -375,7 +375,7 @@
         },
         {
           "name": "test_version_defined",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_mcp_server.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_mcp_server.py",
           "line": 44,
           "length": 6,
           "intent": "unit",
@@ -385,7 +385,7 @@
         },
         {
           "name": "test_concept_parity",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_concept_parity.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_concept_parity.py",
           "line": 59,
           "length": 31,
           "intent": "unit",
@@ -395,7 +395,7 @@
         },
         {
           "name": "test_insert_one",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
           "line": 19,
           "length": 20,
           "intent": "unit",
@@ -405,7 +405,7 @@
         },
         {
           "name": "test_insert_many",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
           "line": 41,
           "length": 24,
           "intent": "unit",
@@ -415,7 +415,7 @@
         },
         {
           "name": "test_find_one",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
           "line": 67,
           "length": 21,
           "intent": "unit",
@@ -425,7 +425,7 @@
         },
         {
           "name": "test_find",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
           "line": 90,
           "length": 28,
           "intent": "unit",
@@ -435,7 +435,7 @@
         },
         {
           "name": "test_replace_one",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
           "line": 120,
           "length": 20,
           "intent": "unit",
@@ -445,7 +445,7 @@
         },
         {
           "name": "test_update_one",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
           "line": 142,
           "length": 20,
           "intent": "unit",
@@ -455,7 +455,7 @@
         },
         {
           "name": "test_update_many",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
           "line": 164,
           "length": 20,
           "intent": "unit",
@@ -465,7 +465,7 @@
         },
         {
           "name": "test_delete_one",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
           "line": 186,
           "length": 15,
           "intent": "unit",
@@ -475,7 +475,7 @@
         },
         {
           "name": "test_delete_many",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
           "line": 203,
           "length": 17,
           "intent": "unit",
@@ -485,7 +485,7 @@
         },
         {
           "name": "test_count_documents",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
           "line": 222,
           "length": 13,
           "intent": "unit",
@@ -495,7 +495,7 @@
         },
         {
           "name": "test_find_one_and_update",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
           "line": 237,
           "length": 35,
           "intent": "unit",
@@ -505,7 +505,7 @@
         },
         {
           "name": "test_find_one_and_replace",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
           "line": 274,
           "length": 35,
           "intent": "unit",
@@ -515,7 +515,7 @@
         },
         {
           "name": "test_find_one_and_delete",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_crud.py",
           "line": 311,
           "length": 23,
           "intent": "unit",
@@ -525,7 +525,7 @@
         },
         {
           "name": "test_parse_json_arg",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_base.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_base.py",
           "line": 19,
           "length": 13,
           "intent": "unit",
@@ -535,7 +535,7 @@
         },
         {
           "name": "test_serialize_oid",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_base.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_base.py",
           "line": 34,
           "length": 24,
           "intent": "unit",
@@ -545,7 +545,7 @@
         },
         {
           "name": "test_binary_version",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
           "line": 18,
           "length": 11,
           "intent": "unit",
@@ -555,7 +555,7 @@
         },
         {
           "name": "test_list_databases",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
           "line": 31,
           "length": 5,
           "intent": "unit",
@@ -565,7 +565,7 @@
         },
         {
           "name": "test_run_command",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
           "line": 38,
           "length": 12,
           "intent": "unit",
@@ -575,7 +575,7 @@
         },
         {
           "name": "test_create_database",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
           "line": 52,
           "length": 17,
           "intent": "unit",
@@ -585,7 +585,7 @@
         },
         {
           "name": "test_drop_database",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
           "line": 71,
           "length": 10,
           "intent": "unit",
@@ -595,7 +595,7 @@
         },
         {
           "name": "test_list_collections",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
           "line": 83,
           "length": 6,
           "intent": "unit",
@@ -605,7 +605,7 @@
         },
         {
           "name": "test_create_collection",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
           "line": 91,
           "length": 15,
           "intent": "unit",
@@ -615,7 +615,7 @@
         },
         {
           "name": "test_drop_collection",
-          "file": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
+          "file": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/tests/test_api_client_system.py",
           "line": 108,
           "length": 15,
           "intent": "unit",
@@ -1189,7 +1189,7 @@
           "language": "python",
           "framework": "pytest",
           "command": [
-            "/home/apps/workspace/agent-packages/agents/documentdb-mcp/.venv/bin/python",
+            "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/.venv/bin/python",
             "-m",
             "pytest",
             "--tb=line",
@@ -1259,7 +1259,7 @@
         {
           "criterion": "bumpversion_exists",
           "points": 20,
-          "evidence": "/home/apps/workspace/agent-packages/agents/documentdb-mcp/.bumpversion.cfg",
+          "evidence": "${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp/.bumpversion.cfg",
           "reasoning": ".bumpversion.cfg found"
         },
         {

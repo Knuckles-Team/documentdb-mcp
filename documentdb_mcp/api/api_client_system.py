@@ -16,7 +16,7 @@ class SystemClient(BaseApiClient):
             info = self.client.admin.command("buildInfo")
             return info.get("version", "unknown")
         except Exception as e:
-            return f"Error: {str(e)}"
+            return f"Error: {type(e).__name__}"
 
     def list_databases(self) -> list[str]:
         return self.client.list_database_names()
@@ -37,14 +37,14 @@ class SystemClient(BaseApiClient):
             db.create_collection(initial_collection)
             return f"Collection '{initial_collection}' created in database '{database_name}'"
         except PyMongoError as e:
-            return f"Error creating collection: {str(e)}"
+            return f"Error creating collection: {type(e).__name__}"
 
     def drop_database(self, database_name: str) -> str:
         try:
             self.client.drop_database(database_name)
             return f"Database '{database_name}' dropped"
         except PyMongoError as e:
-            return f"Error dropping database: {str(e)}"
+            return f"Error dropping database: {type(e).__name__}"
 
     # Collections
     def list_collections(self, database_name: str) -> list[str]:
@@ -59,7 +59,7 @@ class SystemClient(BaseApiClient):
                 f"Collection '{collection_name}' created in database '{database_name}'"
             )
         except PyMongoError as e:
-            return f"Error creating collection: {str(e)}"
+            return f"Error creating collection: {type(e).__name__}"
 
     def drop_collection(self, database_name: str, collection_name: str) -> str:
         db = self.client[database_name]
@@ -67,7 +67,7 @@ class SystemClient(BaseApiClient):
             db.drop_collection(collection_name)
             return f"Collection '{collection_name}' dropped from database '{database_name}'"
         except PyMongoError as e:
-            return f"Error dropping collection: {str(e)}"
+            return f"Error dropping collection: {type(e).__name__}"
 
     def rename_collection(
         self, database_name: str, old_name: str, new_name: str
@@ -77,4 +77,4 @@ class SystemClient(BaseApiClient):
             db[old_name].rename(new_name)
             return f"Collection '{old_name}' renamed to '{new_name}'"
         except PyMongoError as e:
-            return f"Error renaming collection: {str(e)}"
+            return f"Error renaming collection: {type(e).__name__}"

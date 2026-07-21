@@ -1,0 +1,19 @@
+{
+  "connector": "documentdb-mcp",
+  "fixtures": [
+    {
+      "expected": {
+        "acl_state": "quarantine",
+        "id": "fixture-record",
+        "title": "Synthetic certification record"
+      },
+      "preset": "documentdb-collection-documents",
+      "record": {
+        "_id": "Synthetic certification record",
+        "acl_public": false,
+        "text": "Synthetic content used only for contract validation."
+      }
+    }
+  ],
+  "schema_version": "1"
+}

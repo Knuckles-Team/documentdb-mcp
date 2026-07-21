@@ -65,7 +65,7 @@ def test_mcp_server_module_execution():
     mock_args.auth_type = "none"
 
     with patch(
-        "agent_utilities.mcp_utilities.create_mcp_server",
+        "agent_utilities.mcp.server_factory.create_mcp_server",
         return_value=(mock_args, mock_mcp, []),
     ):
         runpy.run_module("documentdb_mcp.mcp_server", run_name="__main__")

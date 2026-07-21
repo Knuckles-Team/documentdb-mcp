@@ -3,6 +3,7 @@
   "documentdb-collection-documents": {
     "server": "documentdb-mcp",
     "tool": "documentdb_crud",
+    "params_style": "args",
     "action": "find",
     "params": {"database_name": "app", "collection_name": "documents", "filter": {}, "limit": 100},
     "records_path": "",
