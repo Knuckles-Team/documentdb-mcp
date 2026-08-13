@@ -36,5 +36,5 @@ class AnalysisClient(BaseApiClient):
             for doc in cursor:
                 results.append(serialize_oid(doc))
             return results
-        except PyMongoError as e:
+        except PyMongoError:
             return [{"error": "Operation failed"}]

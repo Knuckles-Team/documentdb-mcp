@@ -50,7 +50,7 @@ class CrudClient(BaseApiClient):
             if result:
                 return serialize_oid(result)
             return None
-        except PyMongoError as e:
+        except PyMongoError:
             return {"error": "Operation failed"}
 
     def find(
@@ -82,7 +82,7 @@ class CrudClient(BaseApiClient):
             for doc in cursor:
                 results.append(serialize_oid(doc))
             return results
-        except PyMongoError as e:
+        except PyMongoError:
             return [{"error": "Operation failed"}]
 
     def replace_one(
@@ -200,7 +200,7 @@ class CrudClient(BaseApiClient):
             if result:
                 return serialize_oid(result)
             return None
-        except PyMongoError as e:
+        except PyMongoError:
             return {"error": "Operation failed"}
 
     def find_one_and_replace(
@@ -226,7 +226,7 @@ class CrudClient(BaseApiClient):
             if result:
                 return serialize_oid(result)
             return None
-        except PyMongoError as e:
+        except PyMongoError:
             return {"error": "Operation failed"}
 
     def find_one_and_delete(
@@ -241,5 +241,5 @@ class CrudClient(BaseApiClient):
             if result:
                 return serialize_oid(result)
             return None
-        except PyMongoError as e:
+        except PyMongoError:
             return {"error": "Operation failed"}
