@@ -60,5 +60,5 @@ class UsersClient(BaseApiClient):
         try:
             result = db.command("usersInfo", username)
             return serialize_oid(result)
-        except PyMongoError as e:
+        except PyMongoError:
             return {"error": "Operation failed"}
