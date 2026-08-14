@@ -61,13 +61,15 @@ _Auto-generated — do not edit (synced by the `mcp-readme-table` pre-commit hoo
 
 <!-- MCP-TOOLS-TABLE:START -->
 
-#### Condensed action-routed tools (default — `MCP_TOOL_MODE=condensed`)
+#### Condensed action-routed tools (`MCP_TOOL_MODE=condensed`)
 
 | MCP Tool | Toggle Env Var | Description |
 |----------|----------------|-------------|
 | `documentdb_analysis` | `ANALYSISTOOL` | Manage analysis operations. |
 | `documentdb_collections` | `COLLECTIONSTOOL` | Manage collections operations. |
 | `documentdb_crud` | `CRUDTOOL` | Manage crud operations. |
+| `documentdb_ingest_catalog` | `KGTOOL` | Natively ingest the DocumentDB catalog into epistemic-graph as typed nodes. |
+| `documentdb_ingest_documents` | `KGTOOL` | Natively ingest stored documents from a collection as ``:Document`` nodes. |
 | `documentdb_system` | `SYSTEMTOOL` | Manage system operations. |
 | `documentdb_users` | `USERSTOOL` | Manage users operations. |
 
@@ -109,7 +111,7 @@ _Auto-generated — do not edit (synced by the `mcp-readme-table` pre-commit hoo
 
 </details>
 
-_5 action-routed tool(s) (default) · 28 verbose 1:1 tool(s). Each is enabled unless its `<DOMAIN>TOOL` toggle is set false; `MCP_TOOL_MODE` selects the surface (`condensed` default · `verbose` 1:1 · `both`). Auto-generated — do not edit._
+_7 action-routed tool(s) · 28 verbose 1:1 tool(s). Each is enabled unless its `<DOMAIN>TOOL` toggle is set false; `MCP_TOOL_MODE` selects the surface (**`intent` default** — the six verb-tools, granular set loaded on demand · `condensed` action-routed · `verbose` 1:1 · `both`). Auto-generated — do not edit._
 <!-- MCP-TOOLS-TABLE:END -->
 
 Detailed tool schemas, parameter shapes, and validation constraints are preserved in [docs/usage.md](docs/usage.md).
@@ -161,6 +163,7 @@ When query strings or parameters are supplied, an LLM-free **Knowledge Graph res
         "ANALYSISTOOL": "True",
         "COLLECTIONSTOOL": "True",
         "CRUDTOOL": "True",
+        "KGTOOL": "True",
         "MONGODB_HOST": "localhost",
         "MONGODB_PORT": "27017",
         "MONGODB_URI": "mongodb://localhost:27017/",
@@ -200,6 +203,7 @@ own runtime secret boundary.
         "ANALYSISTOOL": "True",
         "COLLECTIONSTOOL": "True",
         "CRUDTOOL": "True",
+        "KGTOOL": "True",
         "MONGODB_HOST": "localhost",
         "MONGODB_PORT": "27017",
         "MONGODB_URI": "mongodb://localhost:27017/",
@@ -238,6 +242,7 @@ docker run -i --rm \
   -e ANALYSISTOOL=True \
   -e COLLECTIONSTOOL=True \
   -e CRUDTOOL=True \
+  -e KGTOOL=True \
   -e MONGODB_HOST=localhost \
   -e MONGODB_PORT=27017 \
   -e MONGODB_URI=mongodb://localhost:27017/ \
@@ -387,8 +392,8 @@ Built directly upon the enterprise-ready [`agent-utilities`](https://github.com/
 | `TRANSPORT` | `stdio` | options: stdio, streamable-http, sse |
 | `ENABLE_OTEL` | `True` |  |
 | `OTEL_EXPORTER_OTLP_ENDPOINT` | `http://localhost:8080/api/public/otel` |  |
-| `OTEL_EXPORTER_OTLP_PUBLIC_KEY` | `pk-...` |  |
-| `OTEL_EXPORTER_OTLP_SECRET_KEY` | `sk-...` |  |
+| `OTEL_EXPORTER_OTLP_PUBLIC_KEY_REF` | `secret://.../otel_public_key` |  |
+| `OTEL_EXPORTER_OTLP_SECRET_KEY_REF` | `secret://.../otel_secret_key` |  |
 | `OTEL_EXPORTER_OTLP_PROTOCOL` | `http/protobuf` |  |
 | `EUNOMIA_TYPE` | `none` | options: none, embedded, remote |
 | `EUNOMIA_POLICY_FILE` | `mcp_policies.json` |  |
@@ -402,19 +407,22 @@ Built directly upon the enterprise-ready [`agent-utilities`](https://github.com/
 | `USERSTOOL` | `True` |  |
 | `CRUDTOOL` | `True` |  |
 | `ANALYSISTOOL` | `True` |  |
+| `KGTOOL` | `True` |  |
 
 #### Inherited agent-utilities variables (apply to every connector)
 
 | Variable | Example | Description |
 |----------|---------|-------------|
-| `MCP_TOOL_MODE` | `condensed` | Tool surface: `condensed` | `verbose` | `both` |
+| `MCP_TOOL_MODE` | `intent` | Tool surface: `intent` \| `condensed` \| `verbose` \| `both` |
 | `MCP_ENABLED_TOOLS` | — | Comma-separated tool allow-list |
 | `MCP_DISABLED_TOOLS` | — | Comma-separated tool deny-list |
 | `MCP_ENABLED_TAGS` | — | Comma-separated tag allow-list |
 | `MCP_DISABLED_TAGS` | — | Comma-separated tag deny-list |
-| `MCP_CLIENT_AUTH` | — | Outbound MCP auth (`oidc-client-credentials` for fleet calls) |
+| `MCP_CLIENT_AUTH` | — | Outbound MCP child auth: `oidc-client-credentials` \| `basic` \| `none` |
 | `OIDC_CLIENT_ID` | — | OIDC client id (service-account auth) |
-| `OIDC_CLIENT_SECRET` | — | OIDC client secret (service-account auth) |
+| `OIDC_CLIENT_SECRET_REF` | `secret://identity/oidc-client-secret` | Runtime secret reference for the OIDC service account |
+| `MCP_BASIC_AUTH_USERNAME` | — | HTTP Basic username (`MCP_CLIENT_AUTH=basic`) |
+| `MCP_BASIC_AUTH_PASSWORD_REF` | `secret://identity/mcp-basic-password` | Runtime secret reference for HTTP Basic auth (`MCP_CLIENT_AUTH=basic`) |
 | `DEBUG` | `False` | Verbose logging |
 | `PYTHONUNBUFFERED` | `1` | Unbuffered stdout (recommended in containers) |
 | `MCP_URL` | `http://localhost:8000/mcp` | URL of the MCP server the agent connects to |
@@ -422,7 +430,7 @@ Built directly upon the enterprise-ready [`agent-utilities`](https://github.com/
 | `MODEL_ID` | `gpt-4o` | Model id for the agent |
 | `ENABLE_WEB_UI` | `True` | Serve the AG-UI web interface |
 
-_20 package + 14 inherited variable(s). Auto-generated from `.env.example` + the shared agent-utilities set — do not edit._
+_21 package + 16 inherited variable(s). Auto-generated from `.env.example` + the shared agent-utilities set — do not edit._
 <!-- ENV-VARS-TABLE:END -->
 
 

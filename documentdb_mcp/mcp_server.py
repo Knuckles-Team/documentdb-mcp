@@ -54,7 +54,26 @@ def get_mcp_instance() -> tuple[Any, ...]:
 
     @mcp.custom_route("/health", methods=["GET"])
     async def health_check(request: Request) -> JSONResponse:
-        return JSONResponse({"status": "OK"})
+        """Liveness/readiness probe.
+
+        Proves the process is up AND that it can actually reach the
+        configured MongoDB-wire backend — a bare ``{"status": "OK"}`` here
+        previously reported healthy for weeks while every operation silently
+        fell back to an unreachable ``mongodb://localhost:27017`` (dead
+        config keys never read by ``auth.get_client``). ``ping`` is the
+        standard low-cost MongoDB-wire liveness command; a short
+        ``serverSelectionTimeoutMS`` keeps a down backend from hanging the
+        k8s probe past its own timeout.
+        """
+        try:
+            client = get_client()
+            client.client.admin.command("ping", maxTimeMS=2000)
+        except Exception as exc:  # noqa: BLE001 - report any backend failure as degraded
+            return JSONResponse(
+                {"status": "degraded", "backend": "unreachable", "error": str(exc)},
+                status_code=503,
+            )
+        return JSONResponse({"status": "OK", "backend": "reachable"})
 
     register_tool_surface(
         mcp,
