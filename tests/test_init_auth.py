@@ -105,14 +105,18 @@ def test_get_client_uri_scenarios():
         ):
             client = get_client()
             assert client is not None
-            mock_mongo.assert_called_with("mongodb://user:pass@remote:27017/")
+            mock_mongo.assert_called_with(
+                "mongodb://user:pass@remote:27017/", serverSelectionTimeoutMS=5000
+            )
 
         # Scenario 2: MONGODB_URI is not specified, check host/port construction
         with patch.dict(os.environ, {}, clear=True):
             # Check default localhost:27017 fallback
             client = get_client()
             assert client is not None
-            mock_mongo.assert_called_with("mongodb://localhost:27017/")
+            mock_mongo.assert_called_with(
+                "mongodb://localhost:27017/", serverSelectionTimeoutMS=5000
+            )
 
             # Check explicit host and port env fallback
             with patch.dict(
@@ -120,15 +124,16 @@ def test_get_client_uri_scenarios():
             ):
                 client = get_client()
                 assert client is not None
-                mock_mongo.assert_called_with("mongodb://db-server:27018/")
+                mock_mongo.assert_called_with(
+                    "mongodb://db-server:27018/", serverSelectionTimeoutMS=5000
+                )
 
 
 # --- Health Route Custom Endpoint Tests ---
 
 
-@pytest.mark.asyncio
-async def test_health_check_endpoint():
-    # Capture the decorated health_check function
+def _capture_health_fn():
+    """Build the MCP instance and return its decorated /health handler."""
     health_fn = None
 
     def mock_custom_route(path, methods):
@@ -142,14 +147,38 @@ async def test_health_check_endpoint():
         return decorator
 
     with patch("fastmcp.FastMCP.custom_route", side_effect=mock_custom_route):
-        with patch("documentdb_mcp.mcp_server.get_client", return_value=MagicMock()):
-            get_mcp_instance()
-
+        get_mcp_instance()
     assert health_fn is not None
-    mock_request = MagicMock()
-    response = await health_fn(mock_request)
+    return health_fn
+
+
+@pytest.mark.asyncio
+async def test_health_check_endpoint_backend_reachable():
+    """/health reports OK + proves it pinged the real backend, not just that the process is up."""
+    mock_client = MagicMock()
+    with patch("documentdb_mcp.mcp_server.get_client", return_value=mock_client):
+        health_fn = _capture_health_fn()
+        response = await health_fn(MagicMock())
+
+    mock_client.client.admin.command.assert_called_with("ping", maxTimeMS=2000)
     assert isinstance(response, JSONResponse)
-    assert response.body == b'{"status":"OK"}'
+    assert response.status_code == 200
+    assert response.body == b'{"status":"OK","backend":"reachable"}'
+
+
+@pytest.mark.asyncio
+async def test_health_check_endpoint_backend_unreachable():
+    """A dead/misconfigured backend must degrade /health, not report OK (the documentdb-mcp bug)."""
+    mock_client = MagicMock()
+    mock_client.client.admin.command.side_effect = ConnectionError("no server available")
+    with patch("documentdb_mcp.mcp_server.get_client", return_value=mock_client):
+        health_fn = _capture_health_fn()
+        response = await health_fn(MagicMock())
+
+    assert isinstance(response, JSONResponse)
+    assert response.status_code == 503
+    assert b'"status":"degraded"' in response.body
+    assert b'"backend":"unreachable"' in response.body
 
 
 # --- CLI Transport and Main Executable Option Tests ---

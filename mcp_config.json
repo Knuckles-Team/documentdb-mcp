@@ -7,10 +7,11 @@
         "documentdb-mcp"
       ],
       "env": {
-        "MCP_TOOL_MODE": "condensed",
+        "MCP_TOOL_MODE": "intent",
         "ANALYSISTOOL": "True",
         "COLLECTIONSTOOL": "True",
         "CRUDTOOL": "True",
+        "KGTOOL": "True",
         "MONGODB_HOST": "localhost",
         "MONGODB_PORT": "27017",
         "MONGODB_URI": "mongodb://localhost:27017/",
