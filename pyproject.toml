@@ -40,6 +40,9 @@ documentdb-mcp = "documentdb_mcp.connectors"
 [project.entry-points."agent_utilities.prompt_providers"]
 documentdb-mcp = "documentdb_mcp.prompts"
 
+[tool.uv.workspace]
+members = ["."]
+
 [tool.setuptools]
 include-package-data = true
 
