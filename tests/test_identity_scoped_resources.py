@@ -19,9 +19,11 @@ from documentdb_mcp.tools.system import _entitled
 def _install_fake_entitlements(entitled_names):
     """Install a fake ``agent_utilities.security.entitlements`` module."""
     module = types.ModuleType("agent_utilities.security.entitlements")
-    module.identity_scoped_resources = lambda namespace, names: [
-        n for n in names if n in entitled_names
-    ]
+    setattr(  # noqa: B010 - dynamic attribute on a faked module for test isolation
+        module,
+        "identity_scoped_resources",
+        lambda namespace, names: [n for n in names if n in entitled_names],
+    )
     sys.modules["agent_utilities.security.entitlements"] = module
 
 

@@ -40,7 +40,7 @@ def register_system_tools(mcp: FastMCP):
         database_name: str | None = Field(default=None, description="database name"),
         command: dict[str, Any] | None = Field(default=None, description="command"),
         client=Depends(get_client),
-    ) -> dict:
+    ) -> dict | list[str]:
         # CONCEPT:AU-ECO.mcp.fastmcp-middleware
         """Manage system operations.
 
