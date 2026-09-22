@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Literal
 
 from fastmcp import FastMCP
 from fastmcp.dependencies import Depends
@@ -15,7 +15,21 @@ def register_crud_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"crud"})
     async def documentdb_crud(
-        action: str = Field(
+        action: Literal[
+            "count_documents",
+            "delete_many",
+            "delete_one",
+            "find",
+            "find_one",
+            "find_one_and_delete",
+            "find_one_and_replace",
+            "find_one_and_update",
+            "insert_many",
+            "insert_one",
+            "replace_one",
+            "update_many",
+            "update_one",
+        ] = Field(
             description="Action to perform. Must be one of: 'insert_one', 'insert_many', 'find_one', 'find', 'replace_one', 'update_one', 'update_many', 'delete_one', 'delete_many', 'count_documents', 'find_one_and_update', 'find_one_and_replace', 'find_one_and_delete'"
         ),
         database_name: str | None = Field(default=None, description="database name"),

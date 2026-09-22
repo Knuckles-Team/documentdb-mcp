@@ -93,7 +93,7 @@ sync:
   updated_field: null
   pagination: null
   doc_type: documentdb_document
-  tool_schema_sha256: e19b7a81f9c4758fc908a0c0942045b144c78439e8dceb3fd705ac85b1ec901d
+  tool_schema_sha256: ef990f23e38502825bfa7873d5d18a1abd9a51b3342a24a110baa157b97aec27
   raw:
     server: documentdb-mcp
     tool: documentdb_crud
