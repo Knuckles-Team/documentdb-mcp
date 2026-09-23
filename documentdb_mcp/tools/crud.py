@@ -13,7 +13,18 @@ def register_crud_tools(mcp: FastMCP):
     CONCEPT:AU-ECO.mcp.fastmcp-middleware
     """
 
-    @mcp.tool(tags={"crud"})
+    @mcp.tool(
+        tags={"crud"},
+        annotations={
+            "readOnlyHint": False,
+            "destructiveHint": True,
+            "idempotentHint": False,
+            "openWorldHint": True,
+        },
+        meta={
+            "eg.annotations": {"modalities_in": ["text"], "modalities_out": ["text"]}
+        },
+    )
     async def documentdb_crud(
         action: Literal[
             "count_documents",
