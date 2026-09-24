@@ -274,90 +274,8 @@ the detailed transport contract.
   `MCP_ALLOWED_HOSTS` in `AgentConfig`.
 <!-- END GENERATED: additional-deployment-options -->
 
-## Agent
-
-This repository features a fully integrated Pydantic AI Graph Agent. It communicates over the **Agent Control Protocol (ACP)** and interacts seamlessly with the **Agent Web UI (AG-UI)** and Terminal interface.
-
-### Running the Agent CLI
-To start the interactive command-line agent:
-
-```bash
-# Set credentials
-export MONGODB_URI="mongodb://localhost:27017/"
-export MONGODB_HOST="localhost"
-export MONGODB_PORT="27017"
-
-# Run the agent server
-documentdb-agent --provider openai --model-id gpt-4o
-```
-
 ### Docker Compose Orchestration
-The following `docker/agent.compose.yml` configures the Agent, Web UI, and Terminal Interface together:
-
-```yaml
-version: '3.8'
-
-services:
-  documentdb-mcp-mcp:
-    image: example/documentdb-mcp:mcp
-    container_name: documentdb-mcp-mcp
-    hostname: documentdb-mcp-mcp
-    restart: always
-    env_file:
-      - ../.env
-    environment:
-      - PYTHONUNBUFFERED=1
-      - HOST=0.0.0.0
-      - PORT=8000
-      - TRANSPORT=streamable-http
-    ports:
-      - "8000:8000"
-    healthcheck:
-      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
-
-  documentdb-mcp-agent:
-    image: example/documentdb-mcp@sha256:<digest>
-    container_name: documentdb-mcp-agent
-    hostname: documentdb-mcp-agent
-    restart: always
-    depends_on:
-      - documentdb-mcp-mcp
-    env_file:
-      - ../.env
-    command: [ "documentdb-agent" ]
-    environment:
-      - PYTHONUNBUFFERED=1
-      - HOST=0.0.0.0
-      - PORT=9015
-      - MCP_URL=http://documentdb-mcp-mcp:8000/mcp
-      - PROVIDER=${PROVIDER:-openai}
-      - MODEL_ID=${MODEL_ID:-gpt-4o}
-      - ENABLE_WEB_UI=True
-      - ENABLE_OTEL=True
-    ports:
-      - "9015:9015"
-    healthcheck:
-      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9015/health')"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
-
-```
+`docker/mcp.compose.yml` runs the MCP server as a hardened, least-privilege container (see the file for the full service definition).
 
 Detailed graph node architecture explanations, custom skill configurations, and agentic trace guides are available in [docs/deployment.md](docs/deployment.md).
 
@@ -478,13 +396,6 @@ The full list is in the [Available MCP Tools](#available-mcp-tools) table above.
 | `EUNOMIA_POLICY_FILE` | Embedded policy file | `mcp_policies.json` |
 | `EUNOMIA_REMOTE_URL` | Remote Eunomia server URL | — |
 
-### Agent CLI (full `[agent]` runtime only)
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `MCP_URL` | URL of the MCP server the agent connects to | `http://localhost:8000/mcp` |
-| `PROVIDER` | LLM provider (e.g. `openai`) | `openai` |
-| `MODEL_ID` | Model id (e.g. `gpt-4o`) | `gpt-4o` |
-| `ENABLE_WEB_UI` | Serve the AG-UI web interface | `True` |
 
 See [`.env.example`](.env.example) for a copy-paste starting point.
 
@@ -497,43 +408,31 @@ Pick the extra that matches what you want to run:
 | Extra | Installs | Use when |
 |-------|----------|----------|
 | `documentdb-mcp[mcp]` | Connector-focused MCP server (`agent-utilities[mcp]` — FastMCP/FastAPI + `epistemic-graph[full]`) | You only run the **MCP server** (smallest install / image) |
-| `documentdb-mcp[agent]` | Agent runtime (`agent-utilities[agent-runtime,logfire]` — model orchestration + `epistemic-graph[full]`) | You run the **integrated agent** |
-| `documentdb-mcp[all]` | Everything (`mcp` + `agent` + `logfire`) | Development / both surfaces |
 
 ```bash
 # Connector-focused MCP server (includes the shared graph engine)
 uv pip install "documentdb-mcp[mcp]"
-
-# Agent runtime (adds model orchestration to the shared graph engine)
-uv pip install "documentdb-mcp[agent]"
-
-# Everything (development)
-uv pip install "documentdb-mcp[all]"      # or: python -m pip install "documentdb-mcp[all]"
 ```
 
-### Container images (`:mcp` vs `:agent`)
+### Container images (`:mcp`)
 
-One multi-stage `docker/Dockerfile` builds two right-sized images, selected by `--target`:
+One `docker/Dockerfile` builds a single slim MCP-server image:
 
-| Image tag | Build target | Contents | Entrypoint |
-|-----------|--------------|----------|------------|
-| `example/documentdb-mcp:mcp` | `--target mcp` | `documentdb-mcp[mcp]` — **connector-focused**, includes `epistemic-graph[full]`; no model-orchestration stack | `documentdb-mcp` |
-| `example/documentdb-mcp@sha256:<digest>` | `--target agent` (default) | `documentdb-mcp[agent]` — **agent runtime**, model orchestration + `epistemic-graph[full]` | `documentdb-agent` |
+| Image tag | Contents | Entrypoint |
+|-----------|----------|------------|
+| `example/documentdb-mcp:mcp` | `documentdb-mcp[mcp]` -- connector-focused, includes `epistemic-graph[full]` | `documentdb-mcp` |
 
 ```bash
-docker build --target mcp   -t example/documentdb-mcp:mcp    docker/   # connector-focused MCP server
-docker build --target agent -t example/documentdb-mcp:agent-local docker/   # agent runtime
+docker build -t example/documentdb-mcp:mcp docker/   # connector-focused MCP server
 ```
 
-`docker/mcp.compose.yml` runs the connector-focused `:mcp` server; `docker/agent.compose.yml` runs the
-agent (`immutable agent digest`) with a co-located `:mcp` sidecar.
+`docker/mcp.compose.yml` runs the connector-focused `:mcp` server.
 
 ### Knowledge-graph database (`epistemic-graph`)
 
-Both `[mcp]` and `[agent]` carry the **epistemic-graph** engine through the required
-Agent Utilities core dependency (`epistemic-graph[full]`). The `[mcp]` extra keeps
-the server connector-focused; `[agent]` additionally enables model orchestration. Local
-deployments can use the bundled engine. For production or shared state, run
+The `[mcp]` extra carries the **epistemic-graph** engine through the required
+Agent Utilities core dependency (`epistemic-graph[full]`); the server stays
+connector-focused. Local deployments can use the bundled engine. For production or shared state, run
 **epistemic-graph as a dedicated database service** and configure the runtime to use it.
 Deployment recipes (single-node + Raft HA), connection configuration, and architecture
 diagrams are documented in the
@@ -591,7 +490,7 @@ to **"deploy `documentdb-mcp` with agent-utilities-deployment"**.
 | Install mode | Command |
 |------|---------|
 | Installed package | `uv tool install "documentdb-mcp[mcp]"`, then run `documentdb-mcp` |
-| Editable source | `uv pip install -e ".[agent]"`, then run `documentdb-mcp` |
+| Editable source | `uv pip install -e ".[mcp]"`, then run `documentdb-mcp` |
 | Immutable container | deploy `registry.example.invalid/documentdb-mcp@sha256:<digest>` through the operator-selected orchestrator |
 
 The repository embeds no deployment profile, credential value, certificate path, or
