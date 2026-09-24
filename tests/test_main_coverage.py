@@ -14,46 +14,14 @@ sys.modules["agent_utilities"] = mock_agent_utils
 
 
 def test_main_module_execution():
-    """Verify that __main__ executes the agent server command correctly.
+    """Verify that __main__ executes the mcp_server command correctly
+    (agent_server.py retired, EH-480 policy update).
 
     CONCEPT:AU-ECO.mcp.fastmcp-middleware
     """
-    with patch("documentdb_mcp.agent_server.agent_server") as mock_agent:
+    with patch("documentdb_mcp.mcp_server.mcp_server") as mock_mcp:
         runpy.run_module("documentdb_mcp.__main__", run_name="__main__")
-        assert mock_agent.called
-
-
-def test_agent_server_module_execution():
-    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
-    mock_parser = MagicMock()
-    mock_args = MagicMock()
-    mock_args.debug = False
-    mock_args.mcp_url = "http://localhost:8000"
-    mock_args.mcp_config = "mcp_config.json"
-    mock_args.host = "localhost"
-    mock_args.port = 8000
-    mock_args.provider = "openai"
-    mock_args.model_id = "gpt-4"
-    mock_args.base_url = None
-    mock_args.api_key = None
-    mock_args.custom_skills_directory = None
-    mock_args.web = False
-    mock_args.otel = False
-    mock_args.otel_endpoint = None
-    mock_args.otel_headers = None
-    mock_args.otel_public_key = None
-    mock_args.otel_secret_key = None
-    mock_args.otel_protocol = None
-    mock_parser.parse_args.return_value = mock_args
-
-    with (
-        patch("agent_utilities.initialize_workspace"),
-        patch("agent_utilities.load_identity", return_value={"name": "test-agent"}),
-        patch("agent_utilities.create_agent_parser", return_value=mock_parser),
-        patch("agent_utilities.create_agent_server") as mock_server_create,
-    ):
-        runpy.run_module("documentdb_mcp.agent_server", run_name="__main__")
-        assert mock_server_create.called
+        assert mock_mcp.called
 
 
 def test_mcp_server_module_execution():
@@ -65,7 +33,7 @@ def test_mcp_server_module_execution():
     mock_args.auth_type = "none"
 
     with patch(
-        "agent_utilities.mcp.server_factory.create_mcp_server",
+        "agent_connector_sdk.mcp.server.create_mcp_server",
         return_value=(mock_args, mock_mcp, []),
     ):
         runpy.run_module("documentdb_mcp.mcp_server", run_name="__main__")

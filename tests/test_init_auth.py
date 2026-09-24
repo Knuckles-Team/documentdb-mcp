@@ -18,7 +18,6 @@ import pytest
 from starlette.responses import JSONResponse
 
 import documentdb_mcp
-from documentdb_mcp.agent_server import agent_server
 from documentdb_mcp.auth import get_client
 from documentdb_mcp.mcp_server import get_mcp_instance, mcp_server
 
@@ -89,7 +88,7 @@ def test_empty_optional_modules():
 def test_dynamic_getattr_success():
     # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     with patch.dict("documentdb_mcp._loaded_optional_modules", {}, clear=True):
-        val = documentdb_mcp.agent_server
+        val = documentdb_mcp.mcp_server
         assert val is not None
 
 
@@ -222,47 +221,6 @@ def test_mcp_server_cli_routing():
             assert exc_info.value.code == 1
 
 
-def test_agent_server_debug_mode():
-    # Test setting level to debug in agent_server()
-    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
-    mock_args = MagicMock()
-    mock_args.mcp_url = "http://localhost:8000"
-    mock_args.mcp_config = "mcp_config.json"
-    mock_args.host = "localhost"
-    mock_args.port = 8000
-    mock_args.provider = "openai"
-    mock_args.model_id = "gpt-4"
-    mock_args.base_url = None
-    mock_args.api_key = None
-    mock_args.custom_skills_directory = None
-    mock_args.web = False
-    mock_args.otel = False
-    mock_args.otel_endpoint = None
-    mock_args.otel_headers = None
-    mock_args.otel_public_key = None
-    mock_args.otel_secret_key = None
-    mock_args.otel_protocol = None
-    mock_args.debug = True
-
-    mock_parser = MagicMock()
-    mock_parser.parse_args.return_value = mock_args
-
-    with (
-        patch("agent_utilities.initialize_workspace"),
-        patch("agent_utilities.load_identity", return_value={"name": "test-agent"}),
-        patch("agent_utilities.create_agent_parser", return_value=mock_parser),
-        patch("agent_utilities.create_agent_server") as mock_server_create,
-        patch("logging.getLogger") as mock_get_logger,
-    ):
-        with patch("sys.argv", ["agent_server.py"]):
-            agent_server()
-
-            # Verify that logging setLevel to DEBUG was invoked
-            mock_get_logger.return_value.setLevel.assert_called_with(logging.DEBUG)
-            # Verify server creation call was completed
-            assert mock_server_create.called
-
-
 def test_direct_getattr_call():
     # Force a direct call to __getattr__ to bypass globals lookup order and cover line 69
     # CONCEPT:AU-ECO.mcp.fastmcp-middleware
@@ -270,7 +228,7 @@ def test_direct_getattr_call():
     mock_module.some_attribute = "test_value"
     with patch.dict(
         "documentdb_mcp._loaded_optional_modules",
-        {"documentdb_mcp.agent_server": mock_module},
+        {"documentdb_mcp.mcp_server": mock_module},
     ):
         val = documentdb_mcp.__getattr__("some_attribute")
         assert val == "test_value"

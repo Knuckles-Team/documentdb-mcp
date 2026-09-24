@@ -1,8 +1,8 @@
 """Authentication module for documentdb-mcp."""
 
 import pymongo
-from agent_utilities.base_utilities import get_logger
-from agent_utilities.core.config import setting
+from agent_connector_sdk.utilities import get_logger
+from agent_connector_sdk.config import setting
 
 from documentdb_mcp.api_client import DocumentDBApi
 

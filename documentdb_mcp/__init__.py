@@ -9,7 +9,6 @@ __all__: list[str] = []
 CORE_MODULES: list[str] = ["documentdb_mcp.mcp_server"]
 
 OPTIONAL_MODULES = {
-    "documentdb_mcp.agent_server": "agent",
     "documentdb_mcp.mcp_server": "mcp",
 }
 

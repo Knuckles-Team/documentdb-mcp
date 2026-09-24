@@ -177,20 +177,6 @@ def test_mcp_server_coverage(mock_mongo):
         assert mcp is not None
 
 
-def test_agent_server_coverage():
-    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
-    import documentdb_mcp.agent_server as mod
-    from documentdb_mcp import agent_server
-
-    with patch("agent_utilities.create_agent_server") as mock_s:
-        with patch("sys.argv", ["agent_server.py"]):
-            if inspect.isfunction(agent_server):
-                agent_server()
-            else:
-                mod.agent_server()
-            assert mock_s.called
-
-
 def test_main_coverage():
     # CONCEPT:AU-ECO.mcp.fastmcp-middleware
     from documentdb_mcp.mcp_server import mcp_server
