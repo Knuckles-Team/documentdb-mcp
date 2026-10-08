@@ -1,7 +1,7 @@
 # Usage — API / CLI / MCP
 
 `documentdb-mcp` exposes the same capability three ways: as **MCP tools** an agent
-calls, as a **Python API** (`DocumentDBApi`) you import, and as a **CLI** / agent
+calls, as a **Python API** (`DocumentDBApi`) the operator import, and as a **CLI** / agent
 server. The ecosystem role and the tool modules are covered in [Overview](overview.md).
 
 ## As an MCP server
@@ -21,7 +21,7 @@ Example agent prompts that map onto these tools:
 
 - *"List the databases on this server"* → System (`list_databases`)
 - *"Find the 10 most recent orders for customer 42"* → CRUD (`find`)
-- *"How many documents match status = active in the orders collection?"* → CRUD (`count_documents`)
+- *"How multiple documents match status = active in the orders collection?"* → CRUD (`count_documents`)
 - *"What are the distinct values of `country` in the users collection?"* → Analysis (`distinct`)
 
 ## As a Python API
@@ -36,7 +36,7 @@ from documentdb_mcp.auth import get_client
 api = get_client()        # reads MONGODB_URI / MONGODB_HOST / MONGODB_PORT
 ```
 
-…or construct it explicitly from a `pymongo` client:
+…or build it explicitly from a `pymongo` client:
 
 ```python
 import pymongo

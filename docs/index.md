@@ -32,7 +32,7 @@ DocumentDB or a standard MongoDB deployment interchangeably.
 
 <div class="grid cards" markdown>
 
-- :material-rocket-launch: **[Installation](installation.md)** — pip, source, extras, and the prebuilt Docker image.
+- :material-rocket-start: **[Installation](installation.md)** — pip, source, extras, and the prebuilt Docker image.
 - :material-server-network: **[Deployment](deployment.md)** — run the MCP server and agent, Docker Compose, Caddy + Technitium.
 - :material-console: **[Usage](usage.md)** — the MCP tools, the `DocumentDBApi` client, and the CLI.
 - :material-database-cog: **[Backing Platform](platform.md)** — deploy DocumentDB with Docker.
