@@ -51,7 +51,7 @@ docker compose -f docker/documentdb.compose.yml logs -f documentdb
 
 ## Connect documentdb-mcp
 
-Point the connector's `MONGODB_URI` at the endpoint and supply credentials:
+Point the connector's `MONGODB_URI` at the endpoint and provide credentials:
 
 ```bash
 export MONGODB_URI="mongodb://admin:change-me@localhost:10260/?authMechanism=SCRAM-SHA-256"
