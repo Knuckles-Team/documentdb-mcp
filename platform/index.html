@@ -855,7 +855,7 @@ recipe:</p>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/documentdb.compose.yml<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>documentdb
 </span></code></pre></div>
 <h2 id="connect-documentdb-mcp">Connect documentdb-mcp<a class="headerlink" href="#connect-documentdb-mcp" title="Permanent link">&para;</a></h2>
-<p>Point the connector's <code>MONGODB_URI</code> at the endpoint and supply credentials:</p>
+<p>Point the connector's <code>MONGODB_URI</code> at the endpoint and provide credentials:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">MONGODB_URI</span><span class="o">=</span><span class="s2">"mongodb://admin:change-me@localhost:10260/?authMechanism=SCRAM-SHA-256"</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AUTH_TYPE</span><span class="o">=</span>scram-sha-256
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
