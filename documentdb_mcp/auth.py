@@ -1,12 +1,13 @@
 """Authentication module for documentdb-mcp."""
 
+import logging
+
 import pymongo
-from agent_utilities.base_utilities import get_logger
-from agent_utilities.core.config import setting
+from agent_connector_sdk.config import setting
 
 from documentdb_mcp.api_client import DocumentDBApi
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 def get_client():
