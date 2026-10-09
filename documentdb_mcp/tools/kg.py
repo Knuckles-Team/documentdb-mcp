@@ -31,7 +31,7 @@ def register_kg_tools(mcp: FastMCP):
         from documentdb_mcp.kg_ingest import ingest_catalog
 
         dbs = [database_name] if database_name else None
-        result = ingest_catalog(client, database_names=dbs)
+        result = await ingest_catalog(client, database_names=dbs)
         return {"scope": database_name or "all", "ingested": result}
 
     @mcp.tool(tags={"misc", "kg"})
@@ -55,7 +55,7 @@ def register_kg_tools(mcp: FastMCP):
         """
         from documentdb_mcp.kg_ingest import ingest_collection_documents
 
-        result = ingest_collection_documents(
+        result = await ingest_collection_documents(
             client,
             database_name,
             collection_name,

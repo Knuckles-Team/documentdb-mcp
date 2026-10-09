@@ -4,10 +4,9 @@ CONCEPT:AU-KG.ingest.enterprise-source-extractor. This is the record-source twin
 media-downloader's blob ingestion: the connector natively pushes its catalog into the
 ONE epistemic-graph knowledge graph as **typed OWL nodes** (``:DatabaseServer``,
 ``:Database``, ``:Collection``, ``:DatabaseUser``) plus stored rows as ``:Document``
-nodes and their containment links through the required
-``agent_utilities.knowledge_graph.memory.native_ingest`` authority. Node ids follow
-``documentdb:<class>:<externalId>`` and every ``node_type`` matches a class the package's
-``documentdb.ttl`` federates.
+nodes and their containment links through the ``agent_connector_sdk.ingest``
+knowledge-ingest facade. Node ids follow ``documentdb:<class>:<externalId>`` and every
+``node_type`` matches a class the package's ``documentdb.ttl`` federates.
 """
 
 from __future__ import annotations
@@ -16,95 +15,124 @@ import json
 import logging
 from typing import Any
 
-from agent_utilities.knowledge_graph.memory.native_ingest import (
-    ingest_entities as _native_ingest_entities,
+from agent_connector_sdk.ingest import (
+    ChangeSet,
+    Document,
+    Entity,
+    IngestBinding,
+    IngestError,
+    KnowledgeIngest,
+    Relationship,
+    current_ingest,
 )
 
 logger = logging.getLogger("documentdb_mcp.kg")
 
-_SOURCE = "documentdb-mcp"
-_DOMAIN = "documentdb"
+_BINDING = IngestBinding(connector="documentdb-mcp", stream="documentdb")
 _SERVER_ID = "documentdb:server:default"
 
 
-def ingest_entities(
-    entities: list[dict[str, Any]],
-    relationships: list[dict[str, Any]] | None = None,
-    *,
-    source: str = _SOURCE,
-    domain: str = _DOMAIN,
-    client: Any | None = None,
-    graph: str | None = None,
-) -> dict[str, int]:
-    """Write canonical typed nodes and relationships through native ingestion."""
-    return _native_ingest_entities(
-        entities,
-        relationships,
-        source=source,
-        domain=domain,
-        client=client,
-        graph=graph,
+def _to_entity(record: dict[str, Any]) -> Entity:
+    return Entity(
+        id=record.get("id"),
+        node_type=record.get("node_type"),
+        properties={k: v for k, v in record.items() if k not in ("id", "node_type")},
     )
 
 
-def ingest_documents(
+def _to_relationship(record: dict[str, Any]) -> Relationship:
+    props = {
+        k: v for k, v in record.items() if k not in ("source", "target", "relationship")
+    }
+    return Relationship(
+        source=record.get("source"),
+        target=record.get("target"),
+        relationship=record.get("relationship"),
+        properties=props or None,
+    )
+
+
+def _to_document(record: dict[str, Any]) -> Document:
+    return Document(
+        id=record.get("id"),
+        text=record.get("text"),
+        title=record.get("title"),
+        source_uri=record.get("source_uri"),
+        properties={
+            k: v
+            for k, v in record.items()
+            if k not in ("id", "text", "title", "source_uri")
+        },
+    )
+
+
+async def ingest_entities(
+    entities: list[dict[str, Any]],
+    relationships: list[dict[str, Any]] | None = None,
+    *,
+    ingest: KnowledgeIngest | None = None,
+) -> dict[str, int]:
+    """Write canonical typed nodes and relationships through the SDK's ingest facade."""
+    if not entities:
+        raise IngestError("ingest_entities needs at least one entity")
+    change_set = ChangeSet(
+        entities=tuple(_to_entity(e) for e in entities),
+        relationships=tuple(_to_relationship(r) for r in relationships or ()),
+    )
+    service = ingest or current_ingest()
+    receipt = await service.submit(_BINDING, change_set)
+    return {"nodes": receipt.affected_count, "edges": receipt.relationship_count}
+
+
+async def ingest_documents(
     documents: list[dict[str, Any]],
     *,
-    source: str = _SOURCE,
-    domain: str = _DOMAIN,
-    client: Any | None = None,
-    graph: str | None = None,
+    ingest: KnowledgeIngest | None = None,
 ) -> dict[str, int]:
     """Write text records as ``:Document`` nodes (semantic-search fodder).
 
     Each doc: ``{"id":..., "text":..., "title"?:..., "source_uri"?:..., ...props}``.
-    Containment relationships are committed with their document nodes.
+    An optional ``_rel`` key (``{"source":..., "target":..., "relationship":...}``)
+    is pulled off and submitted as a containment relationship alongside the document.
     """
-    nodes: list[dict[str, Any]] = []
-    rels: list[dict[str, Any]] = []
+    docs: list[Document] = []
+    rels: list[Relationship] = []
     for doc in documents or []:
         did = doc.get("id")
         text = doc.get("text") or doc.get("content")
         if not did or not text:
             continue
-        node = {
-            k: v
-            for k, v in doc.items()
-            if k not in ("content", "_rel") and v is not None
-        }
-        node["id"] = did
-        node["node_type"] = "Document"
-        node["text"] = text
-        node["needs_enrichment"] = True
-        nodes.append(node)
         rel = doc.get("_rel")
+        clean = {
+            k: v for k, v in doc.items() if k not in ("content", "_rel") and v is not None
+        }
+        clean["id"] = did
+        clean["text"] = text
+        docs.append(_to_document(clean))
         if rel:
-            rels.append(rel)
-    return _native_ingest_entities(
-        nodes,
-        rels,
-        source=source,
-        domain=domain,
-        client=client,
-        graph=graph,
-    )
+            rels.append(_to_relationship(rel))
+    if not docs:
+        raise IngestError("ingest_documents needs at least one document")
+    change_set = ChangeSet(documents=tuple(docs), relationships=tuple(rels))
+    service = ingest or current_ingest()
+    receipt = await service.submit(_BINDING, change_set)
+    return {"nodes": receipt.affected_count, "edges": receipt.relationship_count}
 
 
 # --- domain mappers (records -> entity/document dicts) ---------------------------
 
 
-def ingest_catalog(
+async def ingest_catalog(
     api: Any,
     database_names: list[str] | None = None,
     *,
-    client: Any | None = None,
-    graph: str | None = None,
+    ingest: KnowledgeIngest | None = None,
 ) -> dict[str, int]:
     """Map a DocumentDB server's catalog → ``:DatabaseServer``/``:Database``/``:Collection``.
 
     Lists databases (and, per database, collections + document counts) via the live
     ``api`` client and pushes typed nodes with ``:hostedOnServer`` / ``:inDatabase``
-    links. Source and native-ingestion failures propagate.
+    links. Source and SDK ingest failures propagate.
     """
     try:
         version = api.binary_version()
@@ -173,18 +201,17 @@ def ingest_catalog(
             relationships.append(
                 {"source": col_id, "target": db_id, "relationship": "inDatabase"}
             )
-    return ingest_entities(entities, relationships, client=client, graph=graph)
+    return await ingest_entities(entities, relationships, ingest=ingest)
 
 
-def ingest_collection_documents(
+async def ingest_collection_documents(
     api: Any,
     database_name: str,
     collection_name: str,
     *,
     filter: dict[str, Any] | None = None,
     limit: int = 50,
-    client: Any | None = None,
-    graph: str | None = None,
+    ingest: KnowledgeIngest | None = None,
 ) -> dict[str, int]:
     """Sample rows from a collection → ``:Document`` nodes linked ``:inCollection``.
 
@@ -221,4 +248,4 @@ def ingest_collection_documents(
                 },
             }
         )
-    return ingest_documents(docs, client=client, graph=graph)
+    return await ingest_documents(docs, ingest=ingest)
