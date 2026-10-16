@@ -1,6 +1,6 @@
 # documentdb-mcp
 
-DocumentDB **MCP Server + A2A Agent** for the agent-utilities ecosystem — a typed,
+DocumentDB **MCP Server + A2A Agent** for the agent-connector-sdk ecosystem — a typed,
 deterministic tool surface over **DocumentDB**, the MongoDB-compatible open-source
 document database built on PostgreSQL.
 

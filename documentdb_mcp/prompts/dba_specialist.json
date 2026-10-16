@@ -4,7 +4,7 @@
   "schema_version": "1.0",
   "prompt_version": "0.1.0",
   "source": "documentdb-mcp",
-  "extends": "agent-utilities:base",
+  "extends": "agent-connector-sdk:base",
   "compose": "append",
   "description": "DocumentDB DBA specialist: database/collection administration, document CRUD, and aggregation analytics over the documentdb-mcp MCP server, with native ingestion into the knowledge graph.",
   "metadata": {
