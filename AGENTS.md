@@ -9,19 +9,9 @@
 - Key principles: Functional patterns, Pydantic for data validation, asynchronous tool execution.
 - Architecture:
     - `mcp_server.py`: Main MCP server entry point and tool registration.
-    - `agent_server.py`: Pydantic AI agent definition and logic.
     - `skills/`: Directory containing modular agent skills (if applicable).
 
 ### Architecture Diagram
-```mermaid
-graph TD
-    User([User/A2A]) --> Server[A2A Server / FastAPI]
-    Server --> Agent[Pydantic AI Agent]
-    Agent --> Skills[Modular Skills]
-    Agent --> MCP[MCP Server / FastMCP]
-    MCP --> Client[API Client / Wrapper]
-    Client --> ExternalAPI([External Service API])
-```
 
 ### Workflow Diagram
 ```mermaid
@@ -54,14 +44,10 @@ pre-commit run --all-files
 
 ## Project Structure Quick Reference
 - MCP Entry Point → `mcp_server.py`
-- Agent Entry Point → `agent_server.py`
 - Source Code → `documentdb_mcp/`
 - Skills → `skills/` (if exists)
 
 ### File Tree
-```text
-├── .bumpversion.cfg\n├── .dockerignore\n├── .env\n├── .gitattributes\n├── .github\n│   └── workflows\n│       └── pipeline.yml\n├── .gitignore\n├── .pre-commit-config.yaml\n├── AGENTS.md\n├── Dockerfile\n├── LICENSE\n├── MANIFEST.in\n├── README.md\n├── compose.yml\n├── debug.Dockerfile\n├── documentdb_mcp\n│   ├── __init__.py\n│   ├── __main__.py\n│   ├── agent_server.py\n│   └── mcp_server.py\n├── mcp.compose.yml\n├── pyproject.toml\n├── pytest.ini\n└── requirements.txt
-```
 
 ## Code Style & Conventions
 **Always:**
@@ -100,7 +86,6 @@ async def my_tool(param: str) -> str:
 - Use `agent-connector-sdk` base classes.
 
 **Ask first:**
-- Major refactors of `mcp_server.py` or `agent_server.py`.
 - Removing or renaming public tool functions.
 
 **Never do:**

@@ -63,13 +63,10 @@ Store the real remote URL, outbound identity reference, and TLS-profile referenc
 <!-- END GENERATED: deployment-options -->
 
 This page covers running `documentdb-mcp` as a long-lived server: the transports, a
-Docker Compose stack, the integrated agent server, putting it behind a Caddy reverse
 proxy, and giving it a DNS name with Technitium. To provision the **DocumentDB**
 endpoint it connects to, see [Backing Platform](platform.md).
 
 > `documentdb-mcp` ships both an **MCP server** (console script `documentdb-mcp`) and
-> an **A2A agent server** (console script `documentdb-agent`). The MCP server is the
-> typed, deterministic tool surface; the agent server is a Pydantic-AI graph agent
 > that calls those tools and exposes a web UI.
 
 ## Run the MCP server
@@ -157,46 +154,6 @@ services:
 cp .env.example .env          # then edit MONGODB_* values
 docker compose -f docker/mcp.compose.yml up -d
 docker compose -f docker/mcp.compose.yml logs -f
-```
-
-## Agent server
-
-The repo also ships [`docker/agent.compose.yml`](https://github.com/Knuckles-Team/documentdb-mcp/blob/main/docker/agent.compose.yml),
-which runs the MCP server alongside the **A2A agent** (console script
-`documentdb-agent`). The agent connects back to the MCP server over `MCP_URL` and
-publishes its web UI on `:9015`:
-
-```bash
-documentdb-agent --provider openai --model-id gpt-4o
-```
-
-```yaml
-services:
-  documentdb-mcp-agent:
-    image: example/documentdb-mcp@sha256:<digest>
-    container_name: documentdb-mcp-agent
-    hostname: documentdb-mcp-agent
-    restart: always
-    depends_on:
-      - documentdb-mcp-mcp
-    env_file:
-      - ../.env
-    command: [ "documentdb-agent" ]
-    environment:
-      - PYTHONUNBUFFERED=1
-      - HOST=0.0.0.0
-      - PORT=9015
-      - MCP_URL=http://documentdb-mcp-mcp:8000/mcp
-      - PROVIDER=${PROVIDER:-openai}
-      - MODEL_ID=${MODEL_ID:-gpt-4o}
-      - ENABLE_WEB_UI=True
-      - ENABLE_OTEL=True
-    ports:
-      - "9015:9015"
-```
-
-```bash
-docker compose -f docker/agent.compose.yml up -d
 ```
 
 ## Behind a Caddy reverse proxy
