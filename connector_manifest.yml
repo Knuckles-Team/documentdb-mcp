@@ -84,8 +84,8 @@ schema_mappings:
 sync:
 - preset: documentdb-collection-documents
   server: documentdb-mcp
-  tool: documentdb_crud
-  action: find
+  tool: documentdb_find
+  action: null
   records_path: ''
   id_field: _id
   title_field: _id
@@ -93,7 +93,7 @@ sync:
   updated_field: null
   pagination: null
   doc_type: documentdb_document
-  tool_schema_sha256: 9b0ee457e318c953fa4e3e58a2a17217f6bbaa8d2743f3f51b3a2f397469dce1
+  tool_schema_sha256: 5a2c7c9ca997ab389c10105eca3b792cd651d9218ab8df14a32b1556cb47751a
   raw:
     server: documentdb-mcp
     tool: documentdb_crud

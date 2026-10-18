@@ -3,6 +3,6 @@
   "connector": "documentdb-mcp",
   "schema_version": "1",
   "tools": {
-    "documentdb_crud": "9b0ee457e318c953fa4e3e58a2a17217f6bbaa8d2743f3f51b3a2f397469dce1"
+    "documentdb_find": "5a2c7c9ca997ab389c10105eca3b792cd651d9218ab8df14a32b1556cb47751a"
   }
 }
