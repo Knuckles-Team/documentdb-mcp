@@ -4,10 +4,6 @@ import sys
 from typing import Any
 from unittest.mock import MagicMock, patch
 
-# Pre-emptively mock agent_utilities to prevent tree_sitter_javascript import errors
-mock_agent_utils = MagicMock()
-mock_agent_utils.load_identity.return_value = {"name": "documentdb-mcp"}
-sys.modules["agent_utilities"] = mock_agent_utils
 
 import pytest
 
@@ -177,18 +173,6 @@ def test_mcp_server_coverage(mock_mongo):
         assert mcp is not None
 
 
-def test_agent_server_coverage():
-    # CONCEPT:AU-ECO.mcp.fastmcp-middleware
-    import documentdb_mcp.agent_server as mod
-    from documentdb_mcp import agent_server
-
-    with patch("agent_utilities.create_agent_server") as mock_s:
-        with patch("sys.argv", ["agent_server.py"]):
-            if inspect.isfunction(agent_server):
-                agent_server()
-            else:
-                mod.agent_server()
-            assert mock_s.called
 
 
 def test_main_coverage():

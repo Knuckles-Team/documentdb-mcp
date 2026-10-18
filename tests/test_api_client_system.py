@@ -25,7 +25,7 @@ def test_binary_version(api_client, mock_client):
     # Error fallback
     # CONCEPT:AU-OS.config.secrets-authentication
     mock_client.admin.command.side_effect = Exception("Connection lost")
-    assert "Error: Connection lost" in api_client.binary_version()
+    assert "Error: Exception" in api_client.binary_version()
 
 
 def test_list_databases(api_client, mock_client):

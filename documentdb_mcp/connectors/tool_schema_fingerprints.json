@@ -1,8 +1,8 @@
 {
-  "algorithm": "agent-utilities:mcp-tool-schema-compat:v1",
+  "algorithm": "agent-connector-sdk:mcp-tool-contract-compat:v2",
   "connector": "documentdb-mcp",
   "schema_version": "1",
   "tools": {
-    "documentdb_crud": "e19b7a81f9c4758fc908a0c0942045b144c78439e8dceb3fd705ac85b1ec901d"
+    "documentdb_crud": "9b0ee457e318c953fa4e3e58a2a17217f6bbaa8d2743f3f51b3a2f397469dce1"
   }
 }

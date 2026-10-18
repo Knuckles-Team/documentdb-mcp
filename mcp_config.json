@@ -7,7 +7,6 @@
         "documentdb-mcp"
       ],
       "env": {
-        "MCP_TOOL_MODE": "intent",
         "ANALYSISTOOL": "True",
         "COLLECTIONSTOOL": "True",
         "CRUDTOOL": "True",

@@ -75,14 +75,6 @@ api.delete_one("documentation_db", "orders", {"_id": "65a..."})
 The MCP server console script doubles as a CLI entry point, and the package ships a
 Pydantic-AI graph agent:
 
-```bash
-# Run the MCP server (default stdio transport)
-documentdb-mcp
-
-# Run the integrated agent server (web UI + ACP) — see Deployment
-documentdb-agent --provider openai --model-id gpt-4o
-```
-
 Each connector reads its connection settings from the environment (see
 [`.env.example`](https://github.com/Knuckles-Team/documentdb-mcp/blob/main/.env.example))
 and the server remains inactive when no reachable endpoint is configured.

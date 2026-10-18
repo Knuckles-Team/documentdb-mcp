@@ -1,6 +1,5 @@
 # documentdb-mcp
 
-DocumentDB **MCP Server + A2A Agent** for the agent-utilities ecosystem — a typed,
 deterministic tool surface over **DocumentDB**, the MongoDB-compatible open-source
 document database built on PostgreSQL.
 
@@ -22,7 +21,6 @@ action-routed MCP tools and a Pydantic-AI graph agent. It provides:
   users, CRUD, and analysis operations behind one tolerant facade.
 - **Action-routed MCP tools** — five togglable tool modules (system, collections,
   users, CRUD, analysis) that minimize token overhead in an LLM context.
-- **An integrated A2A agent** — a Pydantic-AI graph agent (console script
   `documentdb-agent`) that speaks the Agent Control Protocol and exposes a web UI.
 
 The server connects to any MongoDB-compatible endpoint, so it operates against
@@ -56,5 +54,4 @@ documentdb-mcp --transport streamable-http --host 0.0.0.0 --port 8000
 ```
 
 See **[Installation](installation.md)** and **[Deployment](deployment.md)** for the
-full matrix (PyPI extras, Docker image, all transports, the agent server, reverse
 proxy, DNS).

@@ -84,6 +84,6 @@
     rdfs:label "DocumentDB Ontology" ;
     rdfs:comment """DocumentDB (MongoDB-compatible, PostgreSQL-backed) model — servers,
     databases, collections, stored documents and database users, with their containment
-    and authorization relationships — federated into the agent-utilities knowledge-graph
+    and authorization relationships — federated into the agent-connector-sdk knowledge-graph
     hub. Reuses the shared :Document and :Person classes.""" ;
     owl:imports <http://knuckles.team/kg> .

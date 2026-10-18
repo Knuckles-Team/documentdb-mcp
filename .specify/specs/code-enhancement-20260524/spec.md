@@ -15,7 +15,7 @@
 
 ## Functional Requirements
 
-- **FR-001**: Minor update: agent-utilities 0.2.40 (installed) -> 0.16.0
+- **FR-001**: Minor update: agent-connector-sdk 0.2.40 (installed) -> 0.16.0
 - **FR-002**: Minor update: pytest-xdist 3.6.0 (constraint — not installed) -> 3.8.0
 - **FR-003**: Minor update: pymongo 4.0 (constraint — not installed) -> 4.17.0
 - **FR-004**: Test suite lacks intent diversity (only one type)
@@ -39,7 +39,7 @@
 - **FR-022**: Test directory lacks subdirectory organization (consider unit/, integration/, e2e/)
 - **FR-023**: 4 tests have excessive mocking (>5 mocks) — test behavior, not implementation
 - **FR-024**: 1 tests exceed 100 lines — likely doing too much per test
-- **FR-025**: Analysis error: No module named 'agent_utilities.knowledge_graph'
+- **FR-025**: Analysis error: No module named 'agent_connector_sdk.knowledge_graph'
 
 ## Success Criteria
 

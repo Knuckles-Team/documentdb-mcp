@@ -21,8 +21,7 @@ The base install ships the MCP server. Install the extra for what the operator n
 
 | Extra | Install | Pulls in |
 |---|---|---|
-| _(base)_ | `pip install documentdb-mcp` | MCP-server runtime (`agent-utilities[mcp]`, `pymongo`) |
-| `agent` | `pip install "documentdb-mcp[agent]"` | Pydantic-AI agent + Logfire tracing (`agent-utilities[agent-runtime,logfire]`) |
+| _(base)_ | `pip install documentdb-mcp` | MCP-server runtime (`agent-connector-sdk`, `pymongo`) |
 | `all` | `pip install "documentdb-mcp[all]"` | MCP server, agent, and Logfire tracing |
 | `test` | `pip install "documentdb-mcp[test]"` | `pytest`, `pytest-asyncio`, `pytest-cov`, `pytest-xdist` |
 
@@ -59,7 +58,6 @@ docker run --rm -i \
   example/documentdb-mcp@sha256:<digest>        # stdio transport (default)
 ```
 
-For an HTTP server with a published port and the agent server, see
 [Deployment](deployment.md).
 
 ## Verify the install
