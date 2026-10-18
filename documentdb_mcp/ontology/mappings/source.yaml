@@ -4,15 +4,15 @@ ontology_source: documentdb
 sync:
 - preset: documentdb-collection-documents
   server: documentdb-mcp
-  tool: documentdb_crud
-  action: find
+  tool: documentdb_find
+  action: null
   records_path: ''
   id_field: _id
   title_field: _id
   text_field: text
   updated_field: null
   doc_type: documentdb_document
-  tool_schema_sha256: e19b7a81f9c4758fc908a0c0942045b144c78439e8dceb3fd705ac85b1ec901d
+  tool_schema_sha256: 5a2c7c9ca997ab389c10105eca3b792cd651d9218ab8df14a32b1556cb47751a
 governance:
   default_acl: quarantine
   identity: opaque-reference
