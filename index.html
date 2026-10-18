@@ -6,8 +6,6 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="DocumentDB MCP Server + A2A Agent — a typed, deterministic tool surface over DocumentDB, the MongoDB-compatible document database built on PostgreSQL, for the agent-utilities ecosystem.">
-      
       
       
         <link rel="canonical" href="https://knuckles-team.github.io/documentdb-mcp/">
@@ -809,8 +807,7 @@
 
 
 <h1 id="documentdb-mcp">documentdb-mcp<a class="headerlink" href="#documentdb-mcp" title="Permanent link">&para;</a></h1>
-<p>DocumentDB <strong>MCP Server + A2A Agent</strong> for the agent-utilities ecosystem — a typed,
-deterministic tool surface over <strong>DocumentDB</strong>, the MongoDB-compatible open-source
+<p>deterministic tool surface over <strong>DocumentDB</strong>, the MongoDB-compatible open-source
 document database built on PostgreSQL.</p>
 <div class="admonition info">
 <p class="admonition-title">Official documentation</p>
@@ -828,8 +825,7 @@ action-routed MCP tools and a Pydantic-AI graph agent. It provides:</p>
 <li><strong><code>DocumentDBApi</code></strong> — a <code>pymongo</code>-backed client that groups system, collections,
   users, CRUD, and analysis operations behind one tolerant facade.</li>
 <li><strong>Action-routed MCP tools</strong> — five togglable tool modules (system, collections,
-  users, CRUD, analysis) that minimize token overhead in an LLM context.</li>
-<li><strong>An integrated A2A agent</strong> — a Pydantic-AI graph agent (console script
+  users, CRUD, analysis) that minimize token overhead in an LLM context.
   <code>documentdb-agent</code>) that speaks the Agent Control Protocol and exposes a web UI.</li>
 </ul>
 <p>The server connects to any MongoDB-compatible endpoint, so it operates against
@@ -854,7 +850,6 @@ DocumentDB or a standard MongoDB deployment interchangeably.</p>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>documentdb-mcp<span class="w"> </span>--transport<span class="w"> </span>streamable-http<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
 </span></code></pre></div>
 <p>See <strong><a href="installation/">Installation</a></strong> and <strong><a href="deployment/">Deployment</a></strong> for the
-full matrix (PyPI extras, Docker image, all transports, the agent server, reverse
 proxy, DNS).</p>
 
 

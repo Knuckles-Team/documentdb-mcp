@@ -6,8 +6,6 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="DocumentDB MCP Server + A2A Agent — a typed, deterministic tool surface over DocumentDB, the MongoDB-compatible document database built on PostgreSQL, for the agent-utilities ecosystem.">
-      
       
       
         <link rel="canonical" href="https://knuckles-team.github.io/documentdb-mcp/installation/">
@@ -936,12 +934,7 @@ path that matches how the operator want to run it.</p>
 <tr>
 <td><em>(base)</em></td>
 <td><code>pip install documentdb-mcp</code></td>
-<td>MCP-server runtime (<code>agent-utilities[mcp]</code>, <code>pymongo</code>)</td>
-</tr>
-<tr>
-<td><code>agent</code></td>
-<td><code>pip install "documentdb-mcp[agent]"</code></td>
-<td>Pydantic-AI agent + Logfire tracing (<code>agent-utilities[agent-runtime,logfire]</code>)</td>
+<td>MCP-server runtime (<code>agent-connector-sdk</code>, <code>pymongo</code>)</td>
 </tr>
 <tr>
 <td><code>all</code></td>
@@ -976,8 +969,7 @@ path that matches how the operator want to run it.</p>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">MONGODB_URI</span><span class="o">=</span>mongodb://your-documentdb:27017/<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span>example/documentdb-mcp@sha256:&lt;digest&gt;<span class="w">        </span><span class="c1"># stdio transport (default)</span>
 </span></code></pre></div>
-<p>For an HTTP server with a published port and the agent server, see
-<a href="../deployment/">Deployment</a>.</p>
+<p><a href="../deployment/">Deployment</a>.</p>
 <h2 id="verify-the-install">Verify the install<a class="headerlink" href="#verify-the-install" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>documentdb-mcp<span class="w"> </span>--help
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"import documentdb_mcp; print(documentdb_mcp.__version__)"</span>

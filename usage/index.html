@@ -6,8 +6,6 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="DocumentDB MCP Server + A2A Agent — a typed, deterministic tool surface over DocumentDB, the MongoDB-compatible document database built on PostgreSQL, for the agent-utilities ecosystem.">
-      
       
       
         <link rel="canonical" href="https://knuckles-team.github.io/documentdb-mcp/usage/">
@@ -932,12 +930,6 @@ users, CRUD, and analysis operations. Build one straight from the environment wi
 <h2 id="as-a-cli-agent">As a CLI / agent<a class="headerlink" href="#as-a-cli-agent" title="Permanent link">&para;</a></h2>
 <p>The MCP server console script doubles as a CLI entry point, and the package ships a
 Pydantic-AI graph agent:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Run the MCP server (default stdio transport)</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>documentdb-mcp
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Run the integrated agent server (web UI + ACP) — see Deployment</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>documentdb-agent<span class="w"> </span>--provider<span class="w"> </span>openai<span class="w"> </span>--model-id<span class="w"> </span>gpt-4o
-</span></code></pre></div>
 <p>Each connector reads its connection settings from the environment (see
 <a href="https://github.com/Knuckles-Team/documentdb-mcp/blob/main/.env.example"><code>.env.example</code></a>)
 and the server remains inactive when no reachable endpoint is configured.</p>
