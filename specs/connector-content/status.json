@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "spec_id": "CONN-DOCUMENTDB-MCP-CONNECTOR-CONTENT",
+  "owner_repo": "documentdb-mcp",
+  "delivery_state": "VERIFIED",
+  "requirement_ids": [
+    "CONN-DOCUMENTDB-MCP-CONNECTOR-CONTENT-R001"
+  ],
+  "requirements": [
+    {
+      "id": "CONN-DOCUMENTDB-MCP-CONNECTOR-CONTENT-R001",
+      "title": "Default content",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "9a5bf0840205"
+      ],
+      "verified_by": [
+        "tests/test_default_content_surfaces.py:15"
+      ]
+    }
+  ]
+}
