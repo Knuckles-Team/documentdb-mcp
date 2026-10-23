@@ -20,7 +20,7 @@
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/documentdb-mcp)
 ![PyPI - Implementation](https://img.shields.io/pypi/implementation/documentdb-mcp)
 
-*Version: 2.3.2*
+*Version: 2.3.3*
 
 > **Documentation** — Installation, deployment, usage across the API, CLI, MCP, and
 > agent interfaces, and guidance for provisioning the DocumentDB backing service are

@@ -21,9 +21,8 @@
     rdfs:label "Database" ;
     rdfs:comment "A logical database on a DocumentDB server, containing collections (documentdb_system list_databases / documentdb_collections create_database)." .
 
-:Collection a owl:Class ;
-    rdfs:label "Collection" ;
-    rdfs:comment "A collection of documents within a Database — the MongoDB analogue of a table (documentdb_collections list_collections)." .
+:Collection a owl:Class .
+
 
 :DatabaseUser a owl:Class ;
     rdfs:label "Database User" ;
@@ -85,5 +84,4 @@
     rdfs:comment """DocumentDB (MongoDB-compatible, PostgreSQL-backed) model — servers,
     databases, collections, stored documents and database users, with their containment
     and authorization relationships — federated into the agent-connector-sdk knowledge-graph
-    hub. Reuses the shared :Document and :Person classes.""" ;
-    owl:imports <http://knuckles.team/kg> .
+    hub. Reuses the shared :Document and :Person classes.""" .
