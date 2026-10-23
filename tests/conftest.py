@@ -29,3 +29,10 @@ def api_client(mock_client):
     CONCEPT:AU-ECO.mcp.fastmcp-middleware
     """
     return DocumentDBApi(client=mock_client)
+
+
+def pytest_configure(config):
+    """Register the spec marker that binds a test to a requirement row."""
+    config.addinivalue_line(
+        "markers", "spec(id): Binds a test to a requirement row of a spec."
+    )
