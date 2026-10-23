@@ -1,0 +1,40 @@
+{
+  "schema_version": 2,
+  "spec_id": "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION",
+  "owner_repo": "documentdb-mcp",
+  "delivery_state": "SPECIFIED",
+  "requirement_ids": [
+    "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001",
+    "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001.1",
+    "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001.2"
+  ],
+  "requirements": [
+    {
+      "id": "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001",
+      "title": "Capabilities come from the SDK (rollup)",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [
+        "a53aaf84b4bc"
+      ],
+      "verified_by": [],
+      "rollup_of": [
+        "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001.1",
+        "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001.2"
+      ]
+    },
+    {
+      "id": "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001.1",
+      "title": "Database driver from the SDK",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": []
+    },
+    {
+      "id": "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001.2",
+      "title": "SDK floor",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": []
+    }
+  ]
+}
