@@ -393,7 +393,7 @@ wheels = [
 
 [[package]]
 name = "documentdb-mcp"
-version = "2.3.1"
+version = "2.3.2"
 source = { editable = "." }
 dependencies = [
     { name = "agent-connector-sdk", extra = ["db", "mcp"] },
