@@ -68,3 +68,25 @@ def __getattr__(name: str) -> Any:
 
 def __dir__() -> list[str]:
     return sorted(list(globals().keys()) + __all__)
+
+
+from agent_connector_sdk.connector import Connector
+from agent_connector_sdk.connector_hooks import RegistrationContext
+
+from documentdb_mcp.api_client import DocumentDBApi
+from documentdb_mcp.auth import get_client
+
+
+def _register_legacy_health(context: RegistrationContext) -> None:
+    """Reuse the existing health route through the public SDK hook."""
+    from documentdb_mcp.mcp_server import register_health_route
+
+    register_health_route(context.server)
+
+
+connector = Connector(
+    api=DocumentDBApi,
+    get_client=get_client,
+    instructions="documentdb-mcp MCP Server — Condensed Action-Routed Tools.",
+    extra_registrations=(_register_legacy_health,),
+)

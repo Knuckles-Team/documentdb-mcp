@@ -22,12 +22,11 @@ import sys
 from typing import Any
 
 from agent_connector_sdk.config import load_config
-from agent_connector_sdk.mcp.server import create_mcp_server
-from agent_connector_sdk.mcp.tool_surface import register_tool_surface
+from agent_connector_sdk.connector import build_server
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from documentdb_mcp.api_client import DocumentDBApi
+from documentdb_mcp.api_client import DocumentDBApi as DocumentDBApi
 from documentdb_mcp.auth import get_client
 from documentdb_mcp.tools import (
     register_analysis_tools,  # noqa: F401
@@ -44,14 +43,8 @@ logger = get_logger(name="documentdb-mcp")
 logger.setLevel(logging.INFO)
 
 
-def get_mcp_instance() -> tuple[Any, ...]:
-    """Initialize and return the MCP instance."""
-    load_config()
-    args, mcp, middlewares = create_mcp_server(
-        name="documentdb-mcp MCP",
-        version=__version__,
-        instructions="documentdb-mcp MCP Server — Condensed Action-Routed Tools.",
-    )
+def register_health_route(mcp: Any) -> None:
+    """Register the existing backend health route unchanged."""
 
     @mcp.custom_route("/health", methods=["GET"])
     async def health_check(request: Request) -> JSONResponse:
@@ -76,17 +69,12 @@ def get_mcp_instance() -> tuple[Any, ...]:
             )
         return JSONResponse({"status": "OK", "backend": "reachable"})
 
-    register_tool_surface(
-        mcp,
-        client_cls=DocumentDBApi,
-        get_client=get_client,
-        service="documentdb-mcp",
-        tools_module=sys.modules[__name__],
-    )
 
-    for mw in middlewares:
-        mcp.add_middleware(mw)
-    return mcp, args, middlewares
+def get_mcp_instance(*, command_args=None) -> tuple[Any, ...]:
+    """Preserve legacy configuration while composing the SDK descriptor."""
+    load_config()
+    args, mcp = build_server("documentdb_mcp", command_args=command_args)
+    return mcp, args, list(mcp.middleware)
 
 
 def mcp_server() -> None:
