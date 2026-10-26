@@ -104,7 +104,9 @@ async def ingest_documents(
             continue
         rel = doc.get("_rel")
         clean = {
-            k: v for k, v in doc.items() if k not in ("content", "_rel") and v is not None
+            k: v
+            for k, v in doc.items()
+            if k not in ("content", "_rel") and v is not None
         }
         clean["id"] = did
         clean["text"] = text

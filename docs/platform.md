@@ -81,7 +81,7 @@ services:
     image: example/documentdb-mcp@sha256:<digest>
     depends_on: [documentdb]
     environment:
-      - MONGODB_URI=mongodb://admin:change-me@documentdb:10260/?authMechanism=SCRAM-SHA-256
+      - MONGODB_URI=mongodb://admin:password@documentdb:10260/?authMechanism=SCRAM-SHA-256
       - AUTH_TYPE=scram-sha-256
       - TRANSPORT=streamable-http
       - HOST=0.0.0.0

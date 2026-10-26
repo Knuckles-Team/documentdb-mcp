@@ -79,7 +79,7 @@ documentdb_crud action=find_one_and_update database_name=app collection_name=job
 - `count_documents` returns `-1` on error (it never raises), so treat negatives as
   failures, not empty collections.
 - Filters/updates may be passed as JSON strings; the client parses them, but an
-  unparseable string is sent through verbatim and will fail.
+  unparsable string is sent through verbatim and will fail.
 
 ## Related
 - **Native KG ingestion:** `documentdb_ingest_documents` samples a collection and pushes
