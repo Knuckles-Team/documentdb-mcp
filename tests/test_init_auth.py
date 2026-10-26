@@ -79,12 +79,12 @@ def test_get_client_uri_scenarios():
     with patch("pymongo.MongoClient") as mock_mongo:
         # Scenario 1: MONGODB_URI is specified
         with patch.dict(
-            os.environ, {"MONGODB_URI": "mongodb://user:pass@remote:27017/"}
+            os.environ, {"MONGODB_URI": "mongodb://user:password@localhost:27017/"}
         ):
             client = get_client()
             assert client is not None
             mock_mongo.assert_called_with(
-                "mongodb://user:pass@remote:27017/", serverSelectionTimeoutMS=5000
+                "mongodb://user:password@localhost:27017/", serverSelectionTimeoutMS=5000
             )
 
         # Scenario 2: MONGODB_URI is not specified, check host/port construction
