@@ -2,7 +2,7 @@
   "schema_version": 2,
   "spec_id": "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION",
   "owner_repo": "documentdb-mcp",
-  "delivery_state": "LANDED",
+  "delivery_state": "VERIFIED",
   "requirement_ids": [
     "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001",
     "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001.1",
@@ -12,12 +12,15 @@
     {
       "id": "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001",
       "title": "Capabilities come from the SDK (rollup)",
-      "delivery_state": "LANDED",
+      "delivery_state": "VERIFIED",
       "landed_in": [
         "a53aaf84b4bc",
         "ff85221376ba"
       ],
-      "verified_by": [],
+      "verified_by": [
+        "tests/test_sdk_dependencies.py:14",
+        "tests/test_sdk_dependencies.py:25"
+      ],
       "rollup_of": [
         "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001.1",
         "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001.2"
@@ -26,20 +29,24 @@
     {
       "id": "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001.1",
       "title": "Database driver from the SDK",
-      "delivery_state": "LANDED",
+      "delivery_state": "VERIFIED",
       "landed_in": [
         "ff85221376ba"
       ],
-      "verified_by": []
+      "verified_by": [
+        "tests/test_sdk_dependencies.py:14"
+      ]
     },
     {
       "id": "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001.2",
       "title": "SDK floor",
-      "delivery_state": "LANDED",
+      "delivery_state": "VERIFIED",
       "landed_in": [
         "ff85221376ba"
       ],
-      "verified_by": []
+      "verified_by": [
+        "tests/test_sdk_dependencies.py:25"
+      ]
     }
   ]
 }

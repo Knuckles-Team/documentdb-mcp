@@ -7,12 +7,11 @@ import re
 
 import pytest
 
-ID = "CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001"
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 FILES = ("pyproject.toml", "requirements.txt")
 
 
-@pytest.mark.spec(f"{ID}.1")
+@pytest.mark.spec("CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001.1")
 def test_driver_comes_from_the_sdk_db_extra() -> None:
     for name in FILES:
         text = (ROOT / name).read_text()
@@ -23,7 +22,7 @@ def test_driver_comes_from_the_sdk_db_extra() -> None:
     assert pymongo.version
 
 
-@pytest.mark.spec(f"{ID}.2")
+@pytest.mark.spec("CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION-R001.2")
 def test_sdk_floor_is_current() -> None:
     for name in FILES:
         text = (ROOT / name).read_text()
