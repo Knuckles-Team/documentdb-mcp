@@ -13,3 +13,4 @@ Read the existing specs first. Extend the spec that owns the behavior. Create a 
 ## Local specifications
 
 - [`CONN-DOCUMENTDB-MCP-SDK-CENTRALIZATION`](sdk-centralization/spec.md) — Capabilities through the SDK.
+- [`CONN-DOCUMENTDB-MCP-CONNECTOR-CONTENT`](connector-content/spec.md) — The connector serves its packaged content.
