@@ -8,36 +8,36 @@ from unittest.mock import MagicMock, patch
 
 class TestToolRegistration:
     def test_tools_registered(self):
-        """Verify that tools are registered successfully.
+        """The actual SDK-composed server retains the existing API and KG tools."""
+        import asyncio
 
-        CONCEPT:AU-ECO.mcp.fastmcp-middleware
-        """
-        from unittest.mock import MagicMock, patch
-
+        from fastmcp import Client
         from documentdb_mcp.mcp_server import get_mcp_instance
 
-        with patch("documentdb_mcp.mcp_server.get_client", return_value=MagicMock()):
-            with patch("documentdb_mcp.mcp_server.create_mcp_server") as mock_create:
-                mcp_mock = MagicMock()
-                mock_create.return_value = (mcp_mock, MagicMock(), [MagicMock()])
-                mcp, _, _ = get_mcp_instance()
+        async def capture():
+            server, _, _ = get_mcp_instance(command_args=["--transport", "stdio", "--auth-type", "none"])
+            async with Client(server) as client:
+                return {tool.name for tool in await client.list_tools()}
 
-                # Verify that mcp tool decorators were executed during module load or instance creation
-                assert mcp is not None
+        names = asyncio.run(capture())
+        assert len(names) == 30
+        assert {"documentdb_find", "documentdb_ingest_documents"} <= names
 
 
 class TestGetMcpInstance:
     def test_get_mcp_instance(self):
-        # CONCEPT:AU-ECO.mcp.fastmcp-middleware
+        """Keep the legacy server/args/middleware startup tuple."""
         from documentdb_mcp.mcp_server import get_mcp_instance
 
-        with patch("documentdb_mcp.mcp_server.get_client", return_value=MagicMock()):
-            with patch("documentdb_mcp.mcp_server.create_mcp_server") as mock_create:
-                mock_create.return_value = (MagicMock(), MagicMock(), [MagicMock()])
-
-                mcp, args, middlewares = get_mcp_instance()
-
-                assert mcp is not None
+        server = MagicMock()
+        middleware = MagicMock()
+        server.middleware = [middleware]
+        arguments = MagicMock()
+        with patch("documentdb_mcp.mcp_server.build_server", return_value=(arguments, server)):
+            actual_server, actual_args, actual_middlewares = get_mcp_instance()
+        assert actual_server is server
+        assert actual_args is arguments
+        assert actual_middlewares == [middleware]
 
 
 class TestVersion:
