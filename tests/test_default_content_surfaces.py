@@ -73,7 +73,6 @@ def _no_outbound_network(monkeypatch):
     monkeypatch.setattr(socket.socket, "connect", refuse)
 
 
-
 def test_sdk_floor_supports_content_identity_and_current_pack_protocol() -> None:
     import tomllib
 
@@ -86,7 +85,7 @@ def test_sdk_floor_supports_content_identity_and_current_pack_protocol() -> None
     sdk = [Requirement(value) for value in declared if value.startswith("scion-sdk")]
     assert sdk
     for requirement in sdk:
-        assert requirement.specifier.contains("0.5.6")
+        assert requirement.specifier.contains("0.5.9")
         assert not requirement.specifier.contains("0.5.5")
 
 
@@ -121,10 +120,21 @@ def test_canonical_and_legacy_routes_preserve_the_full_tool_surface():
     from agent_connector_sdk.connector import build_server
 
     async def capture():
-        _, canonical = build_server(PACKAGE, command_args=["--transport", "stdio", "--auth-type", "none"])
-        async with Client(_server()) as legacy_client, Client(canonical) as canonical_client:
-            legacy = {tool.name: tool.model_dump(mode="json") for tool in await legacy_client.list_tools()}
-            declared = {tool.name: tool.model_dump(mode="json") for tool in await canonical_client.list_tools()}
+        _, canonical = build_server(
+            PACKAGE, command_args=["--transport", "stdio", "--auth-type", "none"]
+        )
+        async with (
+            Client(_server()) as legacy_client,
+            Client(canonical) as canonical_client,
+        ):
+            legacy = {
+                tool.name: tool.model_dump(mode="json")
+                for tool in await legacy_client.list_tools()
+            }
+            declared = {
+                tool.name: tool.model_dump(mode="json")
+                for tool in await canonical_client.list_tools()
+            }
         assert len(legacy) == 30
         for name in ("documentdb_ingest_catalog", "documentdb_ingest_documents"):
             assert {"gated", "granular"} <= set(legacy[name]["meta"]["fastmcp"]["tags"])
@@ -133,7 +143,9 @@ def test_canonical_and_legacy_routes_preserve_the_full_tool_surface():
     asyncio.run(capture())
 
 
-def test_legacy_cli_configuration_file_still_controls_host_and_port(tmp_path, monkeypatch):
+def test_legacy_cli_configuration_file_still_controls_host_and_port(
+    tmp_path, monkeypatch
+):
     import json
     from documentdb_mcp.mcp_server import get_mcp_instance
 
@@ -142,5 +154,7 @@ def test_legacy_cli_configuration_file_still_controls_host_and_port(tmp_path, mo
     monkeypatch.delenv("HOST", raising=False)
     monkeypatch.delenv("PORT", raising=False)
     monkeypatch.setenv("CONNECTOR_CONFIG_FILE", str(config))
-    _, args, _ = get_mcp_instance(command_args=["--transport", "stdio", "--auth-type", "none"])
+    _, args, _ = get_mcp_instance(
+        command_args=["--transport", "stdio", "--auth-type", "none"]
+    )
     assert (args.host, args.port) == ("127.0.0.1", 9187)
