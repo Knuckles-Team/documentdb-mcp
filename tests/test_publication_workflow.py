@@ -13,10 +13,7 @@ def _workflow(name: str) -> dict:
     return yaml.safe_load((ROOT / ".github/workflows" / name).read_text())
 
 
-
-
 def test_pages_workflow_publishes_the_spec_dashboard() -> None:
-
 
     config = json.loads((ROOT / ".github/spec-dashboard.json").read_text())
     assert config == {

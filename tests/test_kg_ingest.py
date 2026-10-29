@@ -30,7 +30,9 @@ class _FakeTransport:
         self.requests: list[Any] = []
 
     async def source_status(self, connector: str, stream: str) -> Any:
-        return SimpleNamespace(connector=connector, stream=stream, accepted_checkpoint=None)
+        return SimpleNamespace(
+            connector=connector, stream=stream, accepted_checkpoint=None
+        )
 
     async def submit(self, request: Any) -> Any:
         self.requests.append(request)
@@ -134,7 +136,9 @@ async def test_ingest_catalog_maps_server_database_collection(ingest):
     assert col.mapping_reference.endswith("/Collection")
     assert col.payload["documentCount"] == 3
     assert col.payload["collectionName"] == "users"
-    edge_names = {r.relation_reference.rsplit("/", 1)[-1] for r in request.relationships}
+    edge_names = {
+        r.relation_reference.rsplit("/", 1)[-1] for r in request.relationships
+    }
     assert edge_names == {"hostedOnServer", "inDatabase"}
 
 
