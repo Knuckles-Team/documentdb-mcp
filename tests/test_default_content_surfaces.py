@@ -147,6 +147,7 @@ def test_legacy_cli_configuration_file_still_controls_host_and_port(
     tmp_path, monkeypatch
 ):
     import json
+
     from documentdb_mcp.mcp_server import get_mcp_instance
 
     config = tmp_path / "connector.json"
