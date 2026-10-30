@@ -3,7 +3,7 @@
 import logging
 
 import pymongo
-from agent_connector_sdk.config import setting
+from scion_sdk.config import setting
 
 from documentdb_mcp.api_client import DocumentDBApi
 

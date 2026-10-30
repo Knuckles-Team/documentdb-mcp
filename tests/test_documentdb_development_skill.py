@@ -62,7 +62,7 @@ def test_development_skill_has_rapid_contract_and_package_binding() -> None:
     assert "--no-verify" not in text
     package_data = project["tool"]["setuptools"]["package-data"]["documentdb_mcp"]
     assert "skills/**" in package_data
-    assert project["project"]["entry-points"]["agent_connector_sdk.connector"] == {
+    assert project["project"]["entry-points"]["scion_sdk.connector"] == {
         "documentdb-mcp": "documentdb_mcp:connector"
     }
     assert re.search(rf"^## \[{re.escape(version)}\] - \d{{4}}-\d{{2}}-\d{{2}}$", changelog, re.M)

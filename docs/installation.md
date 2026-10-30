@@ -21,7 +21,7 @@ The base install ships the MCP server. Install the extra for what the operator n
 
 | Extra | Install | Pulls in |
 |---|---|---|
-| _(base)_ | `pip install documentdb-mcp` | MCP-server runtime (`agent-connector-sdk`, `pymongo`) |
+| _(base)_ | `pip install documentdb-mcp` | MCP-server runtime (`scion-sdk`, `pymongo`) |
 | `all` | `pip install "documentdb-mcp[all]"` | MCP server, agent, and Logfire tracing |
 | `test` | `pip install "documentdb-mcp[test]"` | `pytest`, `pytest-asyncio`, `pytest-cov`, `pytest-xdist` |
 

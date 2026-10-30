@@ -12,7 +12,7 @@ description: >-
 license: MIT
 tags: [documentdb, mongodb, database, collection, admin, users, mcp]
 metadata:
-  author: Genius
+  author: Knuckles-Team
   version: '0.1.0'
 ---
 # DocumentDB Collection & Database Administration

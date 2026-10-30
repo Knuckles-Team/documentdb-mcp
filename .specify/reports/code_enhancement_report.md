@@ -42,7 +42,7 @@ xychart-beta
 `██████████████░░░░░░` 74/100
 
 > [!NOTE]
-> Detected ecosystem marker: agent-connector-sdk → Agent-Utilities Ecosystem
+> Detected ecosystem marker: scion-sdk → Agent-Utilities Ecosystem
 
 | Criterion | Points | Evidence | Reasoning |
 |-----------|--------|----------|-----------|
@@ -272,7 +272,7 @@ xychart-beta
 
 | # | Priority | Domain | Action | Impact | Risk |
 |---|----------|--------|--------|--------|------|
-| 1 | 🟡 Medium | Project Analysis | Detected ecosystem marker: agent-connector-sdk → Agent-Utilities Ecosystem | Medium | Low |
+| 1 | 🟡 Medium | Project Analysis | Detected ecosystem marker: scion-sdk → Agent-Utilities Ecosystem | Medium | Low |
 | 2 | 🟡 Medium | Project Analysis | Protocol support: MCP | Medium | Low |
 | 3 | 🟡 Medium | Architecture & Design Patterns | No discernible layer architecture (no domain/service/adapter separation) | Medium | Low |
 | 4 | 🟡 Medium | Architecture & Design Patterns | Low dependency injection ratio: 0% | Medium | Low |
