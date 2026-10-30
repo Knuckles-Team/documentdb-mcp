@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "documentdb-mcp"
-version = "2.3.6"
+version = "2.3.7"
 description = "DocumentDB MCP Server & A2A Server. DocumentDB is a MongoDB compatible open source document database built on PostgreSQL."
 readme = "README.md"
 classifiers = [ "Development Status :: 5 - Production/Stable", "License :: Public Domain", "Environment :: Console", "Operating System :: POSIX :: Linux", "Programming Language :: Python :: 3",]
 requires-python = ">=3.12, <3.15"
-dependencies = [ "scion-sdk[mcp,db]>=0.5.9,<0.6.0",]
+dependencies = [ "scion-sdk[mcp,db]>=0.6.2,<0.7.0",]
 [[project.authors]]
 name = "Repository Maintainers"
 email = "maintainers@knuckles.team"
@@ -18,8 +18,8 @@ email = "maintainers@knuckles.team"
 text = "MIT"
 
 [project.optional-dependencies]
-mcp = [ "scion-sdk[mcp,db]>=0.5.9,<0.6.0",]
-all = [ "scion-sdk[mcp,db]>=0.5.9,<0.6.0",]
+mcp = [ "scion-sdk[mcp,db]>=0.6.2,<0.7.0",]
+all = [ "scion-sdk[mcp,db]>=0.6.2,<0.7.0",]
 test = [
     "pytest-xdist>=3.8.0", "pytest>=9.1.1", "pytest-asyncio>=1.4.0", "pytest-cov>=7.1.0",]
 
@@ -29,11 +29,11 @@ documentdb-mcp = "documentdb_mcp.mcp_server:mcp_server"
 
 
 
-[project.entry-points."agent_connector_sdk.prompt_providers"]
+[project.entry-points."scion_sdk.prompt_providers"]
 documentdb-mcp = "documentdb_mcp.prompts"
 
 # The one declared connector identity: the fleet name (SCION-CONNECTOR-CONTROL-R071).
-[project.entry-points."agent_connector_sdk.connector"]
+[project.entry-points."scion_sdk.connector"]
 documentdb-mcp = "documentdb_mcp:connector"
 
 [tool.uv.workspace]

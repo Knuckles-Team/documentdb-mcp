@@ -1,7 +1,7 @@
 """Knowledge-graph ingestion coverage for the DocumentDB connector.
 
 Exercises the real ``ingest_entities`` / ``ingest_documents`` seam plus the DocumentDB
-catalog and collection-document mappers against a fake ``agent_connector_sdk.ingest``
+catalog and collection-document mappers against a fake ``scion_sdk.ingest``
 transport (no engine required), asserting the submitted records/relationships and the
 record -> :DatabaseServer/:Database/:Collection/:Document mapping.
 CONCEPT:AU-KG.ingest.enterprise-source-extractor.
@@ -13,7 +13,7 @@ from types import SimpleNamespace
 from typing import Any
 
 import pytest
-from agent_connector_sdk.ingest import IngestError, KnowledgeIngest
+from scion_sdk.ingest import IngestError, KnowledgeIngest
 
 from documentdb_mcp.kg_ingest import (
     ingest_catalog,

@@ -4,7 +4,7 @@ CONCEPT:AU-KG.ingest.enterprise-source-extractor. This is the record-source twin
 media-downloader's blob ingestion: the connector natively pushes its catalog into the
 ONE epistemic-graph knowledge graph as **typed OWL nodes** (``:DatabaseServer``,
 ``:Database``, ``:Collection``, ``:DatabaseUser``) plus stored rows as ``:Document``
-nodes and their containment links through the ``agent_connector_sdk.ingest``
+nodes and their containment links through the ``scion_sdk.ingest``
 knowledge-ingest facade. Node ids follow ``documentdb:<class>:<externalId>`` and every
 ``node_type`` matches a class the package's ``documentdb.ttl`` federates.
 """
@@ -15,7 +15,7 @@ import json
 import logging
 from typing import Any
 
-from agent_connector_sdk.ingest import (
+from scion_sdk.ingest import (
     ChangeSet,
     Document,
     Entity,
