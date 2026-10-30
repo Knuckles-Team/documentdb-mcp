@@ -10,7 +10,7 @@ license: MIT
 tags: [documentdb, development, connector, mcp, mongodb, testing, release]
 tier: repository
 metadata:
-  author: Genius
+  author: Knuckles-Team
   version: '0.1.0'
 ---
 

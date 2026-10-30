@@ -21,8 +21,8 @@ import logging
 import sys
 from typing import Any
 
-from agent_connector_sdk.config import load_config
-from agent_connector_sdk.connector import build_server
+from scion_sdk.config import load_config
+from scion_sdk.connector import build_server
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 

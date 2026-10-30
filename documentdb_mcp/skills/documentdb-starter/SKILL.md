@@ -8,7 +8,7 @@ description: >-
 license: MIT
 tags: [documentdb-starter, starter, mcp]
 metadata:
-  author: Genius
+  author: Knuckles-Team
   version: '0.1.0'
 ---
 

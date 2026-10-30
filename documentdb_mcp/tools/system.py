@@ -10,15 +10,15 @@ from documentdb_mcp.auth import get_client
 def _entitled(namespace: str, names: list[str]) -> list[str]:
     """Filter ``names`` to what the calling identity may reach.
 
-    Routes the set through agent-connector-sdk's shared identity-scoped resolver
+    Routes the set through scion-sdk's shared identity-scoped resolver
     (CONCEPT:AU-OS.identity.identity-scoped-resource-autoload): a caller's
     Okta/Keycloak groups decide which resources they see by default. The
     ambient ``SYSTEM_ACTOR`` (unauthenticated/local) holds ``admin`` → sees
     all, so behaviour is unchanged until a real identity scopes it down.
     With no bound identity (local/unauthenticated) the full set is returned.
     """
-    from agent_connector_sdk.entitlements import identity_scoped_resources
-    from agent_connector_sdk.identity import IdentityRequiredError
+    from scion_sdk.entitlements import identity_scoped_resources
+    from scion_sdk.identity import IdentityRequiredError
 
     try:
         return list(identity_scoped_resources(namespace, names))

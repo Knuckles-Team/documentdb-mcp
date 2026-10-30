@@ -70,8 +70,8 @@ def __dir__() -> list[str]:
     return sorted(list(globals().keys()) + __all__)
 
 
-from agent_connector_sdk.connector import Connector
-from agent_connector_sdk.connector_hooks import RegistrationContext
+from scion_sdk.connector import Connector
+from scion_sdk.connector_hooks import RegistrationContext
 
 from documentdb_mcp.api_client import DocumentDBApi
 from documentdb_mcp.auth import get_client

@@ -12,7 +12,7 @@ description: >-
 license: MIT
 tags: [documentdb, mongodb, crud, documents, query, mcp]
 metadata:
-  author: Genius
+  author: Knuckles-Team
   version: '0.1.0'
 ---
 # DocumentDB Document CRUD
