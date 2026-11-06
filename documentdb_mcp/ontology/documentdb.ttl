@@ -9,24 +9,24 @@
 # DocumentDB (MongoDB-compatible, on PostgreSQL) ontology — servers, databases,
 # collections, stored documents, and database users. All classes and properties live
 # in the shared `:` (kg#) namespace; only the owl:Ontology node gets the per-package
-# IRI. Backs the documentdb-mcp tool surface (documentdb_system / documentdb_collections
-# / documentdb_crud / documentdb_users / documentdb_analysis). The shared `:Document`
+# IRI. Backs the documentdb-mcp tool surface (documentdb_list_databases, documentdb_list_collections,
+# documentdb_find, documentdb_create_user, documentdb_aggregate). The shared `:Document`
 # and `:Person` classes are REUSED (federated from the hub), never redefined here.
 
 :DatabaseServer a owl:Class ;
     rdfs:label "Database Server" ;
-    rdfs:comment "A DocumentDB / MongoDB-compatible server instance, identified by its connection URI and build version (documentdb_system binary_version/list_databases)." .
+    rdfs:comment "A DocumentDB / MongoDB-compatible server instance, identified by its connection URI and build version (documentdb_binary_version/documentdb_list_databases)." .
 
 :Database a owl:Class ;
     rdfs:label "Database" ;
-    rdfs:comment "A logical database on a DocumentDB server, containing collections (documentdb_system list_databases / documentdb_collections create_database)." .
+    rdfs:comment "A logical database on a DocumentDB server, containing collections (documentdb_list_databases / documentdb_create_database)." .
 
 :Collection a owl:Class .
 
 
 :DatabaseUser a owl:Class ;
     rdfs:label "Database User" ;
-    rdfs:comment "An authentication principal (role-bearing account) scoped to a Database (documentdb_users create_user / users_info)." .
+    rdfs:comment "An authentication principal (role-bearing account) scoped to a Database (documentdb_create_user / documentdb_users_info)." .
 
 # --- links (owl:ObjectProperty) ---
 

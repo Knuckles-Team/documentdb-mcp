@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.9] - 2026-11-06
+
+### Changed
+- Removed the unserved action-routed `documentdb_system`/`collections`/`users`/`crud`/`analysis` modules; every operation is one typed tool derived from the client. `documentdb_list_databases` is now identity-scoped inside the client (the scoped filter had only run in the removed router).
+- Declared tool-use contracts, links, data locations and business roles; replaced the single prompt with an operator prompt and three business-role prompts; replaced the placeholder starter skill with `documentdb-kg-ingestion`; raised `scion-sdk` to `>=0.9.0`.
+
 ## [2.3.8] - 2026-10-30
 
 ### Changed
@@ -21,7 +27,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add the packaged DocumentDB connector development skill and rapid-delivery contract.
 
 ## [Unreleased]
-
 ### Added
 -
 

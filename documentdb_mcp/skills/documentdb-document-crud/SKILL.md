@@ -45,16 +45,17 @@ Connect via the `mcp-client` skill against the **`documentdb-mcp`** MCP server.
 | `MONGODB_HOST` | one of | Host when no URI (default `localhost`) |
 | `MONGODB_PORT` | optional | Port when no URI (default `27017`) |
 
-`MCP_TOOL_MODE` (`condensed`|`verbose`|`both`) selects the condensed action-routed
-surface vs. the one-to-one verbose tools.
-
-## Tools & actions
-| Condensed tool | Actions |
-|----------------|---------|
-| `documentdb_crud` | `insert_one`, `insert_many`, `find_one`, `find`, `replace_one`, `update_one`, `update_many`, `delete_one`, `delete_many`, `count_documents`, `find_one_and_update`, `find_one_and_replace`, `find_one_and_delete` |
+## Tools
+| Tools | Purpose |
+|-------|---------|
+| `documentdb_insert_one`, `documentdb_insert_many` | insert documents |
+| `documentdb_find_one`, `documentdb_find`, `documentdb_count_documents` | read and count |
+| `documentdb_replace_one`, `documentdb_update_one`, `documentdb_update_many` | replace and update |
+| `documentdb_delete_one`, `documentdb_delete_many` | delete (needs `confirm`) |
+| `documentdb_find_one_and_update`, `documentdb_find_one_and_replace`, `documentdb_find_one_and_delete` | atomic find-and-modify |
 
 ### Key parameters
-- `database_name` / `collection_name` — required for every action.
+- `database_name` / `collection_name` — required for every tool.
 - `document` / `documents` — the payload(s) for inserts.
 - `filter` — a MongoDB query document (e.g. `{"status":"active"}`).
 - `update` — a MongoDB update document with operators (e.g. `{"$set":{"seen":true}}`).
@@ -65,21 +66,21 @@ surface vs. the one-to-one verbose tools.
 ## Recipes
 Insert and read back:
 ```
-documentdb_crud action=insert_one  database_name=app collection_name=users document={"email":"a@b.co","active":true}
-documentdb_crud action=find_one    database_name=app collection_name=users filter={"email":"a@b.co"}
+documentdb_insert_one  database_name=app collection_name=users document={"email":"a@b.co","active":true}
+documentdb_find_one    database_name=app collection_name=users filter={"email":"a@b.co"}
 ```
 Paged, sorted query:
 ```
-documentdb_crud action=find database_name=app collection_name=events filter={"level":"error"} sort=[["ts",-1]] limit=25 skip=0
+documentdb_find database_name=app collection_name=events filter={"level":"error"} sort=[["ts",-1]] limit=25 skip=0
 ```
 Update with an operator, then count:
 ```
-documentdb_crud action=update_many database_name=app collection_name=jobs filter={"state":"queued"} update={"$set":{"state":"running"}}
-documentdb_crud action=count_documents database_name=app collection_name=jobs filter={"state":"running"}
+documentdb_update_many database_name=app collection_name=jobs filter={"state":"queued"} update={"$set":{"state":"running"}}
+documentdb_count_documents database_name=app collection_name=jobs filter={"state":"running"}
 ```
 Atomic claim (return the updated doc):
 ```
-documentdb_crud action=find_one_and_update database_name=app collection_name=jobs filter={"state":"queued"} update={"$set":{"state":"claimed"}} return_document=after
+documentdb_find_one_and_update database_name=app collection_name=jobs filter={"state":"queued"} update={"$set":{"state":"claimed"}} return_document=after
 ```
 
 ## Gotchas

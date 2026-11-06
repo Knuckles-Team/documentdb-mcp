@@ -4,7 +4,7 @@ skill_type: skill
 domain: development
 description: >-
   Develop, test, gate, and release the documentdb-mcp connector while
-  preserving its SDK-owned client boundary, action-routed tools, knowledge
+  preserving its SDK-owned client boundary, per-operation tools, knowledge
   graph ingestion, packaged resources, and shared publication contracts.
 license: MIT
 tags: [documentdb, development, connector, mcp, mongodb, testing, release]
@@ -35,11 +35,12 @@ owning packages.
   bounded server-selection timeout. Keep credentials and endpoints in injected
   configuration.
 - `documentdb_mcp/mcp_server.py` preserves the legacy CLI and `/health` route
-  while `documentdb_mcp/tools/` registers the action-routed system,
-  collections, users, CRUD, analysis, and knowledge-graph tools.
-  The public tool names are `documentdb_system`, `documentdb_collections`,
-  `documentdb_users`, `documentdb_crud`, `documentdb_analysis`,
-  `documentdb_ingest_catalog`, and `documentdb_ingest_documents`.
+  while every database operation is served as its own typed tool derived from
+  `DocumentDBApi` (`documentdb_find`, `documentdb_insert_one`,
+  `documentdb_list_collections`, `documentdb_create_user`,
+  `documentdb_aggregate`, ...) and
+  `documentdb_mcp/tools/` registers the knowledge-graph tools
+  `documentdb_ingest_catalog` and `documentdb_ingest_documents`.
 - `documentdb_mcp/kg_ingest.py` maps catalog and document samples into typed
   SDK ingestion records. `documentdb_mcp/connector_sources.py` owns the live
   `connector://resources` declaration, while `documentdb_mcp/ontology/` owns
@@ -70,10 +71,10 @@ never require a live DocumentDB server for a gate.
    `PIPE-CONNSPEC-R116.4`; do not invent a local status row for it.
 2. Trace changed behavior through the SDK `Connector`, `get_client`, the
    `DocumentDBApi` facade, the action registrar, source declarations, ontology,
-   and package-data boundary. Reuse existing API methods and action dispatch;
+   and package-data boundary. Reuse existing API methods;
    do not create a second connector, client, or tool route.
 3. Make the smallest connector-owned change. Preserve database and collection
-   scoping, action names, response shapes, identity filtering, source IDs,
+   scoping, tool names, response shapes, identity filtering, source IDs,
    typed ingestion mappings, and the health/CLI configuration behavior.
 4. Run the directly bound mock or content test with the locked environment,
    then run the normal repository hooks. Never bypass a failing hook, contact a

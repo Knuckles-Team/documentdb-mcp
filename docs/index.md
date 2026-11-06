@@ -15,7 +15,7 @@ document database built on PostgreSQL.
 ## Overview
 
 `documentdb-mcp` wraps the DocumentDB / MongoDB wire-protocol surface with granular,
-action-routed MCP tools and a Pydantic-AI graph agent. It provides:
+per-operation MCP tools and a Pydantic-AI graph agent. It provides:
 
 - **`DocumentDBApi`** — a `pymongo`-backed client that groups system, collections,
   users, CRUD, and analysis operations behind one tolerant facade.
