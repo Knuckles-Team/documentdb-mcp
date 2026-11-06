@@ -87,6 +87,6 @@ def _register_legacy_health(context: RegistrationContext) -> None:
 connector = Connector(
     api=DocumentDBApi,
     get_client=get_client,
-    instructions="documentdb-mcp MCP Server — Condensed Action-Routed Tools.",
+    instructions="documentdb-mcp MCP Server — one typed tool per operation.",
     extra_registrations=(_register_legacy_health,),
 )

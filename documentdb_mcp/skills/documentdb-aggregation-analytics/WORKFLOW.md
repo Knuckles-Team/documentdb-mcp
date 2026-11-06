@@ -29,13 +29,10 @@ Connect via the `mcp-client` skill against the **`documentdb-mcp`** MCP server.
 | `MONGODB_HOST` | one of | Host when no URI (default `localhost`) |
 | `MONGODB_PORT` | optional | Port when no URI (default `27017`) |
 
-`MCP_TOOL_MODE` (`condensed`|`verbose`|`both`) selects the condensed action-routed
-surface vs. the one-to-one verbose tools.
-
-## Tools & actions
-| Condensed tool | Actions |
-|----------------|---------|
-| `documentdb_analysis` | `distinct`, `aggregate` |
+## Tools
+| Tools | Purpose |
+|-------|---------|
+| `documentdb_distinct`, `documentdb_aggregate` | distinct values and aggregation pipelines |
 
 ### Key parameters
 - `database_name` / `collection_name` — required.
@@ -45,15 +42,15 @@ surface vs. the one-to-one verbose tools.
 ## Recipes
 Distinct values of a field among active docs:
 ```
-documentdb_analysis action=distinct database_name=app collection_name=users key=country filter={"active":true}
+documentdb_distinct database_name=app collection_name=users key=country filter={"active":true}
 ```
 Count errors per service, top 5:
 ```
-documentdb_analysis action=aggregate database_name=app collection_name=events pipeline=[{"$match":{"level":"error"}},{"$group":{"_id":"$service","n":{"$sum":1}}},{"$sort":{"n":-1}},{"$limit":5}]
+documentdb_aggregate database_name=app collection_name=events pipeline=[{"$match":{"level":"error"}},{"$group":{"_id":"$service","n":{"$sum":1}}},{"$sort":{"n":-1}},{"$limit":5}]
 ```
 Average order value by status:
 ```
-documentdb_analysis action=aggregate database_name=shop collection_name=orders pipeline=[{"$group":{"_id":"$status","avg":{"$avg":"$total"}}}]
+documentdb_aggregate database_name=shop collection_name=orders pipeline=[{"$group":{"_id":"$status","avg":{"$avg":"$total"}}}]
 ```
 
 ## Gotchas

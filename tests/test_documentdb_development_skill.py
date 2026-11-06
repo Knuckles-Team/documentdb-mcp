@@ -40,11 +40,11 @@ def test_development_skill_has_rapid_contract_and_package_binding() -> None:
         "MONGODB_HOST",
         "MONGODB_PORT",
         "documentdb-mcp",
-        "documentdb_system",
-        "documentdb_collections",
-        "documentdb_users",
-        "documentdb_crud",
-        "documentdb_analysis",
+        "documentdb_find",
+        "documentdb_list_collections",
+        "documentdb_create_user",
+        "documentdb_insert_one",
+        "documentdb_aggregate",
         "documentdb_ingest_catalog",
         "documentdb_ingest_documents",
         "connector://resources",
@@ -65,7 +65,9 @@ def test_development_skill_has_rapid_contract_and_package_binding() -> None:
     assert project["project"]["entry-points"]["scion_sdk.connector"] == {
         "documentdb-mcp": "documentdb_mcp:connector"
     }
-    assert re.search(rf"^## \[{re.escape(version)}\] - \d{{4}}-\d{{2}}-\d{{2}}$", changelog, re.M)
+    assert re.search(
+        rf"^## \[{re.escape(version)}\] - \d{{4}}-\d{{2}}-\d{{2}}$", changelog, re.M
+    )
     assert "packaged DocumentDB connector development skill" in changelog
     assert re.search(
         rf'(?ms)^name = "documentdb-mcp"\nversion = "{re.escape(version)}"\n',

@@ -1,9 +1,7 @@
 import asyncio
 import inspect
-import sys
 from typing import Any
 from unittest.mock import MagicMock, patch
-
 
 import pytest
 
@@ -78,48 +76,7 @@ def test_mcp_server_coverage(mock_mongo):
         mcp_data = get_mcp_instance()
         mcp = mcp_data[0] if isinstance(mcp_data, tuple) else mcp_data
 
-        # Explicit map of each tool name to all valid actions and one invalid action to cover ValuErrors
-        tool_actions = {
-            "documentdb_system": [
-                "binary_version",
-                "list_databases",
-                "run_command",
-                "invalid_action",
-            ],
-            "documentdb_collections": [
-                "list_collections",
-                "create_collection",
-                "drop_collection",
-                "create_database",
-                "drop_database",
-                "rename_collection",
-                "invalid_action",
-            ],
-            "documentdb_users": [
-                "create_user",
-                "drop_user",
-                "update_user",
-                "users_info",
-                "invalid_action",
-            ],
-            "documentdb_crud": [
-                "insert_one",
-                "insert_many",
-                "find_one",
-                "find",
-                "replace_one",
-                "update_one",
-                "update_many",
-                "delete_one",
-                "delete_many",
-                "count_documents",
-                "find_one_and_update",
-                "find_one_and_replace",
-                "find_one_and_delete",
-                "invalid_action",
-            ],
-            "documentdb_analysis": ["distinct", "aggregate", "invalid_action"],
-        }
+        tool_actions: dict[str, list] = {}
 
         async def run_tools():
             # CONCEPT:AU-ECO.mcp.fastmcp-middleware
@@ -171,8 +128,6 @@ def test_mcp_server_coverage(mock_mongo):
 
         asyncio.run(run_tools())
         assert mcp is not None
-
-
 
 
 def test_main_coverage():

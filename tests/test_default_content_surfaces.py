@@ -39,6 +39,8 @@ async def _listings():
         resources = {str(r.uri) for r in await client.list_resources()}
         prompts = {p.name for p in await client.list_prompts()}
         for uri in resources:
+            if uri.endswith("/contracts.ttl"):
+                continue  # rendered from connector_contracts.py, not a packaged file
             if uri.startswith(("ontology://", "shapes://")):
                 directory = ROOT / "ontology"
                 if uri.startswith("shapes://"):
@@ -87,7 +89,9 @@ def test_sdk_floor_supports_content_identity_and_current_pack_protocol() -> None
     for requirement in sdk:
         from packaging.version import Version
 
-        floor = max(Version(s.version) for s in requirement.specifier if s.operator == ">=")
+        floor = max(
+            Version(s.version) for s in requirement.specifier if s.operator == ">="
+        )
         assert floor >= Version("0.6.3")
         assert not requirement.specifier.contains("0.7.0")
         assert not requirement.specifier.contains("0.5.9")

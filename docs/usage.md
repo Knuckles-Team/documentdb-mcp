@@ -6,7 +6,7 @@ server. The ecosystem role and the tool modules are covered in [Overview](overvi
 
 ## As an MCP server
 
-Once [deployed](deployment.md), the server registers five action-routed tool modules.
+Once [deployed](deployment.md), the server registers one typed tool per database operation.
 Each module is togglable with its environment switch (all default to `True`):
 
 | Module | Env switch | Action-routed methods |
@@ -33,7 +33,7 @@ users, CRUD, and analysis operations. Build one straight from the environment wi
 ```python
 from documentdb_mcp.auth import get_client
 
-api = get_client()        # reads MONGODB_URI / MONGODB_HOST / MONGODB_PORT
+api = get_client()  # reads MONGODB_URI / MONGODB_HOST / MONGODB_PORT
 ```
 
 …or build it explicitly from a `pymongo` client:
@@ -45,8 +45,8 @@ from documentdb_mcp.api_client import DocumentDBApi
 api = DocumentDBApi(client=pymongo.MongoClient("mongodb://localhost:27017/"))
 
 # System reads
-print(api.binary_version())             # server build version
-print(api.list_databases())             # ["admin", "documentation_db", ...]
+print(api.binary_version())  # server build version
+print(api.list_databases())  # ["admin", "documentation_db", ...]
 print(api.list_collections("documentation_db"))
 
 # CRUD reads — ObjectIds are serialized to strings
@@ -66,7 +66,9 @@ Write operations are available on the same client; each returns a status string:
 
 ```python
 api.insert_one("documentation_db", "orders", {"status": "active", "total": 42})
-api.update_one("documentation_db", "orders", {"_id": "65a..."}, {"$set": {"status": "shipped"}})
+api.update_one(
+    "documentation_db", "orders", {"_id": "65a..."}, {"$set": {"status": "shipped"}}
+)
 api.delete_one("documentation_db", "orders", {"_id": "65a..."})
 ```
 

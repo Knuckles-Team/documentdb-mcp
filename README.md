@@ -54,19 +54,14 @@ _Auto-generated — do not edit (synced by the `mcp-readme-table` pre-commit hoo
 
 <!-- MCP-TOOLS-TABLE:START -->
 
-#### Condensed action-routed tools (`MCP_TOOL_MODE=condensed`)
+#### Knowledge-graph tools
 
-| MCP Tool | Toggle Env Var | Description |
-|----------|----------------|-------------|
-| `documentdb_analysis` | `ANALYSISTOOL` | Manage analysis operations. |
-| `documentdb_collections` | `COLLECTIONSTOOL` | Manage collections operations. |
-| `documentdb_crud` | `CRUDTOOL` | Manage crud operations. |
+| Tool | Toggle | Purpose |
+|---|---|---|
 | `documentdb_ingest_catalog` | `KGTOOL` | Natively ingest the DocumentDB catalog into epistemic-graph as typed nodes. |
 | `documentdb_ingest_documents` | `KGTOOL` | Natively ingest stored documents from a collection as ``:Document`` nodes. |
-| `documentdb_system` | `SYSTEMTOOL` | Manage system operations. |
-| `documentdb_users` | `USERSTOOL` | Manage users operations. |
 
-#### Verbose 1:1 API-mapped tools (`MCP_TOOL_MODE=verbose` or `both`)
+#### Operation tools (one per client method)
 
 <details>
 <summary>28 per-operation tools — one per public API method (click to expand)</summary>
@@ -104,7 +99,7 @@ _Auto-generated — do not edit (synced by the `mcp-readme-table` pre-commit hoo
 
 </details>
 
-_7 action-routed tool(s) · 28 verbose 1:1 tool(s). Each is enabled unless its `<DOMAIN>TOOL` toggle is set false; `MCP_TOOL_MODE` selects the surface (**`intent` default** — the six verb-tools, granular set loaded on demand · `condensed` action-routed · `verbose` 1:1 · `both`). Auto-generated — do not edit._
+_28 operation tool(s) and 2 knowledge-graph tool(s). Each is enabled unless its `<DOMAIN>TOOL` toggle is set false; `MCP_TOOL_MODE` selects the surface (**`intent` default** — the six verb-tools, granular set loaded on demand · `condensed` action-routed · `verbose` 1:1 · `both`). Auto-generated — do not edit._
 <!-- MCP-TOOLS-TABLE:END -->
 
 Detailed tool schemas, parameter shapes, and validation constraints are preserved in [docs/usage.md](docs/usage.md).

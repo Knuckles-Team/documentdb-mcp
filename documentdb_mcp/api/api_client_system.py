@@ -9,6 +9,24 @@ from documentdb_mcp.api.api_client_base import (
 )
 
 
+def _entitled(namespace: str, names: list[str]) -> list[str]:
+    """Filter ``names`` to what the calling identity may reach.
+
+    Routes the set through scion-sdk's shared identity-scoped resolver: a
+    caller's Okta/Keycloak groups decide which resources they see by default.
+    The ambient ``SYSTEM_ACTOR`` (unauthenticated/local) holds ``admin`` and
+    sees all. With no bound identity the full set is returned.
+    """
+    from scion_sdk.entitlements import identity_scoped_resources
+    from scion_sdk.identity import IdentityRequiredError
+
+    try:
+        return list(identity_scoped_resources(namespace, names))
+    except IdentityRequiredError:
+        # No identity bound (unauthenticated/local) -> unscoped, full set.
+        return list(names)
+
+
 class SystemClient(BaseApiClient):
     # System
     def binary_version(self) -> str:
@@ -19,7 +37,7 @@ class SystemClient(BaseApiClient):
             return f"Error: {type(e).__name__}"
 
     def list_databases(self) -> list[str]:
-        return self.client.list_database_names()
+        return _entitled("db", self.client.list_database_names())
 
     def run_command(
         self, database_name: str, command: dict[str, Any]

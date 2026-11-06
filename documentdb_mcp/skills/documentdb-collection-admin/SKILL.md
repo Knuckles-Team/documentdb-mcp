@@ -44,42 +44,40 @@ Connect via the `mcp-client` skill against the **`documentdb-mcp`** MCP server.
 | `MONGODB_HOST` | one of | Host when no URI (default `localhost`) |
 | `MONGODB_PORT` | optional | Port when no URI (default `27017`) |
 
-`MCP_TOOL_MODE` (`condensed`|`verbose`|`both`) selects the condensed action-routed
-surface (used below) vs. the one-to-one verbose tools.
-
-## Tools & actions
-| Condensed tool | Actions |
-|----------------|---------|
-| `documentdb_system` | `binary_version`, `list_databases`, `run_command` |
-| `documentdb_collections` | `list_collections`, `create_collection`, `drop_collection`, `create_database`, `drop_database`, `rename_collection` |
-| `documentdb_users` | `create_user`, `drop_user`, `update_user`, `users_info` |
+## Tools
+| Tools | Purpose |
+|-------|---------|
+| `documentdb_binary_version`, `documentdb_list_databases`, `documentdb_run_command` | server version, databases, raw command |
+| `documentdb_list_collections`, `documentdb_create_collection`, `documentdb_rename_collection`, `documentdb_drop_collection` | collections |
+| `documentdb_create_database`, `documentdb_drop_database` | databases (drops need `confirm`) |
+| `documentdb_create_user`, `documentdb_update_user`, `documentdb_users_info`, `documentdb_drop_user` | database users |
 
 ### Key parameters
-- `database_name` — target database (required by nearly every action).
+- `database_name` — target database (required by nearly every tool).
 - `collection_name` — target collection (create/drop collection).
 - `initial_collection` — seed collection created with `create_database`.
 - `old_name` / `new_name` — for `rename_collection`.
-- `username` / `password` / `roles` — for the user actions; `roles` is a JSON array of
+- `username` / `password` / `roles` — for the user tools; `roles` is a JSON array of
   role grants (e.g. `[{"role":"readWrite","db":"app"}]`).
 
 ## Recipes
 List every database, then the collections of one:
 ```
-documentdb_system   action=list_databases
-documentdb_collections action=list_collections database_name=app
+documentdb_list_databases
+documentdb_list_collections database_name=app
 ```
 Provision a new database seeded with a collection:
 ```
-documentdb_collections action=create_database database_name=analytics initial_collection=events
+documentdb_create_database database_name=analytics initial_collection=events
 ```
 Rename then drop a collection:
 ```
-documentdb_collections action=rename_collection database_name=app old_name=tmp new_name=archive
-documentdb_collections action=drop_collection   database_name=app collection_name=archive
+documentdb_rename_collection database_name=app old_name=tmp new_name=archive
+documentdb_drop_collection   database_name=app collection_name=archive
 ```
 Create a scoped read/write user:
 ```
-documentdb_users action=create_user database_name=app username=svc password=<secret> roles=[{"role":"readWrite","db":"app"}]
+documentdb_create_user database_name=app username=svc password=<secret> roles=[{"role":"readWrite","db":"app"}]
 ```
 
 ## Gotchas

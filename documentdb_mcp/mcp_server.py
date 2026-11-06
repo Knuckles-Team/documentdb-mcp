@@ -28,14 +28,7 @@ from starlette.responses import JSONResponse
 
 from documentdb_mcp.api_client import DocumentDBApi as DocumentDBApi
 from documentdb_mcp.auth import get_client
-from documentdb_mcp.tools import (
-    register_analysis_tools,  # noqa: F401
-    register_collections_tools,  # noqa: F401
-    register_crud_tools,  # noqa: F401
-    register_kg_tools,  # noqa: F401
-    register_system_tools,  # noqa: F401
-    register_users_tools,  # noqa: F401
-)
+from documentdb_mcp.tools import register_kg_tools  # noqa: F401
 
 __version__ = package_version("documentdb-mcp")
 

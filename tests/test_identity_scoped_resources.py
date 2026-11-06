@@ -1,6 +1,6 @@
 """Identity-scoped database auto-load (CONCEPT:AU-OS.identity.identity-scoped-resource-autoload).
 
-``documentdb_system(action="list_databases")`` routes the returned database
+``documentdb_list_databases`` routes the returned database
 names through the shared scion-sdk entitlement resolver so a caller's
 Okta/Keycloak groups scope which databases they see. The resolver itself is
 tested in scion-sdk; here we mock the entitlement source (per the
@@ -13,7 +13,7 @@ import types
 
 import pytest
 
-from documentdb_mcp.tools.system import _entitled
+from documentdb_mcp.api.api_client_system import _entitled
 
 
 def _install_fake_entitlements(entitled_names):
