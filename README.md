@@ -58,7 +58,7 @@ _Auto-generated — do not edit (synced by the `mcp-readme-table` pre-commit hoo
 
 | Tool | Toggle | Purpose |
 |---|---|---|
-| `documentdb_ingest_catalog` | `KGTOOL` | Natively ingest the DocumentDB catalog into epistemic-graph as typed nodes. |
+| `documentdb_ingest_catalog` | `KGTOOL` | Natively ingest the DocumentDB catalog into medulla as typed nodes. |
 | `documentdb_ingest_documents` | `KGTOOL` | Natively ingest stored documents from a collection as ``:Document`` nodes. |
 
 #### Operation tools (one per client method)
@@ -131,7 +131,7 @@ When query strings or parameters are supplied, an LLM-free **Knowledge Graph res
 
 > **Install the connector-focused `[mcp]` extra.** Examples use `documentdb-mcp[mcp]` to add
 > FastMCP / FastAPI through `scion-sdk`; the required Scion SDK core
-> still carries `epistemic-graph[full]`. The `[agent-runtime]` extra additionally
+> still carries `medulla[full]`. The `[agent-runtime]` extra additionally
 > enables model orchestration.
 
 #### stdio Transport (local IDEs — Cursor, Claude Desktop, VS Code)
@@ -282,7 +282,7 @@ One multi-stage `docker/Dockerfile` builds the MCP-only image (`--target mcp`):
 
 | Image tag | Build target | Contents | Entrypoint |
 |-----------|--------------|----------|------------|
-| `example/documentdb-mcp:mcp` | `--target mcp` | `documentdb-mcp[mcp]` — **connector-focused**, includes `epistemic-graph[full]`; no model-orchestration stack | `documentdb-mcp` |
+| `example/documentdb-mcp:mcp` | `--target mcp` | `documentdb-mcp[mcp]` — **connector-focused**, includes `medulla[full]`; no model-orchestration stack | `documentdb-mcp` |
 
 ```bash
 docker build --target mcp   -t example/documentdb-mcp:mcp    docker/   # connector-focused MCP server
@@ -290,14 +290,14 @@ docker build --target mcp   -t example/documentdb-mcp:mcp    docker/   # connect
 
 agent (`immutable agent digest`) with a co-located `:mcp` sidecar.
 
-### Knowledge-graph database (`epistemic-graph`)
+### Knowledge-graph database (`medulla`)
 
-Scion SDK core dependency (`epistemic-graph[full]`). The `[mcp]` extra keeps
+Scion SDK core dependency (`medulla[full]`). The `[mcp]` extra keeps
 deployments can use the bundled engine. For production or shared state, run
-**epistemic-graph as a dedicated database service** and configure the runtime to use it.
+**medulla as a dedicated database service** and configure the runtime to use it.
 Deployment recipes (single-node + Raft HA), connection configuration, and architecture
 diagrams are documented in the
-[epistemic-graph deployment guide](https://knuckles-team.github.io/epistemic-graph/deployment/).
+[medulla deployment guide](https://knuckles-team.github.io/medulla/deployment/).
 This graph service is distinct from the DocumentDB backing store used by the MCP tools; see
 the connection variables above.
 

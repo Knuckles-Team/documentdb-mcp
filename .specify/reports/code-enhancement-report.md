@@ -42,12 +42,12 @@ xychart-beta
 `██████████████░░░░░░` 74/100
 
 > [!NOTE]
-> Detected ecosystem marker: scion-sdk → Agent-Utilities Ecosystem
+> Detected ecosystem marker: scion-sdk → Meristem Ecosystem
 
 | Criterion | Points | Evidence | Reasoning |
 |-----------|--------|----------|-----------|
 | has_pyproject | 10 | `pyproject.toml and requirements.txt` | Both pyproject.toml and requirements.txt exist, fulfilling mandatory Python proj |
-| project_type_detected | 10 | `Agent-Utilities Ecosystem` | Identified 1 ecosystem marker(s) in dependencies |
+| project_type_detected | 10 | `Meristem Ecosystem` | Identified 1 ecosystem marker(s) in dependencies |
 | externalized_prompts | 0 | `${WORKSPACE_ROOT}/agent-packages/agents/documentdb-mcp` | No prompts/ directory found. Prompts may be hardcoded in source. |
 | observability | 0 | `dependency list` | No observability tools (logfire, sentry, opentelemetry) found |
 | testing_suite | 10 | `tests dir: True, pytest dep: True` | Tests directory exists, pytest in dependencies |
@@ -272,7 +272,7 @@ xychart-beta
 
 | # | Priority | Domain | Action | Impact | Risk |
 |---|----------|--------|--------|--------|------|
-| 1 | 🟡 Medium | Project Analysis | Detected ecosystem marker: scion-sdk → Agent-Utilities Ecosystem | Medium | Low |
+| 1 | 🟡 Medium | Project Analysis | Detected ecosystem marker: scion-sdk → Meristem Ecosystem | Medium | Low |
 | 2 | 🟡 Medium | Project Analysis | Protocol support: MCP | Medium | Low |
 | 3 | 🟡 Medium | Architecture & Design Patterns | No discernible layer architecture (no domain/service/adapter separation) | Medium | Low |
 | 4 | 🟡 Medium | Architecture & Design Patterns | Low dependency injection ratio: 0% | Medium | Low |
