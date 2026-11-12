@@ -21,7 +21,7 @@ def register_kg_tools(mcp: FastMCP):
         ),
         client=Depends(get_client),
     ) -> dict:
-        """Natively ingest the DocumentDB catalog into epistemic-graph as typed nodes.
+        """Natively ingest the DocumentDB catalog into medulla as typed nodes.
 
         Lists databases + collections (with document counts) via the live client and
         pushes ``:DatabaseServer`` / ``:Database`` / ``:Collection`` nodes with their

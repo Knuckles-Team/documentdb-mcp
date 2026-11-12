@@ -1,8 +1,8 @@
-"""Native epistemic-graph ingestion for DocumentDB records (typed graph nodes).
+"""Native medulla ingestion for DocumentDB records (typed graph nodes).
 
 CONCEPT:AU-KG.ingest.enterprise-source-extractor. This is the record-source twin of
 media-downloader's blob ingestion: the connector natively pushes its catalog into the
-ONE epistemic-graph knowledge graph as **typed OWL nodes** (``:DatabaseServer``,
+ONE medulla knowledge graph as **typed OWL nodes** (``:DatabaseServer``,
 ``:Database``, ``:Collection``, ``:DatabaseUser``) plus stored rows as ``:Document``
 nodes and their containment links through the ``scion_sdk.ingest``
 knowledge-ingest facade. Node ids follow ``documentdb:<class>:<externalId>`` and every

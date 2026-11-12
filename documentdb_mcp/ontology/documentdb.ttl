@@ -1,7 +1,8 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix core: <https://knuckles-team.github.io/ontology/core#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix dc: <http://purl.org/dc/terms/> .
-@prefix : <http://knuckles.team/kg#> .
+@prefix : <https://knuckles-team.github.io/ontology/connector/documentdb#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -14,17 +15,21 @@
 # and `:Person` classes are REUSED (federated from the hub), never redefined here.
 
 :DatabaseServer a owl:Class ;
+    rdfs:subClassOf core:Server ;
     rdfs:label "Database Server" ;
     rdfs:comment "A DocumentDB / MongoDB-compatible server instance, identified by its connection URI and build version (documentdb_binary_version/documentdb_list_databases)." .
 
 :Database a owl:Class ;
+    rdfs:subClassOf core:Database ;
     rdfs:label "Database" ;
     rdfs:comment "A logical database on a DocumentDB server, containing collections (documentdb_list_databases / documentdb_create_database)." .
 
-:Collection a owl:Class .
+:Collection a owl:Class ;
+    rdfs:subClassOf core:Collection .
 
 
 :DatabaseUser a owl:Class ;
+    rdfs:subClassOf core:IdentityUser ;
     rdfs:label "Database User" ;
     rdfs:comment "An authentication principal (role-bearing account) scoped to a Database (documentdb_create_user / documentdb_users_info)." .
 
@@ -79,7 +84,7 @@
     rdfs:comment "Role grants held by a DatabaseUser, rendered as a string." ;
     rdfs:range xsd:string .
 
-<http://knuckles.team/kg/documentdb> a owl:Ontology ;
+<https://knuckles-team.github.io/ontology/connector/documentdb> a owl:Ontology ;
     rdfs:label "DocumentDB Ontology" ;
     rdfs:comment """DocumentDB (MongoDB-compatible, PostgreSQL-backed) model — servers,
     databases, collections, stored documents and database users, with their containment
