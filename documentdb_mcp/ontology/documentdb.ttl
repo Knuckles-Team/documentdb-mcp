@@ -19,15 +19,6 @@
     rdfs:label "Database Server" ;
     rdfs:comment "A DocumentDB / MongoDB-compatible server instance, identified by its connection URI and build version (documentdb_binary_version/documentdb_list_databases)." .
 
-:Database a owl:Class ;
-    rdfs:subClassOf core:Database ;
-    rdfs:label "Database" ;
-    rdfs:comment "A logical database on a DocumentDB server, containing collections (documentdb_list_databases / documentdb_create_database)." .
-
-:Collection a owl:Class ;
-    rdfs:subClassOf core:Collection .
-
-
 :DatabaseUser a owl:Class ;
     rdfs:subClassOf core:IdentityUser ;
     rdfs:label "Database User" ;
@@ -38,24 +29,24 @@
 :hostedOnServer a owl:ObjectProperty ;
     rdfs:label "hosted on server" ;
     rdfs:comment "Links a Database to the DatabaseServer that hosts it." ;
-    rdfs:domain :Database ;
+    rdfs:domain core:Database ;
     rdfs:range :DatabaseServer .
 
 :inDatabase a owl:ObjectProperty ;
     rdfs:label "in database" ;
     rdfs:comment "Links a Collection or DatabaseUser to the Database it belongs to." ;
-    rdfs:range :Database .
+    rdfs:range core:Database .
 
 :inCollection a owl:ObjectProperty ;
     rdfs:label "in collection" ;
     rdfs:comment "Links a stored :Document to the Collection it was read from." ;
-    rdfs:range :Collection .
+    rdfs:range core:Collection .
 
 :authorizedOn a owl:ObjectProperty ;
     rdfs:label "authorized on" ;
     rdfs:comment "Links a DatabaseUser to a Database it holds roles on." ;
     rdfs:domain :DatabaseUser ;
-    rdfs:range :Database .
+    rdfs:range core:Database .
 
 # --- fields (owl:DatatypeProperty) ---
 
@@ -73,11 +64,6 @@
     rdfs:label "collection name" ;
     rdfs:comment "Name of the Collection within its Database." ;
     rdfs:range xsd:string .
-
-:documentCount a owl:DatatypeProperty ;
-    rdfs:label "document count" ;
-    rdfs:comment "Number of documents in a Collection at ingestion time (count_documents)." ;
-    rdfs:range xsd:integer .
 
 :userRoles a owl:DatatypeProperty ;
     rdfs:label "user roles" ;

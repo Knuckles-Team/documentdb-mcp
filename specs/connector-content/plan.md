@@ -54,6 +54,7 @@ The repository pre-commit hooks apply: `ruff-format`, `connector-standard`, `sec
 ## Production caller chain
 
 1. `CONN-DOCUMENTDB-MCP-CONNECTOR-CONTENT-R001`: the documentdb-mcp console script (documentdb_mcp.mcp_server:mcp_server) builds the server with scion_sdk.connector.build_server, which loads the entry point documentdb_mcp:connector (documentdb_mcp/__init__.py:87) and serves the packaged skills, ontology and prompts.
+2. `CONN-DOCUMENTDB-MCP-CONNECTOR-CONTENT-R002`: the ontology loader reads `documentdb_mcp/ontology/` at server start; the engine imports the served pack and finds no redeclared core term.
 
 ## Cross-repo seams
 
