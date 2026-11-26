@@ -2,13 +2,7 @@
 name: documentdb-document-crud
 skill_type: skill
 description: >-
-  Document create/read/update/delete operations on a DocumentDB (MongoDB-compatible,
-  PostgreSQL-backed) collection via the documentdb-mcp MCP server — insert one/many,
-  find with filter/sort/skip/limit, update/replace one/many, delete, count, and the
-  atomic find-and-modify variants. Use when the agent must read or mutate the documents
-  inside a known database + collection. Do NOT use for creating/dropping the collection
-  itself or managing users (use documentdb-collection-admin) or for aggregation
-  pipelines and distinct/analytics (use documentdb-aggregation-analytics).
+  Create, read, update and delete documents in a DocumentDB (MongoDB-compatible) collection via documentdb-mcp: insert, find with filter/sort/limit, update, replace, delete, count and atomic find-and-modify. Use for documents in a known database and collection. Do NOT use for namespace or user admin (documentdb-collection-admin) or aggregation (documentdb-aggregation-analytics).
 license: MIT
 tags: [documentdb, mongodb, crud, documents, query, mcp]
 metadata:
@@ -17,8 +11,32 @@ metadata:
 ---
 # DocumentDB Document CRUD
 
+Scope: Document create/read/update/delete operations on a DocumentDB (MongoDB-compatible, PostgreSQL-backed) collection via the documentdb-mcp MCP server — insert one/many, find with filter/sort/skip/limit, update/replace one/many, delete, count, and the atomic find-and-modify variants. Use when the agent must read or mutate the documents inside a known database + collection. Do NOT use for creating/dropping the collection itself or managing users (use documentdb-collection-admin) or for aggregation pipelines and distinct/analytics (use documentdb-aggregation-analytics).
+
 Row-level document operations against a specific `database_name` + `collection_name`
 using MongoDB filter/update semantics.
+
+## Steps
+
+1. Confirm the namespace with `documentdb_list_collections` (`database_name`).
+   Verify the `collection_name` is listed.
+2. Read first with `documentdb_find` (`database_name`, `collection_name`, `filter`, `limit`) or `documentdb_count_documents`.
+   Verify the filter matches the expected number of documents.
+3. To insert, call `documentdb_insert_one` (`document`) or `documentdb_insert_many` (`documents`).
+   Verify with `documentdb_find_one` that the document reads back.
+4. To change documents, state the filter and update to the operator and call `documentdb_update_one` (`filter`, `update`) or `documentdb_update_many`.
+   Verify the matched and modified counts and re-read one sample.
+5. To remove documents, get explicit approval and call `documentdb_delete_one` (`filter`, `confirm`) or `documentdb_delete_many` with `confirm=true`.
+   Verify the count with `documentdb_count_documents` falls as expected.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---------|-------|----------|
+| Connection error or server-selection timeout | `MONGODB_URI`, or `MONGODB_HOST` and `MONGODB_PORT`, unset or unreachable | Set `MONGODB_URI` for the `documentdb-mcp` server and call `documentdb_list_databases` to confirm; ask the operator for the correct endpoint |
+| Authorization error string | The connecting principal lacks the privilege for this command | Check the account roles with `documentdb_users_info` (`database_name`) and ask the operator for a principal with the needed role |
+| Delete or drop refused | `confirm=true` was not passed, or no operator approval was given | Describe the exact target to the operator, get approval, and pass `confirm=true` |
+| Update matched nothing | The `filter` is wrong or the update lacks operators | Test the `filter` with `documentdb_count_documents`, and use operators such as `$set` in `update` |
 
 ## When to use
 - Insert one or many documents.
