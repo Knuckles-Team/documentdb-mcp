@@ -23,6 +23,27 @@ DocumentDB calls, mappings, MCP tools, and packaged connector content. Shared
 transport, identity, ingestion, and publication contracts stay with their
 owning packages.
 
+## Steps
+
+1. Read the owning requirement and `AGENTS.md` and find tests with `git grep -n "<term>" -- tests specs`.
+   Verify the owning row and bound test are identified.
+2. Make the smallest connector-owned change in the existing facade or tool module.
+   Verify with `git diff --stat` that only intended files changed.
+3. Run the bound test with `uv run --locked --extra test pytest -q tests/test_documentdb_development_skill.py`.
+   Verify the run ends with all tests passed.
+4. Run the repository gate with `uvx pre-commit run --all-files`.
+   Verify every hook reports Passed.
+5. Stage reviewed paths with `git add -- <path>` and inspect `git diff --cached --name-status`.
+   Verify only intended files are staged before committing with the `Spec:` trailer.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---------|-------|----------|
+| Pre-commit hook fails | Formatting, spelling or spec gate violation | Read the hook output, fix the named file, and re-stage that path |
+| Test needs a live database | A test connects to a real server instead of a mock client | Replace the connection with the existing mock client so the test passes without a server |
+| Locked environment missing | Dependencies not synced | Run `uv sync --locked` in the worktree before invoking the focused pytest command |
+
 ## Repository and runtime map
 
 - `documentdb_mcp/__init__.py` is the SDK `Connector` entry point. It composes

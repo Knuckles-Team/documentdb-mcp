@@ -2,12 +2,7 @@
 name: documentdb-aggregation-analytics
 skill_type: skill
 description: >-
-  Read-only analytics on a DocumentDB (MongoDB-compatible, PostgreSQL-backed) collection
-  via the documentdb-mcp MCP server — run aggregation pipelines ($match/$group/$sort/…)
-  and fetch distinct field values. Use when the agent must summarize, group, or profile
-  documents rather than fetch individual rows. Do NOT use for plain document
-  reads/writes (use documentdb-document-crud) or for creating/dropping collections and
-  users (use documentdb-collection-admin).
+  Read-only analytics on a DocumentDB (MongoDB-compatible) collection via documentdb-mcp: run aggregation pipelines and fetch distinct field values. Use to summarize, group or profile documents rather than fetch rows. Do NOT use for plain document reads or writes (documentdb-document-crud) or admin (documentdb-collection-admin).
 license: MIT
 tags: [documentdb, mongodb, aggregation, analytics, distinct, mcp]
 metadata:
@@ -16,8 +11,31 @@ metadata:
 ---
 # DocumentDB Aggregation & Analytics
 
+Scope: Read-only analytics on a DocumentDB (MongoDB-compatible, PostgreSQL-backed) collection via the documentdb-mcp MCP server — run aggregation pipelines ($match/$group/$sort/…) and fetch distinct field values. Use when the agent must summarize, group, or profile documents rather than fetch individual rows. Do NOT use for plain document reads/writes (use documentdb-document-crud) or for creating/dropping collections and users (use documentdb-collection-admin).
+
 Server-side summarization over a collection: MongoDB aggregation pipelines and distinct
 value enumeration. These stay read-only and push the computation to the server.
+
+## Steps
+
+1. Confirm the target with `documentdb_list_databases` and `documentdb_list_collections` (`database_name`).
+   Verify the collection is listed.
+2. For distinct values, call `documentdb_distinct` (`database_name`, `collection_name`, `key`, `filter`).
+   Verify the result is a list and not an error string.
+3. For summaries, build the `pipeline` as a list of stage documents with an early `$match`, and call `documentdb_aggregate`.
+   Verify the first element is not an `error` document.
+4. Avoid write stages such as `$out` and `$merge` without operator approval.
+   Verify the pipeline contains none before calling.
+5. Report the result with the pipeline used.
+   Verify the numbers by a sample check with `documentdb_count_documents` (`database_name`, `collection_name`, `filter`).
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---------|-------|----------|
+| Connection error or server-selection timeout | `MONGODB_URI`, or `MONGODB_HOST` and `MONGODB_PORT`, unset or unreachable | Set `MONGODB_URI` for the `documentdb-mcp` server and call `documentdb_list_databases` to confirm; ask the operator for the correct endpoint |
+| Result is `[{"error": ...}]` | Malformed pipeline, a single stage not wrapped in a list, or an unknown field | Fix the `pipeline` to a list of stage documents, test it with a leading `$limit` stage, and call `documentdb_aggregate` again |
+| Aggregation is slow | Large unindexed `$group` or `$sort` stage | Add an early `$match` on an indexed field and a `$limit` to the `pipeline` |
 
 ## When to use
 - Group/roll-up metrics with an aggregation pipeline (`$match`, `$group`, `$sort`,
