@@ -20,9 +20,9 @@
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/documentdb-mcp)
 ![PyPI - Implementation](https://img.shields.io/pypi/implementation/documentdb-mcp)
 
-> **Documentation** — Installation, deployment, usage across the API, CLI, MCP, and
-> agent interfaces, and guidance for provisioning the DocumentDB backing service are
-> maintained in the [official documentation](https://knuckles-team.github.io/documentdb-mcp/).
+> **Documentation** — Installation, deployment, and usage across the API, CLI, MCP,
+> and A2A agent interfaces are maintained in the
+> [official documentation](https://knuckles-team.github.io/documentdb-mcp/).
 
 ---
 
@@ -261,6 +261,8 @@ the detailed transport contract.
   ingress. Keep its URL, outbound identity references, trust profile, and exact
   `MCP_ALLOWED_HOSTS` in `AgentConfig`.
 <!-- END GENERATED: additional-deployment-options -->
+
+---
 
 ## Agent
 
