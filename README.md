@@ -266,6 +266,7 @@ the detailed transport contract.
 
 ## Agent
 
+```bash
 # Set credentials
 export MONGODB_URI="mongodb://localhost:27017/"
 export MONGODB_HOST="localhost"
